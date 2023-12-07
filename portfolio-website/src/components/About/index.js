@@ -1,5 +1,5 @@
 import React from 'react';
-import { AboutContainer, AboutH1, AboutP } from '../styles';
+import { AboutContainer, AboutH1, AboutP } from './styles';
 
 const About = () => {
     return (

@@ -64,7 +64,7 @@ section#home {
   background: linear-gradient(145deg, #003973, #e5e5be);
   /* Gradient background for home section */
   color: #fff;
-  min-height: 90vh;
+  min-height: 93vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

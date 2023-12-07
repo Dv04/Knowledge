@@ -1,5 +1,5 @@
 import React from 'react';
-import { ContactContainer, ContactH1, ContactForm, Input, Textarea, Button } from '../styles';
+import { ContactContainer, ContactH1, ContactForm, Input, Textarea, Button } from './styles';
 
 const Contact = () => {
     return (

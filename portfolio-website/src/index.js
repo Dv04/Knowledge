@@ -1,15 +1,19 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import ReactDOM from 'react-dom';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { ProjectsProvider } from './contexts/ProjectsContext';
+// import { BlogProvider } from './contexts/BlogContext';
+import GlobalStyle from './GlobalStyle';
+import './index.css';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+ReactDOM.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <ProjectsProvider>
+      <GlobalStyle />
+      <App />
+    </ProjectsProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
 
 // script.js
@@ -60,7 +64,7 @@ let phraseIndex = 0;
 let letterIndex = 0;
 let currentPhrase = [];
 let isDeleting = false;
-let timer;
+
 
 function type() {
   if (isDeleting && currentPhrase.length === 0) {
@@ -68,22 +72,11 @@ function type() {
     isDeleting = false;
   }
 
-  if (!isDeleting && currentPhrase.length === phrases[phraseIndex].length) {
-    timer = setTimeout(() => {
-      isDeleting = true;
-    }, 2000);
-  }
 
   currentPhrase = phrases[phraseIndex].substring(0, isDeleting ? letterIndex-- : letterIndex++);
   dynamicText.textContent = currentPhrase;
 
-  timer = setTimeout(type, isDeleting ? 100 : 200);
+
 }
 
 setTimeout(type, 2000);
-
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
