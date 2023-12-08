@@ -1,54 +1,54 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
+// Styled components for NavBar
 export const Nav = styled.nav`
-  background: #0a0f0d;
-  height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  width: 100%;
+  background: #0a0a0a; /* Or any color that matches your theme */
+  padding: 1rem 0;
 `;
 
-export const NavbarContainer = styled.div`
+export const NavContainer = styled.div`
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 20px;
   display: flex;
   justify-content: space-between;
-  height: 80px;
-  z-index: 1;
-  width: 100%;
-  padding: 0 24px;
-  max-width: 1100px;
-`;
-
-export const NavLogo = styled(Link)`
-  color: #31c7b2;
-  justify-self: flex-start;
-  cursor: pointer;
-  font-size: 1.5rem;
-  display: flex;
   align-items: center;
-  margin-left: 24px;
-  font-weight: bold;
-  text-decoration: none;
 `;
 
-export const NavItem = styled.li`
-  height: 80px;
+export const Logo = styled.h1`
+  color: #white; /* Or any color that matches your theme */
+
+  margin: 0;
 `;
 
-export const NavLinks = styled(Link)`
-  color: #fff;
+export const LogoLink = styled(RouterLink)`
+    color: #31c7b2; // Replace with your custom color
+    text-decoration: none;
+`;
+
+export const NavMenu = styled.ul`
+  list-style: none;
   display: flex;
-  align-items: center;
-  text-decoration: none;
-  padding: 0 1rem;
-  height: 100%;
-  cursor: pointer;
+  margin: 0;
 
-  &.active {
-    border-bottom: 3px solid #31c7b2;
+  li {
+    padding: 0 1rem;
+  }
+
+  a {
+    text-decoration: none;
+    color: #f4f4f4; /* Light text color for contrast */
+    transition: color 0.3s ease-in-out;
+
+    &:hover {
+      color: #31c7b2; /* Highlight color on hover */
+    }
+    
+    &.active {
+      color: black; /* Highlight color on hover */
+      font-weight: bold;
+    }
   }
 `;
