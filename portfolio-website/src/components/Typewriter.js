@@ -19,7 +19,7 @@ const Typewriter = ({ phrases }) => {
             return;
         }
 
-        const typingSpeed = isDeleting ? 100 : 200;
+        const typingSpeed = isDeleting ? 150 : 300;
         setTimeout(() => {
             setCurrentPhrase((prev) => {
                 const text = phrases[phraseIndex].substring(0, isDeleting ? letterIndex - 1 : letterIndex + 1);

@@ -33,6 +33,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^latest_version"
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.0"
   }
 }

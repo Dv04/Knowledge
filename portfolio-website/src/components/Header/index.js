@@ -10,7 +10,7 @@ const Nav = styled.nav`
 `;
 
 const NavContainer = styled.div`
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 0 20px;
   display: flex;
@@ -45,19 +45,20 @@ const NavMenu = styled.ul`
 
 // NavBar component
 const NavBar = () => {
-    return (
-        <Nav>
-            <NavContainer>
-                <Logo>Dev Sanghvi</Logo>
-                <NavMenu>
-                    <li><Link to="/">Home</Link></li>
-                    <li><Link to="/about">About</Link></li>
-                    <li><Link to="/projects">Projects</Link></li>
-                    <li><Link to="/contact">Contact</Link></li>
-                </NavMenu>
-            </NavContainer>
-        </Nav>
-    );
+  return (
+    <Nav>
+      <NavContainer>
+        <Logo>Dev Sanghvi</Logo>
+        <NavMenu>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/about">About</Link></li>
+          <li><Link to="/projects">Projects</Link></li>
+          <li><Link to="/contact">Contact</Link></li>
+          <li><Link to="/skills">Skills</Link></li>
+        </NavMenu>
+      </NavContainer>
+    </Nav>
+  );
 };
 
 export default NavBar;

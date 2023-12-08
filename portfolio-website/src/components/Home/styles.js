@@ -23,7 +23,7 @@ export const StyledHome = styled.section`
     position: absolute;
     color: #fff;
     font-size: calc(2rem + 2vw);
-    pointer-events: none;
+    pointer-events: auto;
   }
   
   canvas {
@@ -31,4 +31,17 @@ export const StyledHome = styled.section`
     top: 0;
     left: 0;
   }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 1.5rem; // Smaller font size for smaller screens
+    }
+  }
+
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 1rem; // Even smaller font size for mobile screens
+    }
+  }
+
 `;

@@ -5,29 +5,21 @@ import {
     ProjectsH1,
     ProjectCard,
     FilterButtons,
+    ProjectImage,
+    ProjectInfo,
+    ProjectTitle,
+    ProjectDescription,
+    ProjectLinks,
+    ProjectLink
 } from './styles';
 
 const Projects = () => {
-    //     // This would be fetched from an API or imported from a local file in a real app
-    //     const projectsList = [
-    //         {
-    //             title: 'Vision Transformer',
-    //             description: 'A computer vision project using the ViT architecture for image regression tasks.'
-    //         },
-    //         {
-    //             title: 'Text Detector',
-    //             description: 'A CNN model to recognize text from images and video streams.'
-    //         },
-    //         // ...add more projects
-    //     ];
-
     const { projects } = useContext(ProjectsContext);
     const [filter, setFilter] = useState('All');
 
-    const filteredProjects =
-        filter === 'All'
-            ? projects
-            : projects.filter((project) => project.category === filter);
+    const filteredProjects = filter === 'All'
+        ? projects
+        : projects.filter(project => project.category === filter);
 
     return (
         <ProjectsContainer>
@@ -36,12 +28,20 @@ const Projects = () => {
                 <button onClick={() => setFilter('All')}>All</button>
                 <button onClick={() => setFilter('AI')}>AI</button>
                 <button onClick={() => setFilter('Blockchain')}>Blockchain</button>
+                <button onClick={() => setFilter('Web Dev')}>Web Dev</button>
+                <button onClick={() => setFilter('Data')}>Data</button>
                 {/* Add more filters as needed */}
             </FilterButtons>
-            {filteredProjects.map((project) => (
+            {filteredProjects.map(project => (
                 <ProjectCard key={project.id}>
-                    <h3>{project.title}</h3>
-                    <p>{project.description}</p>
+                    <ProjectImage src={project.image} alt={project.title} />
+                    <ProjectInfo>
+                        <ProjectTitle>{project.title}</ProjectTitle>
+                        <ProjectDescription>{project.description}</ProjectDescription>
+                        <ProjectLinks>
+                            <ProjectLink href={project.codeLink} target="_blank">Code</ProjectLink>
+                        </ProjectLinks>
+                    </ProjectInfo>
                 </ProjectCard>
             ))}
         </ProjectsContainer>
