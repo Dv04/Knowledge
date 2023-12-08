@@ -57,8 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Typewriter effect for dynamic text
-const dynamicText = document.getElementById('dynamic-text');
 const phrases = ['AI Enthusiast', 'Blockchain Developer', 'Innovator'];
 let phraseIndex = 0;
 let letterIndex = 0;
@@ -74,7 +72,6 @@ function type() {
 
 
   currentPhrase = phrases[phraseIndex].substring(0, isDeleting ? letterIndex-- : letterIndex++);
-  dynamicText.textContent = currentPhrase;
 
 
 }

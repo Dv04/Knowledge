@@ -13,10 +13,10 @@ function App() {
       <GlobalStyle />
       <Header />
       <Routes>
-        <Route path="/" exact component={<Home />} />
-        <Route path="/about" component={<About />} />
-        <Route path="/projects" component={<Projects />} />
-        <Route path="/contact" component={<Contact />} />
+        <Route path="/" exact element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
     </Router>
   );

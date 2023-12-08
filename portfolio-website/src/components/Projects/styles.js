@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const ProjectsContainer = styled.div`
   padding: 100px;
-  background: #333;
   text-align: center;
 `;
 
@@ -13,22 +12,44 @@ export const ProjectsH1 = styled.h1`
 `;
 
 export const ProjectCard = styled.div`
-  margin: 1rem;
-  background: #222;
-  padding: 2rem;
-  border-radius: 10px;
   display: inline-block;
-`;
+  background: #222;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 10px;
+  width: calc(33.333% - 20px);
+  transition: transform 0.3s ease-in-out;
 
-export const ProjectInfo = styled.div`
-  margin: 1rem 0;
-
-  h3 {
-    font-size: 1.5rem;
-    color: #31c7b2;
+  &:hover {
+    transform: translateY(-10px);
   }
 
-  p {
-    color: #fff;
+  @media (max-width: 768px) {
+    width: calc(50% - 20px);
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+  }
+`;
+
+export const FilterButtons = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+
+  button {
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    background: none;
+    color: #31c7b2;
+    border: 2px solid #31c7b2;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #259d89;
+      color: white;
+    }
   }
 `;

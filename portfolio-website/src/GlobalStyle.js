@@ -6,7 +6,19 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     font-family: 'Open Sans', sans-serif;
     background-color: #121212; /* Dark background */
-    color: #fff; /* Light text */
+    color: #f4f4f4; /* Light text */
+  }
+
+  h1, h2, h3, p {
+    margin: 0;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  input, button, textarea {
+    font-family: inherit;
   }
 `;
 

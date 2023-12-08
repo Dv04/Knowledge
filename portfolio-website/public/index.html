@@ -5,107 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dev Sanghvi - AI & Blockchain Enthusiast</title>
-  <link rel="stylesheet" href="/portfolio-website/src/index.css">
-  <style>
-  </style>
 </head>
 
 <body>
-  <header>
-    <nav id="navbar">
-      <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <section id="home">
-    <h1>Welcome to Dev Sanghvi's Portfolio</h1>
-    <p id="dynamic-text"></p>
-  </section>
-
-  <section id="about">
-    <h2>About Me</h2>
-    <p>[Your detailed about me content goes here...]</p>
-  </section>
-
-  <section id="projects">
-    <h2>Projects</h2>
-    <!-- Project Cards Will be dynamically loaded here -->
-    <div id="project-container"></div>
-  </section>
-
-  <section id="contact">
-    <h2>Contact Me</h2>
-    <form id="contact-form">
-      <input type="text" id="name" name="name" placeholder="Your Name" required>
-      <input type="email" id="email" name="email" placeholder="Your Email" required>
-      <textarea id="message" name="message" placeholder="Your Message" required></textarea>
-      <button type="submit">Send</button>
-    </form>
-  </section>
-
-  <footer>
-    <p>&copy; 2023 Dev Sanghvi</p>
-  </footer>
-
-  <!-- <script src="js/home.js"></script> -->
-  <script>
-    // Dynamically load project cards
-    document.addEventListener('DOMContentLoaded', () => {
-      const projectContainer = document.getElementById('project-container');
-
-      // Example projects data
-      const projects = [
-        { title: 'Project 1', description: 'Description of Project 1' },
-        { title: 'Project 2', description: 'Description of Project 2' },
-        // Add more projects here
-      ];
-
-      projects.forEach(project => {
-        const projectCard = document.createElement('div');
-        projectCard.classList.add('project-card');
-        projectCard.innerHTML = `
-            <h3>${project.title}</h3>
-            <p>${project.description}</p>
-        `;
-        projectContainer.appendChild(projectCard);
-      });
-    });
-
-    // Typewriter effect for dynamic text
-    const dynamicText = document.getElementById('dynamic-text');
-    const phrases = ['AI Enthusiast', 'Blockchain Developer', 'Innovator'];
-    let phraseIndex = 0;
-    let letterIndex = 0;
-    let currentPhrase = [];
-    let isDeleting = false;
-    let timer;
-
-    function type() {
-      if (isDeleting && currentPhrase.length === 0) {
-        phraseIndex = (phraseIndex + 1) % phrases.length;
-        isDeleting = false;
-      }
-
-      if (!isDeleting && currentPhrase.length === phrases[phraseIndex].length) {
-        timer = setTimeout(() => {
-          isDeleting = true;
-        }, 2000);
-      }
-
-      currentPhrase = phrases[phraseIndex].substring(0, isDeleting ? letterIndex-- : letterIndex++);
-      dynamicText.textContent = currentPhrase;
-
-      timer = setTimeout(type, isDeleting ? 100 : 200);
-    }
-
-    setTimeout(type, 2000);
-
-  </script>
+  <div id="root"></div>
 </body>
 
 </html>
