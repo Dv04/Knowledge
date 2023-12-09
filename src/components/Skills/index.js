@@ -45,29 +45,3 @@ const Skills = () => {
 };
 
 export default Skills;
-
-
-
-// import React from 'react';
-// import { SkillsContainer, Skill } from './styles';
-
-// const skillsData = [
-//     "Jupyter", "Data Scraping", "Supervised Learning", "Front-End Development",
-//     "Artificial Intelligence (AI)", "Neural Networks", "Web Scraping", "Mathematics",
-//     "Convolutional Neural Networks (CNN)", "React.js", "Back-End Web Development",
-//     "Web Design", "Transformer Models", "Go (Programming Language)", "Machine Learning",
-//     "Data Processing", "Deep Learning", "Smart Contracts", "Solidity", "Blockchain"
-//     // Add any additional skills here
-// ];
-
-// const Skills = () => {
-//     return (
-//         <SkillsContainer>
-//             {skillsData.map((skill, index) => (
-//                 <Skill key={index}>{skill}</Skill>
-//             ))}
-//         </SkillsContainer>
-//     );
-// };
-
-// export default Skills;

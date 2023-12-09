@@ -1,8 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import Typewriter from '../Typewriter'; // Import the Typewriter component
-import { StyledHome } from './styles';
+import Typewriter from '../Typewriter';
+import About from '../About';
+import Projects from '../Projects';
+import Contact from '../Contact';
+import Skills from '../Skills';
+import { StyledHome, Section } from './styles';
+
 
 const Home = () => {
     const mountRef = useRef(null);
@@ -85,12 +90,30 @@ const Home = () => {
 
     return (
         <StyledHome ref={mountRef}>
-            {/* If you had any console.log or debugger statements, they should be removed after debugging */}
+            {/* Home Section */}
             <h1>Welcome to Dev Sanghvi's Portfolio <br></br> <Typewriter phrases={['AI Enthusiast', 'Blockchain Developer', 'Innovator']} /> </h1>
 
+            {/* About Section */}
+            <Section id="about">
+                <About />
+            </Section>
+
+            {/* Projects Section */}
+            <Section id="projects">
+                <Projects />
+            </Section>
+
+            {/* Skills Section */}
+            <Section id="skills">
+                <Skills />
+            </Section>
+
+            {/* Contact Section */}
+            <Section id="contact">
+                <Contact />
+            </Section>
         </StyledHome>
     );
-
 };
 
 export default Home;

@@ -5,7 +5,7 @@ import Testimonial from '../Testimonials/Testimonials';
 import IntroVideo from '../Introvideo/IntroVideo';
 import ResumeDownload from '../ResumeDownload/ResumeDownload';
 import { AboutContainer, AboutH1, AboutBio, SkillsSection } from './styles';
-
+import Resume from "../../assets/pdf/Resume.pdf"
 // Mock Data for components
 const milestones = [
     { year: "2021", event: "Started my journey with AI and Blockchain." },
@@ -23,7 +23,7 @@ const testimonials = [
 ];
 
 const videoSrc = "path_to_your_video.mp4";
-const resumeLink = "path_to_your_resume.pdf";
+const resumeLink = Resume;
 
 const About = () => {
     return (

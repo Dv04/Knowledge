@@ -45,3 +45,14 @@ export const StyledHome = styled.section`
   }
 
 `;
+
+
+export const Section = styled.section`
+    padding: 500px 20;
+    margin-top: 2000px;
+    
+    // add wrap
+    
+
+    // Add any additional styles for section layout...
+`;

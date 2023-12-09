@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import visionTransformerImage from '../assets/images/vision_transformer.png';
 import textDetectorImage from '../assets/images/text_detector.png';
 import alumniManagementImage from '../assets/images/alumni_management.png';
 import hospitalManagementImage from '../assets/images/hospital_management.png';
@@ -10,15 +9,6 @@ export const ProjectsContext = createContext();
 
 export const ProjectsProvider = ({ children }) => {
     const [projects, setProjects] = useState([
-        {
-            id: 'vision_transformer',
-            title: 'Vision Transformer',
-            description: 'Computer vision project using Vision Transformer for image regression.',
-            category: 'AI',
-            image: visionTransformerImage,
-            demoLink: 'http://link-to-vision-transformer-demo.com',
-            codeLink: 'https://github.com/Dv04/Vision_Transformer'
-        },
         {
             id: 'text_detector',
             title: 'Text Detector',
