@@ -10,7 +10,8 @@ import {
     ProjectTitle,
     ProjectDescription,
     ProjectLinks,
-    ProjectLink
+    ProjectLink,
+    ProjectsGrid
 } from './styles';
 
 const Projects = () => {
@@ -32,18 +33,20 @@ const Projects = () => {
                 <button onClick={() => setFilter('Data')}>Data</button>
                 {/* Add more filters as needed */}
             </FilterButtons>
-            {filteredProjects.map(project => (
-                <ProjectCard key={project.id}>
-                    <ProjectImage src={project.image} alt={project.title} />
-                    <ProjectInfo>
-                        <ProjectTitle>{project.title}</ProjectTitle>
-                        <ProjectDescription>{project.description}</ProjectDescription>
-                        <ProjectLinks>
-                            <ProjectLink href={project.codeLink} target="_blank">Code</ProjectLink>
-                        </ProjectLinks>
-                    </ProjectInfo>
-                </ProjectCard>
-            ))}
+            <ProjectsGrid>
+                {filteredProjects.map(project => (
+                    <ProjectCard key={project.id}>
+                        <ProjectImage src={project.image} alt={project.title} />
+                        <ProjectInfo>
+                            <ProjectTitle>{project.title}</ProjectTitle>
+                            <ProjectDescription>{project.description}</ProjectDescription>
+                            <ProjectLinks>
+                                <ProjectLink href={project.codeLink} target="_blank">Code</ProjectLink>
+                            </ProjectLinks>
+                        </ProjectInfo>
+                    </ProjectCard>
+                ))}
+            </ProjectsGrid>
         </ProjectsContainer>
     );
 };

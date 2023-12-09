@@ -31,8 +31,10 @@ const Typewriter = ({ phrases }) => {
     }, [currentPhrase, isDeleting, letterIndex, phraseIndex, phrases]);
 
     useEffect(() => {
-        if (letterIndex === phrases[phraseIndex].length) {
-            setIsDeleting(true);
+        if (letterIndex === phrases[phraseIndex].length && !isDeleting) {
+            setTimeout(() => {
+                setIsDeleting(true);
+            }, 2000); // 2 second pause
         } else if (isDeleting && letterIndex === 0) {
             setIsDeleting(false);
             setPhraseIndex((prev) => (prev + 1) % phrases.length);

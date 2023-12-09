@@ -8,7 +8,6 @@ import Contact from '../Contact';
 import Skills from '../Skills';
 import { StyledHome, Section } from './styles';
 
-
 const Home = () => {
     const mountRef = useRef(null);
 
@@ -90,24 +89,24 @@ const Home = () => {
 
     return (
         <StyledHome ref={mountRef}>
-            {/* Home Section */}
-            <h1>Welcome to Dev Sanghvi's Portfolio <br></br> <Typewriter phrases={['AI Enthusiast', 'Blockchain Developer', 'Innovator']} /> </h1>
+            <h1 id='Main'>Welcome to Dev Sanghvi's Portfolio <br></br> <Typewriter phrases={['AI Enthusiast', 'Blockchain Developer', 'Innovator']} /> </h1>
 
+            <div className="filler"></div>
             {/* About Section */}
             <Section id="about">
                 <About />
             </Section>
-
+            <div className="filler"></div>
             {/* Projects Section */}
             <Section id="projects">
                 <Projects />
             </Section>
-
+            <div className="filler"></div>
             {/* Skills Section */}
             <Section id="skills">
                 <Skills />
             </Section>
-
+            <div className="filler"></div>
             {/* Contact Section */}
             <Section id="contact">
                 <Contact />
@@ -117,3 +116,24 @@ const Home = () => {
 };
 
 export default Home;
+
+
+{/* About Section */ }
+<Section id="about">
+    <About />
+</Section>
+
+{/* Projects Section */ }
+<Section id="projects">
+    <Projects />
+</Section>
+
+{/* Skills Section */ }
+<Section id="skills">
+    <Skills />
+</Section>
+
+{/* Contact Section */ }
+<Section id="contact">
+    <Contact />
+</Section>

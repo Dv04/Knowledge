@@ -35,10 +35,11 @@ const Skills = () => {
     return (
         <SkillsContainer>
             {skillsData.map((skill, index) => (
-                <Skill key={index} onClick={() => handleSkillClick(skill.name)} isSelected={skill.name === selectedSkill} style={{ transform: skill.name === selectedSkill ? 'translateY(-10px)' : 'none' }}>
+                <Skill key={index} onClick={() => handleSkillClick(skill.name)} isSelected={skill.name === selectedSkill}>
                     <SkillName>{skill.name}</SkillName>
                     {skill.name === selectedSkill && <SkillDetails>{skill.description}</SkillDetails>}
                 </Skill>
+
             ))}
         </SkillsContainer>
     );
