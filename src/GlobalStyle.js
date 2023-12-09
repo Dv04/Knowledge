@@ -11,7 +11,7 @@ const GlobalStyle = createGlobalStyle`
 
   h1, h2, h3, p {
     margin: 0;
-    z-index: 10000;
+    z-index: 100;
   }
 
   button {

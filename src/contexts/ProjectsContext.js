@@ -12,7 +12,7 @@ export const ProjectsProvider = ({ children }) => {
         {
             id: 'text_detector',
             title: 'Text Detector',
-            description: 'CNN model to recognize text from 16-segment displays, using OpenCV and EasyOCR.',
+            description: 'CNN model to recognize text from 16-segment displays, using OpenCV.',
             category: 'AI',
             image: textDetectorImage,
             demoLink: 'http://link-to-text-detector-demo.com',
