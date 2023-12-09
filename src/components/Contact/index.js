@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ContactContainer, ContactH1, ContactForm, Input, Textarea, Button } from './styles';
 import { Element } from 'react-scroll'; // Import the Element component from react-scroll
+import axios from 'axios';
 
 const Contact = () => {
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -11,19 +12,26 @@ const Contact = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Implement the API call here
         try {
-            // You would replace this console.log with your actual API call
+            // Send a POST request to your API endpoint
+            const response = await axios.post('/api/sendmail', formData, {
+                Headers: {
+                    "Content-Type": "application/json"
+                }
+            });
             console.log('Form data submitted:', formData);
+
+            // Check if the response is successful
+            if (response.data.success) {
+                alert('Message sent successfully!');
+            } else {
+                alert('Failed to send the message.');
+            }
 
             // Clear the form fields after submission
             setFormData({ name: '', email: '', message: '' });
-
-            // Notify the user of the successful submission
-            alert('Message sent successfully!');
         } catch (error) {
-            // Handle errors here, such as displaying a notification to the user
-            console.error('Form submission error:', error);
+            console.error('Form submission error:', error.response.data);
             alert('Failed to send the message.');
         }
     };
