@@ -2,29 +2,31 @@
 import styled from 'styled-components';
 
 export const StyledHome = styled.section`
-  height: 100vh;
+  height: 10vh;
   width: 100vw;
+  position: relative;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   scroll-snap-type: y mandatory;
-
+  min-height: 100vh;
   justify-content: flex-start;
-  min-height: 100vh; /* At least the height of the viewport */
+
 
   
-  h1 {
+  #Main {
+    margin-top: 200px;
     position: absolute;
     color: #fff;
     font-size: calc(2rem + 2vw);
     pointer-events: auto;
   }
-  
+
   canvas {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: -1; // Ensure canvas is behind other content
   }
 
   @media (max-width: 768px) {
@@ -39,14 +41,19 @@ export const StyledHome = styled.section`
     }
   }
 
+  div {
+    position: relative;
+
+
+  }
+
 `;
 
 
 export const Section = styled.section`
   padding: 50px 20px;
-  min-height: 100vh; /* Adjust based on content */
   display: flex;
-  flex-direction: column;
+
   justify-content: center;
   align-items: center;
   scroll-snap-type: y mandatory;

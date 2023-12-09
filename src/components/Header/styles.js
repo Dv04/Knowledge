@@ -47,7 +47,7 @@ export const NavMenu = styled.ul`
     }
     
     &.active {
-      color: black; /* Highlight color on hover */
+
       font-weight: bold;
     }
   }

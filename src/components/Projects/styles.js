@@ -2,9 +2,6 @@ import styled from "styled-components";
 
 export const ProjectsContainer = styled.div`
   padding: 100px;
-  text-align: center;
-  flex-wrap: wrap;
-  justify-content: center;
   gap: 20px;
 `;
 
@@ -14,16 +11,23 @@ export const ProjectsH1 = styled.h1`
   margin-bottom: 2rem;
 `;
 
+export const ProjectsGrid = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+`;
+
 export const ProjectCard = styled.div`
-  display: inline-block;
+
+
   background: #222;
   padding: 20px;
   border: 1px solid white
   border-radius: 10px;
   margin: 10px;
   width: calc(33.333% - 20px);
-  height: 20px
-  size: 20px;
+  min-width: 300px;
   overflow: hidden;
   transition: transform 0.3s ease-in-out;
   &:hover {
