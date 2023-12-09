@@ -1,23 +1,17 @@
-// // src/components/Home/styles.js
-// import styled from 'styled-components';
-
-// export const Container = styled.div`
-//     color: #fff;
-//     text-align: center;
-//     // Add more styles for your Home container
-// `;
-
 // src/components/Home/styles.js
 import styled from 'styled-components';
 
 export const StyledHome = styled.section`
   height: 100vh;
   width: 100vw;
-  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background-color: #0a0a0a;
+  scroll-snap-type: y mandatory;
+
+  justify-content: flex-start;
+  min-height: 100vh; /* At least the height of the viewport */
+
   
   h1 {
     position: absolute;
@@ -30,6 +24,7 @@ export const StyledHome = styled.section`
     position: absolute;
     top: 0;
     left: 0;
+    z-index: -1; // Ensure canvas is behind other content
   }
 
   @media (max-width: 768px) {
@@ -48,11 +43,11 @@ export const StyledHome = styled.section`
 
 
 export const Section = styled.section`
-    padding: 500px 20;
-    margin-top: 2000px;
-    
-    // add wrap
-    
-
-    // Add any additional styles for section layout...
+  padding: 50px 20px;
+  min-height: 100vh; /* Adjust based on content */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-type: y mandatory;
 `;
