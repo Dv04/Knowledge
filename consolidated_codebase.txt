@@ -1,0 +1,2491 @@
+
+========== File: .babelrc ==========
+
+{
+    "presets": ["@babel/preset-env", "@babel/preset-react"],
+    "plugins": ["@babel/plugin-transform-runtime"]
+  }
+  
+
+
+========== File: storage.rules ==========
+
+rules_version = '2';
+
+// Craft rules based on data in your Firestore database
+// allow write: if firestore.get(
+//    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
+
+
+========== File: LICENSE ==========
+
+MIT License
+
+Copyright (c) 2023 Dev Sanghvi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+
+========== File: server.js ==========
+
+// Import required modules
+const express = require('express');
+const nodemailer = require('nodemailer');
+const cors = require('cors'); // Require the cors library
+require('dotenv').config();
+
+const app = express();
+app.use(cors()); // Use CORS middleware
+app.use(express.json());
+
+// POST endpoint for sending emails
+app.post('/api/sendmail', async (req, res) => {
+    let transporter = nodemailer.createTransport({
+        service: 'gmail', // or another email service
+        auth: {
+            user: process.env.EMAIL_USERNAME, // Your email
+            pass: process.env.EMAIL_PASSWORD, // Your email password
+        },
+    });
+
+    let mailOptions = {
+        from: process.env.EMAIL_USERNAME, // Your email
+        to: 'tatchasanghvi@gmail.com', // Your email
+        subject: `New Message from ${req.body.name}`,
+        text: `You have received a new message from ${req.body.email}: ${req.body.message}`,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        res.json({ success: true, message: 'Email sent successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error });
+    }
+});
+
+// Start server
+const PORT = process.env.PORT || 3002;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
+
+========== File: .firebaserc ==========
+
+{
+  "projects": {
+    "default": "knowledge-a1af9"
+  }
+}
+
+
+
+========== File: webpack.config.js ==========
+
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+    entry: './src/index.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'bundle.js',
+        publicPath: '/',
+    },
+    module: {
+        rules: [
+            {
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: ['babel-loader', 'eslint-loader'],
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                use: ['style-loader', 'css-loader', 'sass-loader'],
+            },
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
+            },
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset/resource',
+            },
+        ],
+    },
+    resolve: {
+        extensions: ['*', '.js', '.jsx'],
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, 'public', 'index.html'),
+        }),
+    ],
+    devServer: {
+        historyApiFallback: true,
+    },
+};
+
+
+
+========== File: README.md ==========
+
+# Knowledge
+My personal Portfolio
+
+
+Run
+
+```bash
+npm install
+```
+
+```bash
+npm run build
+```
+
+```bash
+firebase deploy
+```
+
+
+========== File: .gitignore ==========
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.env
+
+.DS_Store
+
+
+========== File: package.json ==========
+
+{
+  "name": "portfolio-website",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.6.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "nodemailer": "^6.9.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.1",
+    "react-scripts": "5.0.1",
+    "react-scroll": "^1.9.0",
+    "styled-components": "^6.1.1",
+    "three": "^0.159.0",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.0"
+  },
+  "proxy": "http://localhost:3002"
+}
+
+
+
+========== File: text.py ==========
+
+import os
+
+
+def consolidate_codebase(root_dir, output_file):
+    """
+    Reads all files in a directory structure and writes their content into a single file.
+
+    Args:
+        root_dir (str): The root directory of the codebase.
+        output_file (str): The path to the output file where all code will be written.
+    """
+    # Files and directories to ignore (like .git, node_modules, .DS_Store, etc.)
+    # You can extend this list based on your .gitignore or other needs.
+    ignore_list = {
+        ".git",
+        "node_modules",
+        ".DS_Store",
+        "package-lock.json",  # Often very large and not primary source code
+        # Add other files/directories you want to skip
+        # e.g., build directories, dist directories, virtual environments
+        "build",
+        "dist",
+        ".env",
+        # Specific image or binary file extensions
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".gif",
+        ".ico",
+        ".svg",
+        ".pdf",
+        ".zip",
+        ".tar.gz",
+        # You might want to skip very large specific files if not needed for analysis
+        # 'alumni_management.png', 'amazon_scraper.png', ... (if you decide so)
+    }
+    # File extensions that are typically source code or text-based
+    # You can adjust this list as needed.
+    text_extensions = {
+        ".js",
+        ".jsx",
+        ".ts",
+        ".tsx",
+        ".html",
+        ".css",
+        ".scss",
+        ".json",
+        ".md",
+        ".txt",
+        ".py",
+        ".java",
+        ".c",
+        ".cpp",
+        ".h",
+        ".hpp",
+        ".rb",
+        ".php",
+        ".go",
+        ".rs",
+        ".swift",
+        ".kt",
+        ".kts",
+        ".sh",
+        ".yml",
+        ".yaml",
+        ".xml",
+        ".rules",  # Added .rules for storage.rules
+    }
+
+    with open(output_file, "w", encoding="utf-8", errors="ignore") as outfile:
+        for dirpath, dirnames, filenames in os.walk(root_dir):
+            # Remove ignored directories from further traversal
+            dirnames[:] = [d for d in dirnames if d not in ignore_list]
+
+            for filename in filenames:
+                if (
+                    filename in ignore_list
+                    or os.path.splitext(filename)[1].lower() in ignore_list
+                ):
+                    print(f"Skipping ignored file: {os.path.join(dirpath, filename)}")
+                    continue
+
+                file_path = os.path.join(dirpath, filename)
+                relative_file_path = os.path.relpath(file_path, root_dir)
+
+                # Check if the file extension is in our list of text-based extensions
+                # Or if the file has no extension (e.g., LICENSE, README)
+                file_ext = os.path.splitext(filename)[1].lower()
+                if not file_ext or file_ext in text_extensions:
+                    try:
+                        with open(
+                            file_path, "r", encoding="utf-8", errors="ignore"
+                        ) as infile:
+                            content = infile.read()
+                        outfile.write(
+                            f"\n{'='*10} File: {relative_file_path} {'='*10}\n\n"
+                        )
+                        outfile.write(content)
+                        outfile.write("\n\n")
+                        print(f"Processed: {relative_file_path}")
+                    except Exception as e:
+                        print(
+                            f"Could not read file (likely binary or encoding issue): {file_path} - Error: {e}"
+                        )
+                        outfile.write(
+                            f"\n{'='*10} File: {relative_file_path} (Could not be read) {'='*10}\n\n"
+                        )
+                else:
+                    print(f"Skipping non-text file based on extension: {file_path}")
+                    outfile.write(
+                        f"\n{'='*10} File: {relative_file_path} (Skipped - non-text extension) {'='*10}\n\n"
+                    )
+
+    print(f"\nAll readable code has been consolidated into: {output_file}")
+
+
+if __name__ == "__main__":
+    # Assuming your script is in the 'Knowledge' directory or one level above.
+    # If your script is inside 'Knowledge', root_dir should be "."
+    # If your script is outside 'Knowledge', root_dir should be "Knowledge" (or the full path)
+    current_working_directory = os.getcwd()
+    project_root_directory = (
+        "."  #  This assumes you run the script from 'Knowledge' directory
+    )
+
+    # Check if the current directory name is "Knowledge"
+    # Adjust if your script is located elsewhere relative to the "Knowledge" directory
+    if os.path.basename(current_working_directory) == "Knowledge":
+        project_root_directory = "."
+    elif os.path.exists(
+        os.path.join(current_working_directory, "Knowledge")
+    ):  # If script is one level above "Knowledge"
+        project_root_directory = "Knowledge"
+    else:
+        print(
+            "Please run this script from the 'Knowledge' directory or its parent directory."
+        )
+        print(f"Current directory: {current_working_directory}")
+        exit()
+
+    output_filename = "consolidated_codebase.txt"
+    consolidate_codebase(project_root_directory, output_filename)
+
+
+
+========== File: .prettierrc ==========
+
+{
+    "semi": true,
+    "trailingComma": "es5",
+    "singleQuote": true,
+    "printWidth": 80,
+    "tabWidth": 2
+}
+
+
+========== File: consolidated_codebase.txt ==========
+
+
+========== File: .babelrc ==========
+
+{
+    "presets": ["@babel/preset-env", "@babel/preset-react"],
+    "plugins": ["@babel/plugin-transform-runtime"]
+  }
+  
+
+
+========== File: storage.rules ==========
+
+rules_version = '2';
+
+// Craft rules based on data in your Firestore database
+// allow write: if firestore.get(
+//    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
+
+
+========== File: LICENSE ==========
+
+MIT License
+
+Copyright (c) 2023 Dev Sanghvi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+
+========== File: server.js ==========
+
+// Import required modules
+const express = require('express');
+const nodemailer = require('nodemailer');
+const cors = require('cors'); // Require the cors library
+require('dotenv').config();
+
+const app = express();
+app.use(cors()); // Use CORS middleware
+app.use(express.json());
+
+// POST endpoint for sending emails
+app.post('/api/sendmail', async (req, res) => {
+    let transporter = nodemailer.createTransport({
+        service: 'gmail', // or another email service
+        auth: {
+            user: process.env.EMAIL_USERNAME, // Your email
+            pass: process.env.EMAIL_PASSWORD, // Your email password
+        },
+    });
+
+    let mailOptions = {
+        from: process.env.EMAIL_USERNAME, // Your email
+        to: 'tatchasanghvi@gmail.com', // Your email
+        subject: `New Message from ${req.body.name}`,
+        text: `You have received a new message from ${req.body.email}: ${req.body.message}`,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        res.json({ success: true, message: 'Email sent successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Internal Server Error', error: error });
+    }
+});
+
+// Start server
+const PORT = process.env.PORT || 3002;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
+
+========== File: .firebaserc ==========
+
+{
+  "projects": {
+    "default": "knowledge-a1af9"
+  }
+}
+
+
+
+========== File: webpack.config.js ==========
+
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+    entry: './src/index.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'bundle.js',
+        publicPath: '/',
+    },
+    module: {
+        rules: [
+            {
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: ['babel-loader', 'eslint-loader'],
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                use: ['style-loader', 'css-loader', 'sass-loader'],
+            },
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
+            },
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset/resource',
+            },
+        ],
+    },
+    resolve: {
+        extensions: ['*', '.js', '.jsx'],
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, 'public', 'index.html'),
+        }),
+    ],
+    devServer: {
+        historyApiFallback: true,
+    },
+};
+
+
+
+========== File: README.md ==========
+
+# Knowledge
+My personal Portfolio
+
+
+Run
+
+```bash
+npm install
+```
+
+```bash
+npm run build
+```
+
+```bash
+firebase deploy
+```
+
+
+========== File: .gitignore ==========
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.env
+
+.DS_Store
+
+
+========== File: package.json ==========
+
+{
+  "name": "portfolio-website",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.6.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "nodemailer": "^6.9.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.1",
+    "react-scripts": "5.0.1",
+    "react-scroll": "^1.9.0",
+    "styled-components": "^6.1.1",
+    "three": "^0.159.0",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.0"
+  },
+  "proxy": "http://localhost:3002"
+}
+
+
+
+========== File: text.py ==========
+
+import os
+
+
+def consolidate_codebase(root_dir, output_file):
+    """
+    Reads all files in a directory structure and writes their content into a single file.
+
+    Args:
+        root_dir (str): The root directory of the codebase.
+        output_file (str): The path to the output file where all code will be written.
+    """
+    # Files and directories to ignore (like .git, node_modules, .DS_Store, etc.)
+    # You can extend this list based on your .gitignore or other needs.
+    ignore_list = {
+        ".git",
+        "node_modules",
+        ".DS_Store",
+        "package-lock.json",  # Often very large and not primary source code
+        # Add other files/directories you want to skip
+        # e.g., build directories, dist directories, virtual environments
+        "build",
+        "dist",
+        ".env",
+        # Specific image or binary file extensions
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".gif",
+        ".ico",
+        ".svg",
+        ".pdf",
+        ".zip",
+        ".tar.gz",
+        # You might want to skip very large specific files if not needed for analysis
+        # 'alumni_management.png', 'amazon_scraper.png', ... (if you decide so)
+    }
+    # File extensions that are typically source code or text-based
+    # You can adjust this list as needed.
+    text_extensions = {
+        ".js",
+        ".jsx",
+        ".ts",
+        ".tsx",
+        ".html",
+        ".css",
+        ".scss",
+        ".json",
+        ".md",
+        ".txt",
+        ".py",
+        ".java",
+        ".c",
+        ".cpp",
+        ".h",
+        ".hpp",
+        ".rb",
+        ".php",
+        ".go",
+        ".rs",
+        ".swift",
+        ".kt",
+        ".kts",
+        ".sh",
+        ".yml",
+        ".yaml",
+        ".xml",
+        ".rules",  # Added .rules for storage.rules
+    }
+
+    with open(output_file, "w", encoding="utf-8", errors="ignore") as outfile:
+        for dirpath, dirnames, filenames in os.walk(root_dir):
+            # Remove ignored directories from further traversal
+            dirnames[:] = [d for d in dirnames if d not in ignore_list]
+
+            for filename in filenames:
+                if (
+                    filename in ignore_list
+                    or os.path.splitext(filename)[1].lower() in ignore_list
+                ):
+                    print(f"Skipping ignored file: {os.path.join(dirpath, filename)}")
+                    continue
+
+                file_path = os.path.join(dirpath, filename)
+                relative_file_path = os.path.relpath(file_path, root_dir)
+
+                # Check if the file extension is in our list of text-based extensions
+                # Or if the file has no extension (e.g., LICENSE, README)
+                file_ext = os.path.splitext(filename)[1].lower()
+                if not file_ext or file_ext in text_extensions:
+                    try:
+                        with open(
+                            file_path, "r", encoding="utf-8", errors="ignore"
+                        ) as infile:
+                            content = infile.read()
+                        outfile.write(
+                            f"\n{'='*10} File: {relative_file_path} {'='*10}\n\n"
+                        )
+                        outfile.write(content)
+                        outfile.write("\n\n")
+                        print(f"Processed: {relative_file_path}")
+                    except Exception as e:
+                        print(
+                            f"Could not read file (likely binary or encoding issue): {file_path} - Error: {e}"
+                        )
+                        outfile.write(
+                            f"\n{'='*10} File: {relative_file_path} (Could not be read) {'='*10}\n\n"
+                        )
+                else:
+                    print(f"Skipping non-text file based on extension: {file_path}")
+                    outfile.write(
+                        f"\n{'='*10} File: {relative_file_path} (Skipped - non-text extension) {'='*10}\n\n"
+                    )
+
+    print(f"\nAll readable code has been consolidated into: {output_file}")
+
+
+if __name__ == "__main__":
+    # Assuming your script is in the 'Knowledge' directory or one level above.
+    # If your script is inside 'Knowledge', root_dir should be "."
+    # If your script is outside 'Knowledge', root_dir should be "Knowledge" (or the full path)
+    current_working_directory = os.getcwd()
+    project_root_directory = (
+        "."  #  This assumes you run the script from 'Knowledge' directory
+    )
+
+    # Check if the current directory name is "Knowledge"
+    # Adjust if your script is located elsewhere relative to the "Knowledge" directory
+    if os.path.basename(current_working_directory) == "Knowledge":
+        project_root_directory = "."
+    elif os.path.exists(
+        os.path.join(current_working_directory, "Knowledge")
+    ):  # If script is one level above "Knowledge"
+        project_root_directory = "Knowledge"
+    else:
+        print(
+            "Please run this script from the 'Knowledge' directory or its parent directory."
+        )
+        print(f"Current directory: {current_working_directory}")
+        exit()
+
+    output_filename = "consolidated_codebase.txt"
+    consolidate_codebase(project_root_directory, output_filename)
+
+
+
+========== File: firebase.json ==========
+
+{
+  "hosting": {
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
+}
+
+
+========== File: .firebase/hosting.YnVpbGQ.cache (Skipped - non-text extension) ==========
+
+
+========== File: .firebase/hosting.c3Jj.cache (Skipped - non-text extension) ==========
+
+
+========== File: .firebase/hosting.cHVibGlj.cache (Skipped - non-text extension) ==========
+
+
+========== File: public/index.html ==========
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dev Sanghvi - AI & Blockchain Enthusiast</title>
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+
+</html>
+
+
+========== File: public/404.html ==========
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page Not Found</title>
+
+    <style media="screen">
+      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
+      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px 16px; border-radius: 3px; }
+      #message h3 { color: #888; font-weight: normal; font-size: 16px; margin: 16px 0 12px; }
+      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
+      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
+      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
+      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
+      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
+      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
+      @media (max-width: 600px) {
+        body, #message { margin-top: 0; background: white; box-shadow: none; }
+        body { border-top: 16px solid #ffa100; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="message">
+      <h2>404</h2>
+      <h1>Page Not Found</h1>
+      <p>The specified file was not found on this website. Please check the URL for mistakes and try again.</p>
+      <h3>Why am I seeing this?</h3>
+      <p>This page was generated by the Firebase Command-Line Interface. To modify it, edit the <code>404.html</code> file in your project's configured <code>public</code> directory.</p>
+    </div>
+  </body>
+</html>
+
+
+
+========== File: .github/workflows/firebase-hosting-pull-request.yml ==========
+
+# This file was auto-generated by the Firebase CLI
+# https://github.com/firebase/firebase-tools
+
+name: Deploy to Firebase Hosting on PR
+'on': pull_request
+jobs:
+  build_and_preview:
+    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci && npm run build
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KNOWLEDGE_A1AF9 }}'
+          projectId: knowledge-a1af9
+
+
+
+========== File: .github/workflows/firebase-hosting-merge.yml ==========
+
+# This file was auto-generated by the Firebase CLI
+# https://github.com/firebase/firebase-tools
+
+name: Deploy to Firebase Hosting on merge
+'on':
+  push:
+    branches:
+      - main
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci && npm run build
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KNOWLEDGE_A1AF9 }}'
+          channelId: live
+          projectId: knowledge-a1af9
+
+
+
+========== File: src/index.tsx ==========
+
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App';
+import { ProjectsProvider } from './contexts/ProjectsContext';
+import GlobalStyle from './GlobalStyle';
+import './index.css';
+
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(
+  <React.StrictMode>
+    <ProjectsProvider>
+      <GlobalStyle />
+      <App />
+    </ProjectsProvider>
+  </React.StrictMode>
+);
+
+
+
+========== File: src/main.tsx ==========
+
+// File: src/main.tsx
+import React from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App";
+import "./index.css";  // Tailwind base styles and our global styles
+
+const container = document.getElementById("root")!;
+const root = createRoot(container);
+root.render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
+);
+
+
+
+========== File: src/App.css ==========
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+========== File: src/index.js ==========
+
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App';
+import { ProjectsProvider } from './contexts/ProjectsContext';
+import GlobalStyle from './GlobalStyle';
+import './index.css';
+
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(
+  <React.StrictMode>
+    <ProjectsProvider>
+      <GlobalStyle />
+      <App />
+    </ProjectsProvider>
+  </React.StrictMode>
+);
+
+
+
+========== File: src/index.css ==========
+
+/* Resetting default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f4f4f4;
+  overflow-x: hidden;
+}
+
+header {
+  background: #0a0f0d;
+  /* Slightly lighter black for header */
+  color: #fff;
+  padding: 1rem 0;
+  text-align: center;
+  position: sticky;
+  top: 0;
+
+}
+
+header nav ul {
+  list-style: none;
+}
+
+header nav ul li {
+  display: inline;
+  margin: 0 20px;
+}
+
+header nav ul li a {
+  color: #31c7b2;
+  /* Turquoise for links */
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+header nav ul li a:hover {
+  background-color: #1e4d5b;
+  /* Darker shade for hover effect */
+}
+
+section {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+section#home {
+  background: linear-gradient(145deg, #003973, #e5e5be);
+  /* Gradient background for home section */
+  color: #fff;
+  min-height: 93vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#contact-form {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #1a1a1a;
+  /* Dark background for form */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+#contact-form input,
+#contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  background: #333;
+  border: none;
+  color: #ddd;
+  border-radius: 4px;
+}
+
+#contact-form button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: #31c7b2;
+  /* Turquoise for button */
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#contact-form button:hover {
+  background: #259d89;
+  /* Slightly darker turquoise when hovering */
+}
+
+footer {
+  background: #0a0f0d;
+  /* Same as header */
+  color: #fff;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 40px;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+========== File: src/GlobalStyle.js ==========
+
+import { createGlobalStyle } from 'styled-components';
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #121212; /* Dark background */
+    color: #f4f4f4; /* Light text */
+  }
+
+  h1, h2, h3, p {
+    margin: 0;
+    z-index: 100;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  input, button, textarea {
+    font-family: inherit;
+  }
+`;
+
+export default GlobalStyle;
+
+
+
+========== File: src/Typewriter.js ==========
+
+import React, { useState, useEffect } from 'react';
+
+const Typewriter = ({ phrases }) => {
+    const [phraseIndex, setPhraseIndex] = useState(0);
+    const [letterIndex, setLetterIndex] = useState(0);
+    const [currentPhrase, setCurrentPhrase] = useState('');
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    useEffect(() => {
+        if (isDeleting && currentPhrase.length === 0) {
+            setPhraseIndex((prev) => (prev + 1) % phrases.length);
+            setIsDeleting(false);
+        }
+
+        if (!isDeleting && currentPhrase.length === phrases[phraseIndex].length) {
+            setTimeout(() => {
+                setIsDeleting(true);
+            }, 2000);
+            return;
+        }
+
+        const typingSpeed = isDeleting ? 150 : 300;
+        setTimeout(() => {
+            setCurrentPhrase((prev) => {
+                const text = phrases[phraseIndex].substring(0, isDeleting ? letterIndex - 1 : letterIndex + 1);
+                return text;
+            });
+
+            setLetterIndex((prev) => (isDeleting ? prev - 1 : prev + 1));
+        }, typingSpeed);
+    }, [currentPhrase, isDeleting, letterIndex, phraseIndex, phrases]);
+
+    useEffect(() => {
+        if (letterIndex === phrases[phraseIndex].length && !isDeleting) {
+            setTimeout(() => {
+                setIsDeleting(true);
+            }, 2000); // 2 second pause
+        } else if (isDeleting && letterIndex === 0) {
+            setIsDeleting(false);
+            setPhraseIndex((prev) => (prev + 1) % phrases.length);
+        }
+    }, [letterIndex, phrases, phraseIndex, isDeleting]);
+
+    return <span>{currentPhrase}</span>;
+};
+
+export default Typewriter;
+
+
+
+========== File: src/App.test.js ==========
+
+import { render, screen } from '@testing-library/react';
+import App from '../App';
+
+test('renders learn react link', () => {
+  render(<App />);
+  const linkElement = screen.getByText(/learn react/i);
+  expect(linkElement).toBeInTheDocument();
+});
+
+
+
+========== File: src/App.js ==========
+
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
+import Home from './components/Home';
+import About from './components/About';
+import Projects from './components/Projects';
+import Contact from './components/Contact';
+import GlobalStyle from './GlobalStyle';
+import Skills from './components/Skills';
+
+function App() {
+  return (
+    <Router>
+      <GlobalStyle />
+      <Header />
+      <Routes>
+        <Route path="/" exact element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/skills" element={<Skills />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
+
+
+
+========== File: src/contexts/BlogContext.js ==========
+
+import React, { createContext, useState, useEffect } from 'react';
+import axios from 'axios';
+
+export const BlogContext = createContext();
+
+export const BlogProvider = ({ children }) => {
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        axios.get('/api/posts')
+            .then(response => setPosts(response.data))
+            .catch(error => console.error(error));
+    }, []);
+
+    return (
+        <BlogContext.Provider value={{ posts }}>
+            {children}
+        </BlogContext.Provider>
+    );
+};
+
+
+
+========== File: src/contexts/ProjectsContext.js ==========
+
+import React, { createContext, useState, useEffect } from 'react';
+import axios from 'axios';
+import textDetectorImage from '../assets/images/text_detector.png';
+import alumniManagementImage from '../assets/images/alumni_management.png';
+import hospitalManagementImage from '../assets/images/hospital_management.png';
+import stockPiImage from '../assets/images/stock_pi.png';
+import amazonScraperImage from '../assets/images/amazon_scraper.png';
+export const ProjectsContext = createContext();
+
+export const ProjectsProvider = ({ children }) => {
+    const [projects, setProjects] = useState([
+        {
+            id: 'text_detector',
+            title: 'Text Detector',
+            description: 'CNN model to recognize text from 16-segment displays, using OpenCV.',
+            category: 'AI',
+            image: textDetectorImage,
+            demoLink: 'http://link-to-text-detector-demo.com',
+            codeLink: 'https://github.com/Dv04/Text_Detector'
+        },
+        {
+            id: 'alumni_management',
+            title: 'Alumni Management System',
+            description: 'Prototype for a university alumni platform to connect graduates.',
+            category: 'Web Dev',
+            image: alumniManagementImage,
+            demoLink: 'http://link-to-alumni-management-demo.com',
+            codeLink: 'https://github.com/Dv04/Alumni_Management'
+        },
+        {
+            id: 'hospital_management',
+            title: 'Hospital Management System',
+            description: 'Improves adoption of HMIS software in state healthcare facilities.',
+            category: 'AI',
+            image: hospitalManagementImage,
+            demoLink: 'http://link-to-hospital-management-demo.com',
+            codeLink: 'https://github.com/Dv04/Hospital_Management_System'
+        },
+        {
+            id: 'stock_pi',
+            title: 'Stock.Pi',
+            description: 'Market Sentiment Analysis Tool for Stock Market Prediction.',
+            category: 'Blockchain',
+            image: stockPiImage,
+            demoLink: 'http://link-to-stock-pi-demo.com',
+            codeLink: 'https://github.com/Dv04/Stock.pi'
+        },
+        {
+            id: 'amazon_scraper',
+            title: 'Amazon Scrapper',
+            description: 'Scrapes products from Amazon for market analysis.',
+            category: 'Data',
+            image: amazonScraperImage,
+            demoLink: 'http://link-to-amazon-scraper-demo.com',
+            codeLink: 'https://github.com/Dv04/Amazon_Scrapper'
+        },
+        // Add more projects here
+    ]);
+
+    // Uncomment and adjust this when the backend API is ready
+    // useEffect(() => {
+    //     axios.get('/api/projects')
+    //         .then(response => setProjects(response.data))
+    //         .catch(error => console.error(error));
+    // }, []);
+
+    return (
+        <ProjectsContext.Provider value={{ projects }}>
+            {children}
+        </ProjectsContext.Provider>
+    );
+};
+
+
+
+========== File: src/components/Typewriter.js ==========
+
+import React, { useState, useEffect } from 'react';
+
+const Typewriter = ({ phrases }) => {
+    const [phraseIndex, setPhraseIndex] = useState(0);
+    const [letterIndex, setLetterIndex] = useState(0);
+    const [currentPhrase, setCurrentPhrase] = useState('');
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    useEffect(() => {
+        if (isDeleting && currentPhrase.length === 0) {
+            setPhraseIndex((prev) => (prev + 1) % phrases.length);
+            setIsDeleting(false);
+        }
+
+        if (!isDeleting && currentPhrase.length === phrases[phraseIndex].length) {
+            setTimeout(() => {
+                setIsDeleting(true);
+            }, 2000);
+            return;
+        }
+
+        const typingSpeed = isDeleting ? 150 : 300;
+        setTimeout(() => {
+            setCurrentPhrase((prev) => {
+                const text = phrases[phraseIndex].substring(0, isDeleting ? letterIndex - 1 : letterIndex + 1);
+                return text;
+            });
+
+            setLetterIndex((prev) => (isDeleting ? prev - 1 : prev + 1));
+        }, typingSpeed);
+    }, [currentPhrase, isDeleting, letterIndex, phraseIndex, phrases]);
+
+    useEffect(() => {
+        if (letterIndex === phrases[phraseIndex].length && !isDeleting) {
+            setTimeout(() => {
+                setIsDeleting(true);
+            }, 2000); // 2 second pause
+        } else if (isDeleting && letterIndex === 0) {
+            setIsDeleting(false);
+            setPhraseIndex((prev) => (prev + 1) % phrases.length);
+        }
+    }, [letterIndex, phrases, phraseIndex, isDeleting]);
+
+    return <span>{currentPhrase}</span>;
+};
+
+export default Typewriter;
+
+
+
+========== File: src/components/Home/index.js ==========
+
+import React, { useRef, useEffect } from 'react';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import Typewriter from '../Typewriter';
+import About from '../About';
+import Projects from '../Projects';
+import Contact from '../Contact';
+import Skills from '../Skills';
+import { StyledHome, Section } from './styles';
+
+const Home = () => {
+    const mountRef = useRef(null);
+
+    useEffect(() => {
+        let frameId;
+        const currentRef = mountRef.current;
+        const { clientWidth: width, clientHeight: height } = currentRef;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 5000);
+        camera.position.z = 2;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.domElement.style.position = 'absolute';
+        renderer.domElement.style.top = '0';
+        renderer.domElement.style.left = '0';
+        renderer.domElement.style.zIndex = '-1'; // Ensure canvas is behind other content
+        currentRef.appendChild(renderer.domElement);
+
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(width, height);
+        currentRef.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.minDistance = 0;
+        controls.maxDistance = 7;
+        controls.enablePan = false;
+        controls.update();
+
+
+        const particlesCnt = 10000;
+        // Efficiently create particles geometry
+        const particlesGeometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particlesCnt * 3);
+        for (let i = 0; i < particlesCnt * 3; i++) {
+            positions[i] = (Math.random() - 0.5) * 10;
+        }
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.005,
+            color: '#ffffff',
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        // Animation loop optimization
+        const animate = () => {
+            requestAnimationFrame(animate);
+            // Any particle updates go here
+            renderer.render(scene, camera);
+        };
+
+        animate();
+        // Ensure the canvas gets the same z-index but lower than content
+        renderer.domElement.style.zIndex = "1";
+
+        // Add resize listener to update camera and renderer size
+        const handleResize = () => {
+            const { clientWidth, clientHeight } = mountRef.current;
+            camera.aspect = clientWidth / clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(clientWidth, clientHeight);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            cancelAnimationFrame(frameId);
+            if (currentRef && renderer.domElement) { // Check that the elements are not null
+                currentRef.removeChild(renderer.domElement);
+            }
+        };
+    }, []);
+
+    const phrases = ['AI Enthusiast', 'Blockchain Developer', 'Innovator']; // Define the phrases for the typewriter
+
+    return (
+        <StyledHome ref={mountRef}>
+            <h1 id='Main'>Welcome to Dev Sanghvi's Portfolio <br></br> <Typewriter phrases={['AI Enthusiast', 'Blockchain Developer', 'Innovator']} /> </h1>
+
+            <div className="filler"></div>
+            {/* About Section */}
+            <Section id="about">
+                <About />
+            </Section>
+            <div className="filler"></div>
+            {/* Projects Section */}
+            <Section id="projects">
+                <Projects />
+            </Section>
+            <div className="filler"></div>
+            {/* Skills Section */}
+            <Section id="skills">
+                <Skills />
+            </Section>
+            <div className="filler"></div>
+            {/* Contact Section */}
+            <Section id="contact">
+                <Contact />
+            </Section>
+        </StyledHome>
+    );
+};
+
+export default Home;
+
+
+{/* About Section */ }
+<Section id="about">
+    <About />
+</Section>
+
+{/* Projects Section */ }
+<Section id="projects">
+    <Projects />
+</Section>
+
+{/* Skills Section */ }
+<Section id="skills">
+    <Skills />
+</Section>
+
+{/* Contact Section */ }
+<Section id="contact">
+    <Contact />
+</Section>
+
+
+========== File: src/components/Home/styles.js ==========
+
+// src/components/Home/styles.js
+import styled from 'styled-components';
+
+export const StyledHome = styled.section`
+  height: 10vh;
+  width: 100vw;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  scroll-snap-type: y mandatory;
+  min-height: 100vh;
+  justify-content: flex-start;
+
+
+  
+  #Main {
+    margin-top: 200px;
+    position: absolute;
+    color: #fff;
+    font-size: calc(2rem + 2vw);
+    pointer-events: auto;
+  }
+
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 1.5rem; // Smaller font size for smaller screens
+    }
+  }
+
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 1rem; // Even smaller font size for mobile screens
+    }
+  }
+
+  div {
+    position: relative;
+
+
+  }
+
+`;
+
+
+export const Section = styled.section`
+  padding: 50px 20px;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  scroll-snap-type: y mandatory;
+`;
+
+
+
+========== File: src/components/Contact/index.js ==========
+
+import React, { useState } from 'react';
+import { ContactContainer, ContactH1, ContactForm, Input, Textarea, Button } from './styles';
+import { Element } from 'react-scroll'; // Import the Element component from react-scroll
+import axios from 'axios';
+
+const Contact = () => {
+    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            // Send a POST request to your API endpoint
+            const response = await axios.post('/api/sendmail', formData, {
+                Headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            console.log('Form data submitted:', formData);
+
+            // Check if the response is successful
+            if (response.data.success) {
+                alert('Message sent successfully!');
+            } else {
+                alert('Failed to send the message.');
+            }
+
+            // Clear the form fields after submission
+            setFormData({ name: '', email: '', message: '' });
+        } catch (error) {
+            console.error('Form submission error:', error.response.data);
+            alert('Failed to send the message.');
+        }
+    };
+
+    return (
+        <Element name="contact" id="contact"> {/* Wrap the container in an Element for react-scroll */}
+            <ContactContainer>
+                <ContactH1>Contact Me</ContactH1>
+                <ContactForm onSubmit={handleSubmit}>
+                    <Input name="name" type="text" value={formData.name} placeholder="Your Name" onChange={handleChange} required />
+                    <Input name="email" type="email" value={formData.email} placeholder="Your Email" onChange={handleChange} required />
+                    <Textarea name="message" value={formData.message} placeholder="Your Message" onChange={handleChange} required></Textarea>
+                    <Button type="submit">Send</Button>
+                </ContactForm>
+            </ContactContainer>
+        </Element>
+    );
+};
+
+export default Contact;
+
+
+
+========== File: src/components/Contact/styles.js ==========
+
+import styled from 'styled-components';
+
+export const ContactContainer = styled.div`
+  padding: 100px;
+  text-align: center;
+`;
+
+export const ContactH1 = styled.h1`
+  color: #31c7b2;
+  margin-bottom: 1rem;
+`;
+
+export const ContactForm = styled.form`
+  max-width: 500px;
+  margin: auto;
+  background: #222;
+  padding: 2rem;
+  border-radius: 10px;
+`;
+
+export const Input = styled.input`
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 5px;
+`;
+
+export const Textarea = styled.textarea`
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 5px;
+  height: 150px;
+`;
+
+export const Button = styled.button`
+  width: 100%;
+  padding: 1rem;
+  background-color: #31c7b2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #259d89;
+  }
+`;
+
+
+
+========== File: src/components/Testimonials/TestimonialStyles.js ==========
+
+import styled from 'styled-components';
+
+export const TestimonialContainer = styled.div`
+  text-align: center;
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 10px;
+  background: #333;
+  color: #fff;
+`;
+
+export const Quote = styled.p`
+  font-style: italic;
+`;
+
+export const Author = styled.span`
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+`;
+
+
+
+
+
+========== File: src/components/Testimonials/Testimonials.js ==========
+
+// About/Components/Testimonials.js
+import React from 'react';
+import { TestimonialContainer, Quote, Author } from './TestimonialStyles';
+
+const Testimonial = ({ testimonial }) => {
+    return (
+        <TestimonialContainer>
+            <Quote>{testimonial.quote}</Quote>
+            <Author>- {testimonial.author}</Author>
+        </TestimonialContainer>
+    );
+};
+
+export default Testimonial;
+
+
+
+========== File: src/components/Projects/index.js ==========
+
+import React, { useContext, useState } from 'react';
+import { ProjectsContext } from '../../contexts/ProjectsContext';
+import {
+    ProjectsContainer,
+    ProjectsH1,
+    ProjectCard,
+    FilterButtons,
+    ProjectImage,
+    ProjectInfo,
+    ProjectTitle,
+    ProjectDescription,
+    ProjectLinks,
+    ProjectLink,
+    ProjectsGrid
+} from './styles';
+
+const Projects = () => {
+    const { projects } = useContext(ProjectsContext);
+    const [filter, setFilter] = useState('All');
+
+    const filteredProjects = filter === 'All'
+        ? projects
+        : projects.filter(project => project.category === filter);
+
+    return (
+        <ProjectsContainer>
+            <ProjectsH1>Projects</ProjectsH1>
+            <FilterButtons>
+                <button onClick={() => setFilter('All')}>All</button>
+                <button onClick={() => setFilter('AI')}>AI</button>
+                <button onClick={() => setFilter('Blockchain')}>Blockchain</button>
+                <button onClick={() => setFilter('Web Dev')}>Web Dev</button>
+                <button onClick={() => setFilter('Data')}>Data</button>
+                {/* Add more filters as needed */}
+            </FilterButtons>
+            <ProjectsGrid>
+                {filteredProjects.map(project => (
+                    <ProjectCard key={project.id}>
+                        <ProjectImage src={project.image} alt={project.title} />
+                        <ProjectInfo>
+                            <ProjectTitle>{project.title}</ProjectTitle>
+                            <ProjectDescription>{project.description}</ProjectDescription>
+                            <ProjectLinks>
+                                <ProjectLink href={project.codeLink} target="_blank">Code</ProjectLink>
+                            </ProjectLinks>
+                        </ProjectInfo>
+                    </ProjectCard>
+                ))}
+            </ProjectsGrid>
+        </ProjectsContainer>
+    );
+};
+
+export default Projects;
+
+
+
+========== File: src/components/Projects/styles.js ==========
+
+import styled from "styled-components";
+
+export const ProjectsContainer = styled.div`
+  padding: 100px;
+  gap: 20px;
+`;
+
+export const ProjectsH1 = styled.h1`
+  font-size: 2.5rem;
+  color: #31c7b2;
+  margin-bottom: 2rem;
+`;
+
+export const ProjectsGrid = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+export const ProjectCard = styled.div`
+
+
+  background: #222;
+  padding: 20px;
+  border: 1px solid white
+  border-radius: 10px;
+  margin: 10px;
+  width: calc(33.333% - 20px);
+  min-width: 300px;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  &:hover {
+    transform: translateY(-10px);
+  }
+
+  @media (max-width: 768px) {
+    width: calc(50% - 20px);
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+  }
+`;
+
+export const FilterButtons = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+
+  button {
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    background: none;
+    color: #31c7b2;
+    border: 1px solid #31c7b2;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    &:hover {
+      background-color: #259d89;
+      color: white;
+    }
+  }
+`;
+
+export const ProjectImage = styled.img`
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  color: #666;
+`;
+
+export const ProjectInfo = styled.div`
+  padding: 15px;
+`;
+
+export const ProjectTitle = styled.h3`
+  margin: 0;
+  color: white;
+`;
+
+export const ProjectDescription = styled.p`
+  color: #666;
+`;
+
+export const ProjectLinks = styled.div`
+  margin-top: 10px;
+`;
+
+export const ProjectLink = styled.a`
+  margin-right: 10px;
+  color: #31c7b2;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+
+
+========== File: src/components/ResumeDownload/ResumeDownload.js ==========
+
+// About/Components/ResumeDownload.js
+import React from 'react';
+import { DownloadLink } from './ResumeDownloadStyles';
+
+const ResumeDownload = ({ resumeLink }) => {
+    return <DownloadLink href={resumeLink} download>Download Resume</DownloadLink>;
+};
+
+export default ResumeDownload;
+
+
+
+========== File: src/components/ResumeDownload/ResumeDownloadStyles.js ==========
+
+import styled from 'styled-components';
+
+export const DownloadLink = styled.a`
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #31c7b2;
+  color: #fff;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #259d89;
+  }
+`;
+
+
+
+
+========== File: src/components/Introvideo/IntroVideoStyles.js ==========
+
+import styled from 'styled-components';
+
+export const VideoContainer = styled.div`
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+
+  video {
+    width: 100%;
+    border-radius: 10px;
+  }
+`;
+
+
+
+========== File: src/components/Introvideo/IntroVideo.js ==========
+
+// About/Components/IntroVideo.js
+import React from 'react';
+import { VideoContainer } from './IntroVideoStyles';
+
+const IntroVideo = ({ videoSrc }) => {
+    return (
+        <VideoContainer>
+            <video src={videoSrc} controls />
+        </VideoContainer>
+    );
+};
+
+export default IntroVideo;
+
+
+
+========== File: src/components/About/index.js ==========
+
+import React from 'react';
+import Timeline from '../Timeline/Timeline';
+import SkillBar from '../SkillBar/SkillBar';
+import Testimonial from '../Testimonials/Testimonials';
+import IntroVideo from '../Introvideo/IntroVideo';
+import ResumeDownload from '../ResumeDownload/ResumeDownload';
+import { AboutContainer, AboutH1, AboutBio, SkillsSection } from './styles';
+import Resume from "../../assets/pdf/Resume.pdf"
+// Mock Data for components
+const milestones = [
+    { year: "2021", event: "Started my journey with AI and Blockchain." },
+    // Add more milestones
+];
+
+const skills = [
+    { skill: "JavaScript", level: "99%" },
+    // Add more skills
+];
+
+const testimonials = [
+    { quote: "Dev is an innovative problem solver.", author: "Dev Sanghvi" },
+    // Add more testimonials
+];
+
+const videoSrc = "path_to_your_video.mp4";
+const resumeLink = Resume;
+
+const About = () => {
+    return (
+        <AboutContainer>
+            <AboutH1>About Dev Sanghvi</AboutH1>
+            <AboutBio>
+                Passionate AI and Blockchain Enthusiast with a drive for developing innovative solutions...
+            </AboutBio>
+            <Timeline milestones={milestones} />
+            <SkillsSection>
+                {skills.map((skill, index) => (
+                    <SkillBar key={index} skill={skill.skill} level={skill.level} />
+                ))}
+            </SkillsSection>
+            {testimonials.map((testimonial, index) => (
+                <Testimonial key={index} testimonial={testimonial} />
+            ))}
+            <IntroVideo videoSrc={videoSrc} />
+            <ResumeDownload resumeLink={resumeLink} />
+        </AboutContainer>
+    );
+};
+
+export default About;
+
+
+
+========== File: src/components/About/styles.js ==========
+
+import styled from 'styled-components';
+
+export const AboutContainer = styled.div`
+  padding: 100px 200px;
+  text-align: center;
+  background: #222;
+  color: #fff;
+  margin-top: 1000px;
+  border-radius: 10px;
+`;
+
+export const AboutH1 = styled.h1`
+  font-size: 2.5rem;
+  color: #31c7b2;
+  margin-bottom: 1rem;
+`;
+
+export const AboutBio = styled.p`
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+`;
+
+export const SkillsSection = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
+
+export const Skill = styled.span`
+  background: #31c7b2;
+  margin: 0.5rem;
+  padding: 0.5rem 0.5rem;
+  border-radius: 2px;
+  color: white;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #259d89;
+  }
+`;
+
+
+
+========== File: src/components/Hooks/TypewriterText.tsx ==========
+
+import React from "react";
+import { useTypewriter } from "./Typewriter.ts";
+
+interface TypewriterProps {
+    texts: string[];
+}
+
+const TypewriterText: React.FC<TypewriterProps> = ({ texts }) => {
+    const animatedText = useTypewriter(texts, 100, 2000);
+    return (
+        <span className="border-r-2 border-gray-300 pr-1 animate-blinkCaret">
+            {animatedText}
+        </span>
+    );
+};
+
+export default TypewriterText;
+
+
+========== File: src/components/SkillBar/SkillBar.js ==========
+
+// About/Components/SkillBar.js
+import React from 'react';
+import { SkillBarContainer, SkillName, SkillLevel } from './SkillBarStyles';
+
+const SkillBar = ({ skill, level }) => {
+    return (
+        <SkillBarContainer>
+            <SkillName>{skill}</SkillName>
+            <SkillLevel level={level} />
+        </SkillBarContainer>
+    );
+};
+
+export default SkillBar;
+
+
+
+========== File: src/components/SkillBar/SkillBarStyles.js ==========
+
+import styled from 'styled-components';
+
+export const SkillBarContainer = styled.div`
+  width: 100%;
+  margin: 10px 0;
+`;
+
+export const SkillName = styled.span`
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+`;
+
+export const SkillLevel = styled.div`
+  height: 20px;
+  background: #ddd;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: ${({ level }) => level};
+    background: #31c7b2;
+    transition: width 2s ease;
+  }
+`;
+
+
+
+========== File: src/components/Skills/index.js ==========
+
+import React from 'react';
+import { SkillsContainer, Skill, SkillName, SkillDetails } from './styles';
+
+const skillsData = [
+    { name: "Jupyter", description: "Proficient in using Jupyter notebooks for interactive data analysis and visualization." },
+    { name: "Data Scraping", description: "Skilled in extracting and processing data from various online sources." },
+    { name: "Supervised Learning", description: "Experienced in creating models using supervised machine learning techniques." },
+    { name: "Front-End Development", description: "Adept at developing user-friendly front-end interfaces using modern web technologies." },
+    { name: "Artificial Intelligence (AI)", description: "Knowledgeable in AI concepts and applications, including machine learning and neural networks." },
+    { name: "Neural Networks", description: "Experienced in designing and implementing neural network architectures for various applications." },
+    { name: "Web Scraping", description: "Expert in automating data extraction from web pages." },
+    { name: "Mathematics", description: "Strong foundation in mathematical concepts essential for complex problem solving in tech." },
+    { name: "Convolutional Neural Networks (CNN)", description: "Proficient in building CNN models for image recognition and processing." },
+    { name: "React.js", description: "Experienced in building dynamic web applications using React.js." },
+    { name: "Back-End Web Development", description: "Adept at server-side web application logic and integration." },
+    { name: "Web Design", description: "Skilled in creating aesthetically pleasing and functional web designs." },
+    { name: "Transformer Models", description: "Knowledgeable in implementing transformer models in natural language processing." },
+    { name: "Go (Programming Language)", description: "Experienced in using Go for efficient software development." },
+    { name: "Machine Learning", description: "Skilled in developing algorithms and statistical models to enable computers to perform tasks without explicit instructions." },
+    { name: "Data Processing", description: "Efficient in processing large sets of data to extract actionable insights." },
+    { name: "Deep Learning", description: "Experienced in using deep learning techniques for advanced computational models." },
+    { name: "Smart Contracts", description: "Knowledgeable in developing self-executing contracts with the terms of the agreement directly written into code." },
+    { name: "Solidity", description: "Skilled in Solidity for creating smart contracts on various blockchain platforms." },
+    { name: "Blockchain", description: "Proficient in blockchain technology and its applications in secure and decentralized systems." }
+];
+
+
+const Skills = () => {
+    const [selectedSkill, setSelectedSkill] = React.useState(null);
+
+    const handleSkillClick = skill => {
+        setSelectedSkill(skill === selectedSkill ? null : skill);
+    };
+
+    return (
+        <SkillsContainer>
+            {skillsData.map((skill, index) => (
+                <Skill key={index} onClick={() => handleSkillClick(skill.name)} isSelected={skill.name === selectedSkill}>
+                    <SkillName>{skill.name}</SkillName>
+                    {skill.name === selectedSkill && <SkillDetails>{skill.description}</SkillDetails>}
+                </Skill>
+
+            ))}
+        </SkillsContainer>
+    );
+};
+
+export default Skills;
+
+
+========== File: src/components/Skills/styles.js ==========
+
+import styled, { css } from 'styled-components';
+
+export const SkillsContainer = styled.div`
+  padding: 100px;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  flex-wrap: wrap; /* Allow skill buttons to wrap */
+  gap: 20px; /* Spacing between skill buttons */
+`;
+
+export const Skill = styled.button`
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: #0077cc;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
+  ${({ isSelected, ...props }) => isSelected && css`
+    background-color: #005fa3;
+    transform: scale(1.1);
+  `}
+
+`;
+
+export const SkillName = styled.div`
+    font - weight: bold;
+`;
+
+export const SkillDetails = styled.div`
+  margin - top: 10px;
+  font - size: 0.8rem;
+  background - color: white;
+  color: white;
+  padding: 5px;
+  border - radius: 5px;
+`;
+
+
+
+========== File: src/components/Timeline/Timeline.js ==========
+
+// About/Components/Timeline.js
+import React from 'react';
+import { TimelineContainer, TimelineItem, TimelineContent } from './TimelineStyles';
+
+const Timeline = ({ milestones }) => {
+    return (
+        <TimelineContainer>
+            {milestones.map((milestone, index) => (
+                <TimelineItem key={index}>
+                    <h3>{milestone.year}</h3>
+                    <TimelineContent>
+                        <p>{milestone.event}</p>
+                    </TimelineContent>
+                </TimelineItem>
+            ))}
+        </TimelineContainer>
+    );
+};
+
+export default Timeline;
+
+
+
+========== File: src/components/Timeline/TimelineStyles.js ==========
+
+import styled from 'styled-components';
+
+export const TimelineContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  margin-top: 20px;
+`;
+
+export const TimelineItem = styled.div`
+  border-left: 2px solid #31c7b2;
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+  }
+`;
+
+export const TimelineContent = styled.div`
+  padding: 10px;
+  border-radius: 5px;
+  background: #333;
+  color: #fff;
+`;
+
+
+
+========== File: src/components/Header/index.js ==========
+
+import React from 'react';
+import { Link as ScrollLink } from 'react-scroll';
+import styled from 'styled-components';
+import { Nav, NavContainer, Logo, LogoLink, NavMenu } from './styles';
+
+// NavBar component
+const NavBar = () => {
+  return (
+    <Nav>
+      <NavContainer>
+        <Logo><LogoLink to="/">Dev Sanghvi</LogoLink></Logo>
+        <NavMenu>
+          <li><ScrollLink to="home" smooth duration={500}>Home</ScrollLink></li>
+          <li><ScrollLink to="about" smooth duration={500}>About</ScrollLink></li>
+          <li><ScrollLink to="projects" smooth duration={500}>Projects</ScrollLink></li>
+          <li><ScrollLink to="contact" smooth duration={500}>Contact</ScrollLink></li>
+          <li><ScrollLink to="skills" smooth duration={500}>Skills</ScrollLink></li>
+        </NavMenu>
+      </NavContainer>
+    </Nav>
+  );
+};
+
+export default NavBar;
+
+
+========== File: src/components/Header/styles.js ==========
+
+import styled from 'styled-components';
+import { Link as RouterLink } from 'react-router-dom';
+
+// Styled components for NavBar
+export const Nav = styled.nav`
+  width: 100%;
+  background: #0a0a0a; /* Or any color that matches your theme */
+  padding: 1rem 0;
+`;
+
+export const NavContainer = styled.div`
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const Logo = styled.h1`
+  color: #white; /* Or any color that matches your theme */
+
+  margin: 0;
+`;
+
+export const LogoLink = styled(RouterLink)`
+    color: #31c7b2; // Replace with your custom color
+    text-decoration: none;
+`;
+
+export const NavMenu = styled.ul`
+  list-style: none;
+  display: flex;
+  margin: 0;
+
+  li {
+    padding: 0 1rem;
+  }
+
+  a {
+    text-decoration: none;
+    color: #f4f4f4; /* Light text color for contrast */
+    transition: color 0.3s ease-in-out;
+
+    &:hover {
+      color: #31c7b2; /* Highlight color on hover */
+    }
+    
+    &.active {
+
+      font-weight: bold;
+    }
+  }
+`;
+
+

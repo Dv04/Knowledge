@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #__next {
+  height: 100%;
+}
+
+/* ===== Unified page background =====
+body {
+  @apply bg-gradient-to-br from-slate-900 via-slate-950 to-black text-slate-100;
+} */
+/* 
+/* soften section transitions */
+/* section {
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.12) 0%,
+      rgba(0, 0, 0, 0.08) 40%,
+      rgba(0, 0, 0, 0.08) 60%,
+      rgba(0, 0, 0, 0.12) 100%);
+  background-blend-mode: overlay;
+}
+
+@media (prefers-color-scheme: light) {
+  section {
+    background: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0.6) 0%,
+        rgba(255, 255, 255, 0.4) 40%,
+        rgba(255, 255, 255, 0.4) 60%,
+        rgba(255, 255, 255, 0.6) 100%);
+    background-blend-mode: overlay;
+  }
+} */
