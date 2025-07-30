@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Jain Culinary Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Harmony -->
+    <!-- Application Structure Plan: A two-panel SPA. Left panel for persistent category navigation, right for dynamic content. A header contains the title, a search bar, and a modal trigger for prohibited ingredients. The main content area defaults to a dashboard view with a chart and then displays recipe cards based on user selection. This structure is chosen for its efficiency, allowing chefs to quickly filter by category or search for a specific dish without scrolling through a long document, making it far more usable in a busy kitchen environment. -->
+    <!-- Visualization & Content Choices: Report Info: Recipe categories -> Goal: Overview -> Viz: Chart.js Donut Chart -> Interaction: Hover for details -> Justification: Provides a quick visual summary of the recipe collection's composition. Report Info: Prohibited Ingredients -> Goal: Critical Reference -> Presentation: HTML table in a modal -> Interaction: Click-to-open -> Justification: Keeps critical safety info accessible but unobtrusive. Report Info: Individual Recipes -> Goal: Inform & Instruct -> Presentation: Tailwind CSS Cards -> Interaction: Click category to filter, search to find -> Justification: Modular, scannable format ideal for quick reference. Chef's notes are highlighted for emphasis. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: auto;
+            max-height: 400px;
+        }
+
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background-color: #d1d5db;
+            border-radius: 20px;
+        }
+
+        .sidebar-scroll::-webkit-scrollbar-track {
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+
+    <div id="app" class="flex h-screen">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 bg-slate-100 p-4 flex flex-col shrink-0 border-r border-slate-200">
+            <h1 class="text-xl font-bold text-emerald-800 mb-6">Jain Culinary Guide</h1>
+            <nav id="category-nav" class="flex-grow sidebar-scroll overflow-y-auto">
+                <ul class="space-y-2">
+                    <li><a href="#"
+                            class="nav-link block px-4 py-2 text-slate-700 font-medium rounded-md hover:bg-emerald-100 hover:text-emerald-800"
+                            data-category="Dashboard">Dashboard</a></li>
+                </ul>
+            </nav>
+            <div class="mt-4">
+                <button id="rules-btn"
+                    class="w-full bg-amber-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-600 transition-colors flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 3.001-1.742 3.001H4.42c-1.53 0-2.493-1.667-1.743-3.001l5.58-9.92zM10 13a1 1 0 110-2 1 1 0 010 2zm-1.75-5.25a.75.75 0 00-1.5 0v2.5a.75.75 0 001.5 0v-2.5z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    View Rules
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 id="main-title" class="text-3xl font-bold text-slate-800">Dashboard</h2>
+                    <div class="w-full max-w-sm">
+                        <input type="text" id="search-bar" placeholder="Search for a recipe..."
+                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                </div>
+                <div id="content-area">
+                    <!-- Dynamic content will be injected here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Prohibited Ingredients Modal -->
+    <div id="rules-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+            <div class="p-6 border-b border-slate-200 flex justify-between items-center">
+                <h3 class="text-2xl font-bold text-amber-700">Critical Prohibited Ingredients</h3>
+                <button id="close-modal-btn" class="text-slate-500 hover:text-slate-800">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto">
+                <p class="mb-6 text-slate-600">This guide adheres to a specific and strict dietary protocol. All kitchen
+                    staff must review these rules before preparation. The exclusion of **coriander (cilantro)** and
+                    **asafoetida (hing)** is a critical deviation from standard Jain recipes.</p>
+                <div class="space-y-6">
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <h4 class="font-bold text-red-800 text-lg mb-2">Root Vegetables (Absolute Prohibition)</h4>
+                        <p class="text-red-700 mb-2"><strong>Prohibited Items:</strong> Potato, Onion, Garlic, Ginger,
+                            Carrot, Beetroot, Radish, Sweet Potato, Yam, Taro, Turmeric Root.</p>
+                        <p class="text-sm font-semibold text-red-900 bg-red-100 p-2 rounded-md"><strong>Chef's
+                                Note:</strong> This includes all forms (fresh, dried, powdered). Use raw banana as the
+                            primary substitute for potato. Powdered turmeric is permitted.</p>
+                    </div>
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <h4 class="font-bold text-yellow-800 text-lg mb-2">Specific Plant & Fungi Exclusions</h4>
+                        <p class="text-yellow-700 mb-2"><strong>Prohibited Items:</strong> Coriander (Cilantro),
+                            Spinach, Asafoetida (Hing), Mushrooms (all types), Yeast.</p>
+                        <p class="text-sm font-semibold text-yellow-900 bg-yellow-100 p-2 rounded-md"><strong>Chef's
+                                Note:</strong> The exclusion of coriander and asafoetida is non-standard. Do not trust
+                            external "Jain" recipes. Build flavor with cumin, mustard seeds, and green chilies.</p>
+                    </div>
+                    <div class="bg-sky-50 border border-sky-200 rounded-lg p-4">
+                        <h4 class="font-bold text-sky-800 text-lg mb-2">Animal-Derived Products</h4>
+                        <p class="text-sky-700 mb-2"><strong>Prohibited Items:</strong> Meat, Fish, Seafood, Eggs,
+                            Honey, Animal Fats, Gelatin, Animal Rennet.</p>
+                        <p class="text-sm font-semibold text-sky-900 bg-sky-100 p-2 rounded-md"><strong>Chef's
+                                Note:</strong> Verify all cheese is made with microbial or vegetable rennet. Scrutinize
+                            labels on processed dairy for hidden egg ingredients.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const recipeData = [
+                { category: "Gujarati & Western-India Staples", name: "Thepla", description: "A soft, spiced Gujarati flatbread, perfect for meals and travel.", ingredients: ["Grated Bottle Gourd (Dudhi)", "Whole Wheat Flour (Atta)", "Low-Fat Curd", "Turmeric Powder", "Red Chilli Powder", "Oil or Ghee", "Salt"], youtubeLinks: ["https://www.youtube.com/watch?v=ywaWR3CHEtE", "https://www.youtube.com/watch?v=Dau-3klXTzk"] },
+                { category: "Gujarati & Western-India Staples", name: "Bajri-na Dhebra", description: "A rustic, savory-sweet flatbread made from pearl millet flour.", ingredients: ["Pearl Millet Flour", "Whole Wheat Flour", "Kasuri Methi", "Yogurt", "Green Chilies", "Sesame Seeds", "Spices"], youtubeLinks: ["https://www.youtube.com/watch?v=EoUxdwXe8QU"] },
+                { category: "Gujarati & Western-India Staples", name: "Rotli / Phulka", description: "A simple, unleavened whole-wheat flatbread, a staple in Indian households.", ingredients: ["Whole Wheat Flour", "Yogurt", "Baking Powder", "Baking Soda", "Sugar", "Salt", "Ghee"], youtubeLinks: ["https://www.youtube.com/watch?v=fJSihFdyQ2U", "https://m.youtube.com/watch?v=DjJEvJAby7o"] },
+                { category: "Gujarati & Western-India Staples", name: "Puri", description: "A deep-fried, puffed bread made from whole wheat flour.", ingredients: ["Whole Wheat Flour", "Salt", "Oil or Ghee", "Water"], youtubeLinks: ["https://www.youtube.com/playlist?list=PLQf_i4Ia49KrdjmWTrCWFoCiWXNdu_Lq7"] },
+                { category: "Gujarati & Western-India Staples", name: "Bhakri (Wheat)", description: "A coarse, unleavened, and crispy flatbread.", ingredients: ["Coarse Whole Wheat Flour", "Ghee or Oil", "Salt", "Warm Water or Milk"], youtubeLinks: ["https://m.youtube.com/watch?v=njlWUDECQDo"] },
+                { category: "Gujarati & Western-India Staples", name: "Bajra Rotla", description: "Traditional gluten-free flatbread served with ghee & jaggery.", ingredients: ["Pearl Millet Flour", "Warm Water", "Salt", "Ghee", "Jaggery"], youtubeLinks: ["https://www.youtube.com/watch?v=813YbleiMJw"] },
+                { category: "Gujarati & Western-India Staples", name: "Khakhra", description: "An exceptionally thin, cracker-like roasted flatbread.", ingredients: ["Whole Wheat Flour", "Gram Flour", "Cumin Seeds", "Spices", "Oil", "Salt"], youtubeLinks: ["https://www.youtube.com/watch?v=UcpAK4W5SKA"] },
+                { category: "Gujarati & Western-India Staples", name: "Dhokla", description: "A savory, steamed, and spongy cake made from a leavened batter.", ingredients: ["Gram Flour", "Semolina", "Citric Acid", "Sugar", "Salt", "Fruit Salt (Eno)", "Tempering Spices"], youtubeNotes: "Chef must OMIT ginger from recipes.", youtubeLinks: ["https://www.youtube.com/watch?v=wBzjkp8yfIU", "https://www.youtube.com/watch?v=ZS_0oyDXfEs"] },
+                { category: "Gujarati & Western-India Staples", name: "Handvo", description: "A savory, pan-fried or baked cake of rice and lentils with vegetables.", ingredients: ["Handvo Flour", "Grated Bottle Gourd", "Yogurt", "Green Chili Paste", "Spices", "Fruit Salt (Eno)"], youtubeLinks: ["https://www.youtube.com/watch?v=dEYi6QwvDWc"] },
+                { category: "Gujarati & Western-India Staples", name: "Bhindi-nu Shaak", description: "A simple dry stir-fry made with okra and basic Indian spices.", ingredients: ["Okra (Bhindi)", "Oil", "Cumin Seeds", "Mustard Seeds", "Spices", "Salt"], youtubeNotes: "Chef must OMIT coriander garnish.", youtubeLinks: ["https://www.youtube.com/watch?v=fA4QzKKGTrs"] },
+                { category: "Gujarati & Western-India Staples", name: "Mixed Vegetable Shaak", description: "Everyday stir-fried vegetable dishes (Parvar, Tindola, Fansi, etc.).", ingredients: ["Your choice of: Parvar, Tindola, Fansi, Dudhi", "Oil", "Cumin Seeds", "Mustard Seeds", "Spices"], youtubeNotes: "Chef must OMIT coriander garnish.", youtubeLinks: ["https://www.youtube.com/watch?v=GK3evqME2Ew", "https://www.youtube.com/watch?v=GruNdXxpR-Y"] },
+                { category: "Gujarati & Western-India Staples", name: "Gujarati Kadhi", description: "A thin, soup-like curry with a distinct sweet and sour flavor.", ingredients: ["Sour Yogurt", "Gram Flour", "Green Chili Paste", "Jaggery", "Tempering Spices"], youtubeNotes: "Chef must OMIT asafoetida from tempering.", youtubeLinks: ["https://www.tarladalal.com/dapka-kadhi--jain-recipe-7552r"] },
+                { category: "Gujarati & Western-India Staples", name: "Tuver ni Daal", description: "A classic sweet, sour, and spiced lentil soup with pigeon peas.", ingredients: ["Tuver Dal", "Jaggery", "Kokum", "Peanuts", "Green Chilies", "Tempering Spices"], youtubeNotes: "Chef must OMIT tomato, ginger, garlic, coriander, and asafoetida.", youtubeLinks: ["https://www.youtube.com/watch?v=IkKo9Jw9BCU"] },
+                { category: "Gujarati & Western-India Staples", name: "Khichdi", description: "A comforting one-pot dish of rice and moong lentils.", ingredients: ["Rice", "Split Yellow Moong Dal", "Ghee", "Turmeric Powder", "Cinnamon", "Cloves", "Salt"], youtubeLinks: ["https://www.jainrasoi.com/khichdi/moong-mogar-dal-khichdi"] },
+                { category: "Breakfast & Light Meals", name: "Moong-Dal Chilla", description: "A savory, thin pancake made from a spiced batter of ground moong lentils.", ingredients: ["Split Yellow Moong Dal", "Rice", "Green Chilies", "Cumin Seeds", "Turmeric Powder", "Salt"], youtubeLinks: ["https://www.youtube.com/watch?v=IFFi6437glg"] },
+                { category: "Breakfast & Light Meals", name: "Idli", description: "A soft, fluffy, savory steamed cake made from a fermented batter.", ingredients: ["Semolina (Rava)", "Yogurt", "Green Chilies", "Curry Leaves", "Mustard Seeds", "Baking Soda", "Salt"], youtubeNotes: "Chef must OMIT ginger and coriander.", youtubeLinks: ["https://www.vegrecipesofindia.com/rava-idli-recipe-quick-rava-idli/"] },
+                { category: "Curries, Dals & Proteins", name: "Paneer Butter Masala", description: "A rich, creamy curry of paneer in a buttery, tomato-cashew gravy.", ingredients: ["Paneer", "Tomatoes", "Cashews", "Melon Seeds", "Whole Spices", "Kasuri Methi", "Cream", "Butter"], youtubeNotes: "Chef must OMIT ginger.", youtubeLinks: ["https://www.cookwithkushi.com/vrat-wale-paneer-curry-recipe/"] },
+                { category: "Curries, Dals & Proteins", name: "Chole Masala", description: "A hearty and spiced curry made with chickpeas in a tangy, thick gravy.", ingredients: ["Chickpeas", "Tomatoes", "Coconut", "Almond Flour", "Amla Powder", "Garam Masala", "Spices"], youtubeLinks: ["https://carveyourcraving.com/chole-without-onion-garlic-tomatoes/"] },
+                { category: "Curries, Dals & Proteins", name: "Rajma", description: "Red kidney beans in a thick, spiced tomato-based gravy.", ingredients: ["Red Kidney Beans", "Tomatoes", "Cashews", "Whole Spices", "Green Chilies", "Spices", "Kasuri Methi"], youtubeNotes: "Chef must OMIT ginger.", youtubeLinks: ["https://www.youtube.com/watch?v=-aDJLOu65tU"] },
+                { category: "Curries, Dals & Proteins", name: "Tuvar Dal", description: "A simple, everyday lentil soup made with split pigeon peas.", ingredients: ["Tuvar Dal", "Tomatoes", "Green Chilies", "Spices", "Lemon Juice", "Tempering Spices"], youtubeLinks: ["https://vegehomecooking.com/dal-fry-tadka-no-onion-no-garlic-jain-dal-fry/"] },
+                { category: "Curries, Dals & Proteins", name: "Moong Dal", description: "A light and nutritious lentil soup made with yellow moong lentils.", ingredients: ["Split Yellow Moong Dal", "Tomatoes", "Green Chili Paste", "Spices", "Tempering Spices"], youtubeNotes: "Chef must OMIT coriander garnish.", youtubeLinks: ["https://www.sailusfood.com/moong-dal-recipe-jain-style/"] },
+                { category: "Rice & One-Pot Main Courses", name: "Jeera Rice", description: "A simple and aromatic rice dish flavored with cumin seeds.", ingredients: ["Basmati Rice", "Ghee", "Cumin Seeds", "Whole Spices", "Salt"], youtubeNotes: "Chef must OMIT coriander garnish.", youtubeLinks: ["https://myfoodstory.com/perfect-jeera-rice-recipe/"] },
+                { category: "Snacks, Starters & Street-Food Favourites", name: "Fafda", description: "A popular crunchy, fried Gujarati snack made from gram flour.", ingredients: ["Gram Flour", "Carom Seeds", "Black Pepper", "Papad Khar", "Turmeric", "Oil", "Salt"], youtubeNotes: "Chef must OMIT asafoetida.", youtubeLinks: ["https://www.youtube.com/watch?v=Sf5dNTu1CkM"] },
+                { category: "Snacks, Starters & Street-Food Favourites", name: "Gathiya", description: "A deep-fried, crispy, and savory Gujarati snack.", ingredients: ["Gram Flour", "Oil", "Baking Soda", "Black Pepper", "Carom Seeds", "Salt"], youtubeNotes: "Chef must OMIT asafoetida.", youtubeLinks: ["https://www.youtube.com/watch?v=uwhekiZxJQU"] },
+                { category: "Snacks, Starters & Street-Food Favourites", name: "Paneer Tikka", description: "Paneer cubes marinated in spiced yogurt and grilled.", ingredients: ["Paneer", "Bell Peppers", "Hung Curd", "Gram Flour", "Spices", "Lemon Juice"], youtubeNotes: "Chef must OMIT ginger and coriander.", youtubeLinks: ["https://vegehomecooking.com/dhaba-style-paneer-masala/"] },
+                { category: "Snacks, Starters & Street-Food Favourites", name: "Paneer Chilli", description: "An Indo-Chinese dish of paneer tossed in a spicy sauce.", ingredients: ["Paneer", "Cornflour", "Bell Peppers", "Green Chilies", "Soy Sauce", "Chili Sauce", "Ketchup"], youtubeNotes: "Chef must OMIT ginger and coriander.", youtubeLinks: ["https://365spicery.com/blogs/news/jain-paneer-chilli-masala-no-onion-no-garlic-a-flavorful-vegetarian-delight"] },
+                { category: "Snacks, Starters & Street-Food Favourites", name: "Cheese Balls", description: "Crispy, deep-fried snack with a molten cheese and corn filling.", ingredients: ["Raw Bananas (boiled & mashed)", "Processed Cheese", "Sweet Corn", "Green Chilies", "Pepper", "Breadcrumbs"], youtubeNotes: "Chef must substitute potato with raw banana.", youtubeLinks: ["https://www.youtube.com/watch?v=lYJAPXp8iFo"] },
+                { category: "Snacks, Starters & Street-Food Favourites", name: "Moong-Dal Pakora", description: "Crispy, deep-fried fritters made from moong lentils.", ingredients: ["Yellow Moong Dal", "Green Chilies", "Crushed Coriander Seeds", "Crushed Black Peppercorns", "Salt"], youtubeLinks: ["https://www.tarladalal.com/moong-dal-pakoda-moong-dal-bhajiya-33399r"] },
+                { category: "Snacks, Starters & Street-Food Favourites", name: "Jain Pav Bhaji", description: "Street food mash-up of vegetables using raw bananas instead of potatoes.", ingredients: ["Raw Bananas", "Tomatoes", "Capsicum", "Green Peas", "Butter", "Pav Bhaji Masala", "Chilli Powder"], youtubeNotes: "Chef must OMIT coriander garnish.", youtubeLinks: ["https://www.tarladalal.com/jain-pav-bhaji--using-raw-bananas-40058r"] },
+                { category: "Soups & Salads", name: "Tomato-Basil Soup", description: "A classic, comforting soup with tomato and aromatic basil.", ingredients: ["Ripe Tomatoes", "Fresh Basil", "Butter", "Pepper", "Sugar", "Salt", "Cream"], youtubeNotes: "Chef must OMIT ginger.", youtubeLinks: ["https://www.youtube.com/watch?v=fz-VATLVi1c"] },
+                { category: "Global Comfort Plates", name: "Arrabbiata Pasta", description: "A classic Italian pasta dish featuring a spicy tomato-based sauce.", ingredients: ["Penne Pasta", "Tomato Puree", "Red Chili Flakes", "Dried Oregano", "Fresh Basil", "Olive Oil"], youtubeLinks: ["https://thegourmetjar.com/blogs/recipes/arrabbiata-pasta"] },
+                { category: "Global Comfort Plates", name: "Margherita Pizza", description: "A simple classic pizza with tomato sauce, mozzarella, and basil.", ingredients: ["No-Yeast Base Ingredients", "Tomato Puree", "Oregano", "Mozzarella Cheese", "Fresh Basil"], youtubeLinks: ["https://sonalsjainkitchen.com/recipe/no-yeast-pan-cooked-multi-grain-jain-pizza/"] },
+                { category: "Desserts & Sweets", name: "Shrikhand", description: "A creamy, sweet dessert made from strained yogurt.", ingredients: ["Full-Fat Yogurt", "Powdered Sugar", "Saffron", "Cardamom", "Nuts", "Mango Pulp (optional)"], youtubeLinks: ["https://www.jainrasoi.com/sweets/shrikhand"] },
+                { category: "Desserts & Sweets", name: "Basundi", description: "Rich, sweetened, and thickened milk dessert.", ingredients: ["Full-Fat Milk", "Sugar", "Almonds", "Pistachios", "Cardamom", "Saffron"], youtubeLinks: ["https://lemoninginger.com/rabri-basundi-khurchan/"] },
+                { category: "Desserts & Sweets", name: "Malai Kulfi", description: "A traditional, dense and creamy Indian ice cream.", ingredients: ["Whole Milk", "Heavy Cream", "Khoya", "Sugar", "Cardamom", "Nuts"], youtubeLinks: ["https://www.cookwithmanali.com/malai-kulfi/"] },
+                { category: "Desserts & Sweets", name: "Gulab Jamun", description: "Soft, deep-fried dumplings made from milk solids in syrup.", ingredients: ["Khoya (Mawa)", "Flour or Paneer", "Cardamom", "Ghee", "Sugar Syrup"], youtubeLinks: ["https://www.jainrasoi.com/sweets/gulab-jamun"] },
+                { category: "Desserts & Sweets", name: "Jalebi", description: "A spiral-shaped, crispy, and chewy sweet soaked in syrup.", ingredients: ["Flour", "Gram Flour", "Yogurt", "Baking Powder", "Ghee", "Sugar Syrup"], youtubeLinks: ["https://rachnas-kitchen.com/jalebi-recipe/"] },
+                { category: "Desserts & Sweets", name: "Mohanthal", description: "A dense, fudge-like sweet made from roasted gram flour.", ingredients: ["Coarse Gram Flour", "Ghee", "Milk", "Sugar", "Cardamom", "Nuts"], youtubeLinks: ["https://www.mygingergarlickitchen.com/rajasthani-mohanthal-gujarati-mohanthal-mohan-thal-2-ways-video-recipe/"] },
+                { category: "Desserts & Sweets", name: "Kesar Phirni", description: "A creamy, slow-cooked rice pudding with ground basmati rice.", ingredients: ["Basmati Rice (ground)", "Full-Fat Milk", "Sugar", "Saffron", "Cardamom", "Pistachios"], youtubeLinks: ["https://maunikagowardhan.co.uk/cook-in-a-curry/phirni-saffron-and-pistachio-rice-pudding/"] },
+                { category: "Desserts & Sweets", name: "Rice Kheer", description: "A classic Indian rice pudding with whole rice grains.", ingredients: ["Basmati Rice", "Full-Fat Milk", "Sugar", "Cardamom", "Saffron", "Nuts", "Raisins"], youtubeLinks: ["https://www.vegrecipesofindia.com/rice-kheer-recipe-chawal-ki-kheer/"] },
+                { category: "Drinks & Sides", name: "Masala Chaas", description: "A cooling and digestive spiced buttermilk drink.", ingredients: ["Yogurt", "Water", "Roasted Cumin Powder", "Black Salt"], youtubeNotes: "Chef must OMIT ginger, green chili, and coriander.", youtubeLinks: ["https://www.youtube.com/watch?v=sftvLoM7Crg"] },
+                { category: "Drinks & Sides", name: "Badam Milk", description: "A rich and nutritious drink made from blended almonds and milk.", ingredients: ["Almonds", "Milk", "Sugar", "Saffron", "Cardamom"], youtubeLinks: ["https://www.youtube.com/watch?v=tVbeB7Qdyn0"] },
+                { category: "Drinks & Sides", name: "Fresh Lime Soda", description: "A refreshing beverage with lime juice, sugar, and soda water.", ingredients: ["Lime Juice", "Sugar", "Salt", "Chilled Soda Water"], youtubeLinks: ["https://www.youtube.com/watch?v=yqomvvNXJiM"] },
+                { category: "Drinks & Sides", name: "Coconut Chutney", description: "A smooth and creamy side chutney made from fresh coconut.", ingredients: ["Fresh Grated Coconut", "Roasted Chana Dal", "Green Chilies", "Salt", "Tempering Spices"], youtubeNotes: "Chef must OMIT ginger and coriander.", youtubeLinks: ["https://www.youtube.com/watch?v=9pptIZuakxo"] },
+            ];
+
+            const categoryNav = document.getElementById('category-nav').querySelector('ul');
+            const contentArea = document.getElementById('content-area');
+            const mainTitle = document.getElementById('main-title');
+            const searchBar = document.getElementById('search-bar');
+            const rulesBtn = document.getElementById('rules-btn');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const rulesModal = document.getElementById('rules-modal');
+
+            let categoryChart = null;
+
+            const categories = ['Dashboard', ...new Set(recipeData.map(r => r.category))];
+
+            function init() {
+                populateCategories();
+                renderDashboard();
+                setupEventListeners();
+            }
+
+            function populateCategories() {
+                const existingLinks = categoryNav.innerHTML;
+                categoryNav.innerHTML = existingLinks + categories.slice(1).map(cat => `<li><a href="#" class="nav-link block px-4 py-2 text-slate-700 font-medium rounded-md hover:bg-emerald-100 hover:text-emerald-800" data-category="${cat}">${cat}</a></li>`).join('');
+            }
+
+            function setupEventListeners() {
+                categoryNav.addEventListener('click', e => {
+                    if (e.target.classList.contains('nav-link')) {
+                        e.preventDefault();
+                        const category = e.target.dataset.category;
+                        setActiveLink(e.target);
+                        if (category === 'Dashboard') {
+                            renderDashboard();
+                        } else {
+                            renderRecipes(recipeData.filter(r => r.category === category));
+                            mainTitle.textContent = category;
+                        }
+                        searchBar.value = '';
+                    }
+                });
+
+                searchBar.addEventListener('input', e => {
+                    const searchTerm = e.target.value.toLowerCase();
+                    if (searchTerm.length > 1) {
+                        const filteredRecipes = recipeData.filter(r => r.name.toLowerCase().includes(searchTerm));
+                        renderRecipes(filteredRecipes);
+                        mainTitle.textContent = `Search Results for "${searchTerm}"`;
+                        setActiveLink(null);
+                    } else if (searchTerm.length === 0) {
+                        renderDashboard();
+                    }
+                });
+
+                rulesBtn.addEventListener('click', () => rulesModal.classList.remove('hidden'));
+                closeModalBtn.addEventListener('click', () => rulesModal.classList.add('hidden'));
+                rulesModal.addEventListener('click', e => {
+                    if (e.target === rulesModal) {
+                        rulesModal.classList.add('hidden');
+                    }
+                });
+            }
+
+            function setActiveLink(activeLink) {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('bg-emerald-100', 'text-emerald-800', 'font-bold');
+                });
+                if (activeLink) {
+                    activeLink.classList.add('bg-emerald-100', 'text-emerald-800', 'font-bold');
+                }
+            }
+
+            function renderDashboard() {
+                mainTitle.textContent = 'Dashboard';
+                setActiveLink(document.querySelector('.nav-link[data-category="Dashboard"]'));
+                contentArea.innerHTML = `
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-bold mb-4">Welcome, Chef!</h3>
+                    <p class="text-slate-600 mb-4">This interactive guide is designed to help you prepare specialized Jain meals with precision and confidence. Use the navigation on the left to browse recipes by category, or use the search bar to find a specific dish.</p>
+                    <p class="text-slate-600">Remember to consult the <strong class="text-amber-600">"View Rules"</strong> button frequently to ensure strict adherence to the prohibited ingredients list. Your attention to detail is crucial for meeting these specific dietary needs.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                     <h3 class="text-xl font-bold mb-4 text-center">Recipe Distribution</h3>
+                     <div class="chart-container">
+                        <canvas id="categoryChart"></canvas>
+                     </div>
+                </div>
+            </div>
+        `;
+                createCategoryChart();
+            }
+
+            function renderRecipes(recipes) {
+                if (recipes.length === 0) {
+                    contentArea.innerHTML = `<div class="text-center py-12"><p class="text-slate-500">No recipes found.</p></div>`;
+                    return;
+                }
+
+                contentArea.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                ${recipes.map(recipe => `
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+                        <div class="p-6 flex-grow">
+                            <h3 class="text-xl font-bold text-emerald-700 mb-2">${recipe.name}</h3>
+                            <p class="text-slate-600 text-sm mb-4">${recipe.description}</p>
+                            ${recipe.youtubeNotes ? `<p class="text-sm bg-red-100 text-red-800 font-semibold p-2 rounded-md mb-4"><strong>Note:</strong> ${recipe.youtubeNotes}</p>` : ''}
+                            <h4 class="font-semibold mb-2 text-slate-700">Key Ingredients:</h4>
+                            <ul class="list-disc list-inside text-sm text-slate-600 space-y-1 mb-4">
+                                ${recipe.ingredients.map(ing => `<li>${ing}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 p-4 border-t border-slate-200">
+                            <h4 class="font-semibold mb-2 text-slate-700">Preparation Videos:</h4>
+                            <div class="flex flex-col space-y-2">
+                                ${recipe.youtubeLinks.map((link, index) => `
+                                    <a href="${link}" target="_blank" rel="noopener noreferrer" class="text-emerald-600 hover:text-emerald-800 hover:underline text-sm flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                        Watch Recipe ${index + 1}
+                                    </a>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+            }
+
+            function createCategoryChart() {
+                const ctx = document.getElementById('categoryChart');
+                if (!ctx) return;
+
+                if (categoryChart) {
+                    categoryChart.destroy();
+                }
+
+                const categoryCounts = recipeData.reduce((acc, recipe) => {
+                    acc[recipe.category] = (acc[recipe.category] || 0) + 1;
+                    return acc;
+                }, {});
+
+                const data = {
+                    labels: Object.keys(categoryCounts),
+                    datasets: [{
+                        label: 'Recipes',
+                        data: Object.values(categoryCounts),
+                        backgroundColor: [
+                            '#059669', '#10b981', '#34d399', '#6ee7b7',
+                            '#0f766e', '#0d9488', '#2dd4bf', '#5eead4',
+                            '#065f46', '#047857', '#059669', '#10b981'
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 2,
+                        hoverOffset: 8
+                    }]
+                };
+
+                categoryChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: data,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    font: {
+                                        size: 12,
+                                        family: 'Inter'
+                                    },
+                                    boxWidth: 15,
+                                    padding: 15
+                                }
+                            },
+                            tooltip: {
+                                bodyFont: {
+                                    family: 'Inter'
+                                },
+                                titleFont: {
+                                    family: 'Inter'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            init();
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "knowledge-a1af9"
-  }
+    "default": "devofolio",
+    "devfolio": "devofolio"
+  },
+  "targets": {},
+  "etags": {}
 }

@@ -14,4 +14,4 @@ jobs:
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KNOWLEDGE_A1AF9 }}'
-          projectId: knowledge-a1af9
+          projectId: devofolio
