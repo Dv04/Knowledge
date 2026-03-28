@@ -7,7 +7,6 @@ import {
   ClipboardDocumentIcon,
   LinkIcon,
   MapPinIcon,
-  PhoneIcon,
   ArrowTopRightOnSquareIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -57,7 +56,7 @@ export default function Contact() {
             <li className="flex items-center gap-3">
               <MapPinIcon className="h-6 w-6 text-teal-500" />
               <span className="text-slate-700 dark:text-slate-300">
-                Ahmedabad, India · Hybrid
+                Houston, TX · Rice University / Dhi-Tech
               </span>
             </li>
           </ul>

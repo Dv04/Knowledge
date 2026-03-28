@@ -12,6 +12,14 @@
         "destination": "/special.html"
       },
       {
+        "source": "/inventory",
+        "destination": "/inventory.html"
+      },
+      {
+        "source": "/recipes",
+        "destination": "/recipes.html"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

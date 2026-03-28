@@ -1,0 +1,499 @@
+{
+    "exportedAt": "2025-10-14T17:04:19.941Z",
+    "sections": [
+        {
+            "id": "3sc4yi1le5qmgo6ucop",
+            "title": "Drinks & Mixes",
+            "items": [
+                {
+                    "id": "fglr126g85mgo6ucop",
+                    "name": "Rose Milkshake Mix",
+                    "qty": "1"
+                },
+                {
+                    "id": "42h5qlu8a7hmgo6ucop",
+                    "name": "Nescafe Coffee",
+                    "qty": "1"
+                },
+                {
+                    "id": "hb3pm5gu9eqmgo6ucop",
+                    "name": "Tropicana Orange Juice",
+                    "qty": "1"
+                },
+                {
+                    "id": "tfrlflvvut8mgo6ucop",
+                    "name": "Simple Mango Juice",
+                    "qty": "1"
+                },
+                {
+                    "id": "new_coffee_mixes_01",
+                    "name": "Coffee Mixes (assorted)",
+                    "qty": "6 packs"
+                }
+            ]
+        },
+        {
+            "id": "m3olpsekvormgo6ucop",
+            "title": "Candies & Mints",
+            "items": [
+                {
+                    "id": "7jox8h94kaomgo6ucop",
+                    "name": "Mixed Ganesh Candy",
+                    "qty": "1 bag"
+                },
+                {
+                    "id": "ts9xvf4xfqmgo6ucop",
+                    "name": "Tic Tac (6: 2 mint, 1 spearmint, 2 strawberry, 1 orange)",
+                    "qty": "6 packs"
+                },
+                {
+                    "id": "y4yv1884ckmgo6ucop",
+                    "name": "Mentos (mint)",
+                    "qty": "1 pack"
+                }
+            ]
+        },
+        {
+            "id": "kr98841q6w8mgo6ucop",
+            "title": "Biscuits & Wafers",
+            "items": [
+                {
+                    "id": "w5joiujkqq9mgo6ucop",
+                    "name": "Chocolate Waffle Stick Biscuits",
+                    "qty": "1 pack"
+                }
+            ]
+        },
+        {
+            "id": "08ywejdlm3jnmgo6ucop",
+            "title": "Chocolates & Sweets",
+            "items": [
+                {
+                    "id": "b6gu14hotzmmgo6ucop",
+                    "name": "Assorted chocolate box (almond/hazelnut/raisin)",
+                    "qty": "1 box"
+                },
+                {
+                    "id": "bztxubtq2msmgo6ucop",
+                    "name": "Magas Sweets",
+                    "qty": "6 pcs"
+                },
+                {
+                    "id": "jvglj0aj8demgo6ucop",
+                    "name": "Hershey’s snack-size (regular)",
+                    "qty": "4 pcs"
+                },
+                {
+                    "id": "vqax6kdqzymgo6ucop",
+                    "name": "Lindt assorted (milk/dark/white)",
+                    "qty": "7 pcs"
+                },
+                {
+                    "id": "gbjogb9ynrmgo6ucop",
+                    "name": "Miniature KitKat pack",
+                    "qty": "1 pack"
+                },
+                {
+                    "id": "new_stone_chocolate_01",
+                    "name": "Stone Chocolate",
+                    "qty": "1 packet"
+                },
+                {
+                    "id": "new_sukhdi_01",
+                    "name": "Sukhdi",
+                    "qty": "1 packet"
+                },
+                {
+                    "id": "new_singh_ladoo_01",
+                    "name": "Singh Ladoo",
+                    "qty": "1 packet"
+                },
+                {
+                    "id": "new_magas_packets_01",
+                    "name": "Magas (packets)",
+                    "qty": "2 packets"
+                },
+                {
+                    "id": "new_choco_mixed_fruit_crunches_01",
+                    "name": "Chocolate Mixed Fruit Crunches",
+                    "qty": "3 packets"
+                },
+                {
+                    "id": "new_mesub_01",
+                    "name": "Mesub",
+                    "qty": "2 packets"
+                }
+            ]
+        },
+        {
+            "id": "v2w6z59wl2mgo6ucop",
+            "title": "Jams, Sauces & Spreads",
+            "items": [
+                {
+                    "id": "cme5l5hat45mgo6ucop",
+                    "name": "Mixed Fruit Jam",
+                    "qty": "1 packet"
+                },
+                {
+                    "id": "5fgofvnuwflmgo6ucop",
+                    "name": "Ketchup (no onion/garlic)",
+                    "qty": "1 bottle"
+                }
+            ]
+        },
+        {
+            "id": "ulja9y4i6qmgo6ucop",
+            "title": "Snack Bars & Grains",
+            "items": [
+                {
+                    "id": "z3daia26ugmgo6ucop",
+                    "name": "Chewy Bars",
+                    "qty": "1 box"
+                }
+            ]
+        },
+        {
+            "id": "vi4vy5b00qmgo6ucop",
+            "title": "Mukhwas & Nuts",
+            "items": [
+                {
+                    "id": "t1vmk3nxl3mgo6ucop",
+                    "name": "Ajmo / Karakata Ajmo",
+                    "qty": "jar"
+                },
+                {
+                    "id": "6iav33pxgsmgo6ucop",
+                    "name": "Pachak Amla",
+                    "qty": "1 pack"
+                },
+                {
+                    "id": "ufhyd68zjdmgo6ucop",
+                    "name": "Roasted Peanuts",
+                    "qty": "1 pack"
+                },
+                {
+                    "id": "new_cashews_roasted_salted_01",
+                    "name": "Cashews (Roasted & Salted)",
+                    "qty": "1 packet"
+                },
+                {
+                    "id": "new_roasted_chana_snack_01",
+                    "name": "Roasted Chana (snack)",
+                    "qty": "2 packets"
+                }
+            ]
+        },
+        {
+            "id": "sec_bread_01",
+            "title": "Bread",
+            "items": [
+                {
+                    "id": "item_bread_hill_county_01",
+                    "name": "Bread (Hill County thin loaf)",
+                    "qty": "15 slices"
+                }
+            ]
+        },
+        {
+            "id": "sec_lentils_rice_01",
+            "title": "Lentils & Rice",
+            "items": [
+                {
+                    "id": "item_rice_plain_01",
+                    "name": "Rice",
+                    "qty": "~100–200 g"
+                },
+                {
+                    "id": "item_dal_moong_split_01",
+                    "name": "Moong Dal (split)",
+                    "qty": "~800 g"
+                },
+                {
+                    "id": "item_dal_urad_split_01",
+                    "name": "Urad/Udad Dal (split)",
+                    "qty": "~800 g"
+                },
+                {
+                    "id": "item_dal_tuver_01",
+                    "name": "Tuver/Toor Dal",
+                    "qty": "1 kg"
+                }
+            ]
+        },
+        {
+            "id": "sec_pulses_01",
+            "title": "Pulses",
+            "items": [
+                {
+                    "id": "item_pulse_moong_beans_01",
+                    "name": "Moong Beans (whole)",
+                    "qty": "~250 g (≈2 rounds)"
+                },
+                {
+                    "id": "item_pulse_mixed_01",
+                    "name": "Mixed Pulses (assorted)",
+                    "qty": "500 g"
+                },
+                {
+                    "id": "item_pulse_chana_vatana_01",
+                    "name": "Chana Vatana (dried)",
+                    "qty": "500 g"
+                },
+                {
+                    "id": "item_pulse_green_vatana_01",
+                    "name": "Green Vatana (dried green peas)",
+                    "qty": "~300 g"
+                },
+                {
+                    "id": "item_pulse_matki_01",
+                    "name": "Matki Beans (moth)",
+                    "qty": "~200 g"
+                }
+            ]
+        },
+        {
+            "id": "sec_non_indian_01",
+            "title": "Non Indian (Pasta)",
+            "items": [
+                {
+                    "id": "item_pasta_elbow_mac_01",
+                    "name": "Elbow Macaroni Pasta",
+                    "qty": "~150 g"
+                }
+            ]
+        },
+        {
+            "id": "sec_base_oil_ghee_01",
+            "title": "Base (Oil & Ghee)",
+            "items": [
+                {
+                    "id": "item_ghee_patanjali_01",
+                    "name": "Patanjali Cow Ghee",
+                    "qty": "1 packet"
+                },
+                {
+                    "id": "item_oil_cooking_01",
+                    "name": "Cooking Oil",
+                    "qty": "~20% bottle"
+                }
+            ]
+        },
+        {
+            "id": "ys4dhh4pibgmgo6ucop_nat",
+            "title": "Natural Spices & Condiments",
+            "items": [
+                {
+                    "id": "nat_salt_01",
+                    "name": "Salt",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "nat_sugar_01",
+                    "name": "Sugar (regular + crushed)",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "nat_hing_01",
+                    "name": "Hing",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "nat_rai_01",
+                    "name": "Rai (mustard seeds)",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "nat_turmeric_01",
+                    "name": "Turmeric Powder",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "nat_red_chilli_powder_01",
+                    "name": "Red Chilli Powder",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "nat_black_pepper_powder_01",
+                    "name": "Black Pepper Powder",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "nat_coriander_powder_01",
+                    "name": "Coriander Powder",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "nat_corn_starch_01",
+                    "name": "Corn Starch",
+                    "qty": "on hand"
+                }
+            ]
+        },
+        {
+            "id": "ys4dhh4pibgmgo6ucop_spec",
+            "title": "Special Masalas & Seasonings",
+            "items": [
+                {
+                    "id": "spec_jeeru_masala_01",
+                    "name": "Jeeru Masala",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "spec_methi_masala_01",
+                    "name": "Methi Masala",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "spec_sabji_masala_01",
+                    "name": "Sabji Masala",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "spec_garam_masala_01",
+                    "name": "Garam Masala",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "spec_surti_jeeralu_01",
+                    "name": "Surti Jeeralu Masala",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "spec_pav_bhaji_masala_01",
+                    "name": "Pav Bhaji Masala",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "spec_shahi_paneer_masala_01",
+                    "name": "Shahi Paneer Masala",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "spec_chole_masala_01",
+                    "name": "Chole Masala",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "spec_mint_powder_01",
+                    "name": "Mint Powder",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "spec_mixed_herbs_01",
+                    "name": "Mixed Herbs (Italian blend)",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "spec_chili_flakes_01",
+                    "name": "Chili Flakes",
+                    "qty": "on hand"
+                }
+            ]
+        },
+        {
+            "id": "j9mawqhkvnqmgo6ucop",
+            "title": "Dairy & Fresh",
+            "items": [
+                {
+                    "id": "cje1vjar8yhmgo6ucop",
+                    "name": "Cheese Cubes",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "hxvkmtsoy4jmgo6ucop",
+                    "name": "Butter",
+                    "qty": "on hand"
+                },
+                {
+                    "id": "drkamvgbs1cmgo6ucop",
+                    "name": "Milk",
+                    "qty": "1/2 gallon"
+                },
+                {
+                    "id": "1rzx5u40fxgmgo6ucop",
+                    "name": "Lemon Juice",
+                    "qty": "bottle"
+                },
+                {
+                    "id": "mskgt64m6rgmgo6ucop",
+                    "name": "Bananas",
+                    "qty": "4"
+                },
+                {
+                    "id": "vxljnt888ulmgo6ucop",
+                    "name": "Tomatoes",
+                    "qty": "4"
+                },
+                {
+                    "id": "h5gtew8oolemgo6ucop",
+                    "name": "Greek Plain Yogurt",
+                    "qty": "tub"
+                }
+            ]
+        },
+        {
+            "id": "new_khakhra_farsan_01",
+            "title": "Khakhra & Farsan",
+            "items": [
+                {
+                    "id": "new_khakhra_cheese_01",
+                    "name": "Cheese Khakhra",
+                    "qty": "2 packets"
+                },
+                {
+                    "id": "new_khakhra_ghee_01",
+                    "name": "Ghee Khakhra",
+                    "qty": "2 packets"
+                },
+                {
+                    "id": "new_khakhra_methi_masala_01",
+                    "name": "Methi Masala Khakhra",
+                    "qty": "1 packet"
+                }
+            ]
+        },
+        {
+            "id": "new_papad_mathia_01",
+            "title": "Papad & Mathia",
+            "items": [
+                {
+                    "id": "new_papad_01",
+                    "name": "Papad",
+                    "qty": "1 packet"
+                },
+                {
+                    "id": "new_mathia_boxes_01",
+                    "name": "Mathia",
+                    "qty": "2 boxes"
+                }
+            ]
+        },
+        {
+            "id": "new_ready_to_eat_01",
+            "title": "Ready-to-Eat",
+            "items": [
+                {
+                    "id": "new_rte_assorted_01",
+                    "name": "Assorted Ready-to-Eat Meals",
+                    "qty": "≈25 packets"
+                }
+            ]
+        },
+        {
+            "id": "ibr070jek5fmgo6ucop",
+            "title": "Indian Snacks",
+            "items": [
+                {
+                    "id": "cxiol5ifvx6mgo6ucop",
+                    "name": "Assorted Indian snacks",
+                    "qty": "ample stock"
+                },
+                {
+                    "id": "new_assorted_snacks_bulk_01",
+                    "name": "Assorted Snacks (new stock)",
+                    "qty": "≈30–35 packets"
+                }
+            ]
+        }
+    ]
+}

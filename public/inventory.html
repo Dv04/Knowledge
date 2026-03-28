@@ -1,0 +1,1332 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jain Pantry Inventory</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <script>
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        night: {
+                            900: "#0f172a",
+                            950: "#020617"
+                        },
+                    },
+                    fontFamily: {
+                        sans: ["Plus Jakarta Sans", "Inter", "system-ui", "sans-serif"],
+                    },
+                    dropShadow: {
+                        glow: "0 35px 60px rgba(45, 212, 191, 0.18)",
+                    },
+                },
+            },
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: "Plus Jakarta Sans", Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body[data-theme="dark"] {
+            color-scheme: dark;
+        }
+
+        body[data-theme="light"] {
+            color-scheme: light;
+        }
+    </style>
+
+    <!-- React 18 UMD + Babel (dev only) -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script>
+        (function () {
+            function applyTheme(theme) {
+                const root = document.documentElement;
+                const body = document.body;
+                if (theme === "dark") {
+                    root.classList.add("dark");
+                    body?.classList.add("dark");
+                } else {
+                    root.classList.remove("dark");
+                    body?.classList.remove("dark");
+                }
+                root.dataset.theme = theme;
+                if (body) {
+                    body.dataset.theme = theme;
+                }
+            }
+
+            if (!window.__applyJainTheme) {
+                window.__applyJainTheme = applyTheme;
+            }
+
+            try {
+                const saved = localStorage.getItem("jain-theme-preference");
+                const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+                const initial = saved === "light" || saved === "dark" ? saved : (prefersLight ? "light" : "dark");
+                applyTheme(initial);
+            } catch (error) {
+                console.warn("Theme bootstrap failed", error);
+            }
+
+
+        })();
+    </script>
+</head>
+
+<body
+    class="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors dark:bg-night-950 dark:text-slate-100">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useCallback, useEffect, useMemo, useRef, useState } = React;
+
+        const LS_KEY = "jain-inventory-app:v1";
+        const THEME_KEY = "jain-theme-preference";
+
+        function fallbackApplyTheme(theme) {
+            const root = document.documentElement;
+            const body = document.body;
+            if (theme === "dark") {
+                root.classList.add("dark");
+                body?.classList.add("dark");
+            } else {
+                root.classList.remove("dark");
+                body?.classList.remove("dark");
+            }
+            root.dataset.theme = theme;
+            if (body) {
+                body.dataset.theme = theme;
+            }
+        }
+
+        // Always point to the same applier (head bootstrap sets window.__applyJainTheme)
+        function getThemeApplier() {
+            return window.__applyJainTheme || fallbackApplyTheme;
+        }
+
+        function useTheme() {
+            const [theme, setTheme] = useState(() => {
+                const saved = localStorage.getItem(THEME_KEY);
+                if (saved === "light" || saved === "dark") return saved;
+                if (window.matchMedia("(prefers-color-scheme: light)").matches) return "light";
+                return "dark";
+            });
+
+            useEffect(() => {
+                getThemeApplier()(theme);
+                localStorage.setItem(THEME_KEY, theme);
+            }, [theme]);
+
+            // Keep other tabs/pages (inventory <-> recipes) in sync
+            useEffect(() => {
+                const onStorage = (e) => {
+                    if (e.key === THEME_KEY && (e.newValue === "light" || e.newValue === "dark")) {
+                        setTheme(e.newValue);
+                    }
+                };
+                window.addEventListener("storage", onStorage);
+                return () => window.removeEventListener("storage", onStorage);
+            }, []);
+
+            const toggle = useCallback(() => {
+                setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+            }, []);
+            return [theme, toggle];
+        }
+
+        function uid() {
+            return Math.random().toString(36).slice(2) + Date.now().toString(36);
+        }
+
+        const initialSections = [
+            {
+                id: "3sc4yi1le5qmgo6ucop",
+                title: "Drinks & Mixes",
+                items: [
+                    {
+                        id: "fglr126g85mgo6ucop",
+                        name: "Rose Milkshake Mix",
+                        qty: "1",
+                        notes: "",
+                    },
+                    {
+                        id: "42h5qlu8a7hmgo6ucop",
+                        name: "Nescafe Coffee",
+                        qty: "1",
+                        notes: "",
+                    },
+                    {
+                        id: "hb3pm5gu9eqmgo6ucop",
+                        name: "Tropicana Orange Juice",
+                        qty: "1",
+                        notes: "",
+                    },
+                    {
+                        id: "tfrlflvvut8mgo6ucop",
+                        name: "Simple Mango Juice",
+                        qty: "1",
+                        notes: "",
+                    },
+                    {
+                        id: "new_coffee_mixes_01",
+                        name: "Coffee Mixes (assorted)",
+                        qty: "6 packs",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "m3olpsekvormgo6ucop",
+                title: "Candies & Mints",
+                items: [
+                    {
+                        id: "7jox8h94kaomgo6ucop",
+                        name: "Mixed Ganesh Candy",
+                        qty: "1 bag",
+                        notes: "",
+                    },
+                    {
+                        id: "ts9xvf4xfqmgo6ucop",
+                        name: "Tic Tac (6: 2 mint, 1 spearmint, 2 strawberry, 1 orange)",
+                        qty: "6 packs",
+                        notes: "",
+                    },
+                    {
+                        id: "y4yv1884ckmgo6ucop",
+                        name: "Mentos (mint)",
+                        qty: "1 pack",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "kr98841q6w8mgo6ucop",
+                title: "Biscuits & Wafers",
+                items: [
+                    {
+                        id: "w5joiujkqq9mgo6ucop",
+                        name: "Chocolate Waffle Stick Biscuits",
+                        qty: "1 pack",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "08ywejdlm3jnmgo6ucop",
+                title: "Chocolates & Sweets",
+                items: [
+                    {
+                        id: "b6gu14hotzmmgo6ucop",
+                        name: "Assorted chocolate box (almond/hazelnut/raisin)",
+                        qty: "1 box",
+                        notes: "",
+                    },
+                    {
+                        id: "bztxubtq2msmgo6ucop",
+                        name: "Magas Sweets",
+                        qty: "6 pcs",
+                        notes: "",
+                    },
+                    {
+                        id: "jvglj0aj8demgo6ucop",
+                        name: "Hershey’s snack-size (regular)",
+                        qty: "4 pcs",
+                        notes: "",
+                    },
+                    {
+                        id: "vqax6kdqzymgo6ucop",
+                        name: "Lindt assorted (milk/dark/white)",
+                        qty: "7 pcs",
+                        notes: "",
+                    },
+                    {
+                        id: "gbjogb9ynrmgo6ucop",
+                        name: "Miniature KitKat pack",
+                        qty: "1 pack",
+                        notes: "",
+                    },
+                    {
+                        id: "new_stone_chocolate_01",
+                        name: "Stone Chocolate",
+                        qty: "1 packet",
+                        notes: "",
+                    },
+                    {
+                        id: "new_sukhdi_01",
+                        name: "Sukhdi",
+                        qty: "1 packet",
+                        notes: "",
+                    },
+                    {
+                        id: "new_singh_ladoo_01",
+                        name: "Singh Ladoo",
+                        qty: "1 packet",
+                        notes: "",
+                    },
+                    {
+                        id: "new_magas_packets_01",
+                        name: "Magas (packets)",
+                        qty: "2 packets",
+                        notes: "",
+                    },
+                    {
+                        id: "new_choco_mixed_fruit_crunches_01",
+                        name: "Chocolate Mixed Fruit Crunches",
+                        qty: "3 packets",
+                        notes: "",
+                    },
+                    {
+                        id: "new_mesub_01",
+                        name: "Mesub",
+                        qty: "2 packets",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "v2w6z59wl2mgo6ucop",
+                title: "Jams, Sauces & Spreads",
+                items: [
+                    {
+                        id: "cme5l5hat45mgo6ucop",
+                        name: "Mixed Fruit Jam",
+                        qty: "1 packet",
+                        notes: "",
+                    },
+                    {
+                        id: "5fgofvnuwflmgo6ucop",
+                        name: "Ketchup (no onion/garlic)",
+                        qty: "1 bottle",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "ulja9y4i6qmgo6ucop",
+                title: "Snack Bars & Grains",
+                items: [
+                    {
+                        id: "z3daia26ugmgo6ucop",
+                        name: "Chewy Bars",
+                        qty: "1 box",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "vi4vy5b00qmgo6ucop",
+                title: "Mukhwas & Nuts",
+                items: [
+                    {
+                        id: "t1vmk3nxl3mgo6ucop",
+                        name: "Ajmo / Karakata Ajmo",
+                        qty: "jar",
+                        notes: "",
+                    },
+                    {
+                        id: "6iav33pxgsmgo6ucop",
+                        name: "Pachak Amla",
+                        qty: "1 pack",
+                        notes: "",
+                    },
+                    {
+                        id: "ufhyd68zjdmgo6ucop",
+                        name: "Roasted Peanuts",
+                        qty: "1 pack",
+                        notes: "",
+                    },
+                    {
+                        id: "new_cashews_roasted_salted_01",
+                        name: "Cashews (Roasted & Salted)",
+                        qty: "1 packet",
+                        notes: "",
+                    },
+                    {
+                        id: "new_roasted_chana_snack_01",
+                        name: "Roasted Chana (snack)",
+                        qty: "2 packets",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "sec_bread_01",
+                title: "Bread",
+                items: [
+                    {
+                        id: "item_bread_hill_county_01",
+                        name: "Bread (Hill County thin loaf)",
+                        qty: "15 slices",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "sec_lentils_rice_01",
+                title: "Lentils & Rice",
+                items: [
+                    {
+                        id: "item_rice_plain_01",
+                        name: "Rice",
+                        qty: "~100–200 g",
+                        notes: "",
+                    },
+                    {
+                        id: "item_dal_moong_split_01",
+                        name: "Moong Dal (split)",
+                        qty: "~800 g",
+                        notes: "",
+                    },
+                    {
+                        id: "item_dal_urad_split_01",
+                        name: "Urad/Udad Dal (split)",
+                        qty: "~800 g",
+                        notes: "",
+                    },
+                    {
+                        id: "item_dal_tuver_01",
+                        name: "Tuver/Toor Dal",
+                        qty: "1 kg",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "sec_pulses_01",
+                title: "Pulses",
+                items: [
+                    {
+                        id: "item_pulse_moong_beans_01",
+                        name: "Moong Beans (whole)",
+                        qty: "~250 g (≈2 rounds)",
+                        notes: "",
+                    },
+                    {
+                        id: "item_pulse_mixed_01",
+                        name: "Mixed Pulses (assorted)",
+                        qty: "500 g",
+                        notes: "",
+                    },
+                    {
+                        id: "item_pulse_chana_vatana_01",
+                        name: "Chana Vatana (dried)",
+                        qty: "500 g",
+                        notes: "",
+                    },
+                    {
+                        id: "item_pulse_green_vatana_01",
+                        name: "Green Vatana (dried green peas)",
+                        qty: "~300 g",
+                        notes: "",
+                    },
+                    {
+                        id: "item_pulse_matki_01",
+                        name: "Matki Beans (moth)",
+                        qty: "~200 g",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "sec_non_indian_01",
+                title: "Non Indian (Pasta)",
+                items: [
+                    {
+                        id: "item_pasta_elbow_mac_01",
+                        name: "Elbow Macaroni Pasta",
+                        qty: "~150 g",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "sec_base_oil_ghee_01",
+                title: "Base (Oil & Ghee)",
+                items: [
+                    {
+                        id: "item_ghee_patanjali_01",
+                        name: "Patanjali Cow Ghee",
+                        qty: "1 packet",
+                        notes: "",
+                    },
+                    {
+                        id: "item_oil_cooking_01",
+                        name: "Cooking Oil",
+                        qty: "~20% bottle",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "ys4dhh4pibgmgo6ucop_nat",
+                title: "Natural Spices & Condiments",
+                items: [
+                    {
+                        id: "nat_salt_01",
+                        name: "Salt",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "nat_sugar_01",
+                        name: "Sugar (regular + crushed)",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "nat_hing_01",
+                        name: "Hing",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "nat_rai_01",
+                        name: "Rai (mustard seeds)",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "nat_turmeric_01",
+                        name: "Turmeric Powder",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "nat_red_chilli_powder_01",
+                        name: "Red Chilli Powder",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "nat_black_pepper_powder_01",
+                        name: "Black Pepper Powder",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "nat_coriander_powder_01",
+                        name: "Coriander Powder",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "nat_corn_starch_01",
+                        name: "Corn Starch",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "ys4dhh4pibgmgo6ucop_spec",
+                title: "Special Masalas & Seasonings",
+                items: [
+                    {
+                        id: "spec_jeeru_masala_01",
+                        name: "Jeeru Masala",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "spec_methi_masala_01",
+                        name: "Methi Masala",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "spec_sabji_masala_01",
+                        name: "Sabji Masala",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "spec_garam_masala_01",
+                        name: "Garam Masala",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "spec_surti_jeeralu_01",
+                        name: "Surti Jeeralu Masala",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "spec_pav_bhaji_masala_01",
+                        name: "Pav Bhaji Masala",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "spec_shahi_paneer_masala_01",
+                        name: "Shahi Paneer Masala",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "spec_chole_masala_01",
+                        name: "Chole Masala",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "spec_mint_powder_01",
+                        name: "Mint Powder",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "spec_mixed_herbs_01",
+                        name: "Mixed Herbs (Italian blend)",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "spec_chili_flakes_01",
+                        name: "Chili Flakes",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "j9mawqhkvnqmgo6ucop",
+                title: "Dairy & Fresh",
+                items: [
+                    {
+                        id: "cje1vjar8yhmgo6ucop",
+                        name: "Cheese Cubes",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "hxvkmtsoy4jmgo6ucop",
+                        name: "Butter",
+                        qty: "on hand",
+                        notes: "",
+                    },
+                    {
+                        id: "drkamvgbs1cmgo6ucop",
+                        name: "Milk",
+                        qty: "1/2 gallon",
+                        notes: "",
+                    },
+                    {
+                        id: "1rzx5u40fxgmgo6ucop",
+                        name: "Lemon Juice",
+                        qty: "bottle",
+                        notes: "",
+                    },
+                    {
+                        id: "mskgt64m6rgmgo6ucop",
+                        name: "Bananas",
+                        qty: "4",
+                        notes: "",
+                    },
+                    {
+                        id: "vxljnt888ulmgo6ucop",
+                        name: "Tomatoes",
+                        qty: "4",
+                        notes: "",
+                    },
+                    {
+                        id: "h5gtew8oolemgo6ucop",
+                        name: "Greek Plain Yogurt",
+                        qty: "tub",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "new_khakhra_farsan_01",
+                title: "Khakhra & Farsan",
+                items: [
+                    {
+                        id: "new_khakhra_cheese_01",
+                        name: "Cheese Khakhra",
+                        qty: "2 packets",
+                        notes: "",
+                    },
+                    {
+                        id: "new_khakhra_ghee_01",
+                        name: "Ghee Khakhra",
+                        qty: "2 packets",
+                        notes: "",
+                    },
+                    {
+                        id: "new_khakhra_methi_masala_01",
+                        name: "Methi Masala Khakhra",
+                        qty: "1 packet",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "new_papad_mathia_01",
+                title: "Papad & Mathia",
+                items: [
+                    {
+                        id: "new_papad_01",
+                        name: "Papad",
+                        qty: "1 packet",
+                        notes: "",
+                    },
+                    {
+                        id: "new_mathia_boxes_01",
+                        name: "Mathia",
+                        qty: "2 boxes",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "new_ready_to_eat_01",
+                title: "Ready-to-Eat",
+                items: [
+                    {
+                        id: "new_rte_assorted_01",
+                        name: "Assorted Ready-to-Eat Meals",
+                        qty: "≈25 packets",
+                        notes: "",
+                    },
+                ],
+            },
+            {
+                id: "ibr070jek5fmgo6ucop",
+                title: "Indian Snacks",
+                items: [
+                    {
+                        id: "cxiol5ifvx6mgo6ucop",
+                        name: "Assorted Indian snacks",
+                        qty: "ample stock",
+                        notes: "",
+                    },
+                    {
+                        id: "new_assorted_snacks_bulk_01",
+                        name: "Assorted Snacks (new stock)",
+                        qty: "≈30–35 packets",
+                        notes: "",
+                    },
+                ],
+            },
+        ];
+
+        function ThemeToggle({ theme, onToggle }) {
+            return (
+                <button
+                    onClick={onToggle}
+                    className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:border-emerald-300/60 hover:text-emerald-500 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:text-emerald-200"
+                >
+                    <span>{theme === "dark" ? "🌙" : "🌞"}</span>
+                    <span>{theme === "dark" ? "Dark" : "Light"} mode</span>
+                </button>
+            );
+        }
+
+        function InventoryApp() {
+            const [theme, toggleTheme] = useTheme();
+            const [sections, setSections] = useState(() => {
+                const saved = localStorage.getItem(LS_KEY);
+                if (saved) {
+                    try {
+                        return JSON.parse(saved);
+                    } catch (e) { }
+                }
+                return initialSections;
+            });
+            const [query, setQuery] = useState("");
+            const [lastSaved, setLastSaved] = useState(() => new Date());
+            const fileRef = useRef(null);
+
+            useEffect(() => {
+                localStorage.setItem(LS_KEY, JSON.stringify(sections));
+                setLastSaved(new Date());
+            }, [sections]);
+
+            const filtered = useMemo(() => {
+                const q = query.trim().toLowerCase();
+                if (!q) return sections;
+                return sections.map((sec) => ({
+                    ...sec,
+                    items: sec.items.filter(
+                        (it) =>
+                            it.name.toLowerCase().includes(q) ||
+                            (it.qty || "").toLowerCase().includes(q) ||
+                            (it.notes || "").toLowerCase().includes(q)
+                    ),
+                }));
+            }, [sections, query]);
+
+            const totalItems = useMemo(
+                () => sections.reduce((sum, sec) => sum + sec.items.length, 0),
+                [sections]
+            );
+
+            const itemsMissingQty = useMemo(
+                () =>
+                    sections.reduce(
+                        (sum, sec) =>
+                            sum +
+                            sec.items.filter((it) => !it.qty || !it.qty.toString().trim()).length,
+                        0
+                    ),
+                [sections]
+            );
+
+            const itemsWithNotes = useMemo(
+                () =>
+                    sections.reduce(
+                        (sum, sec) =>
+                            sum +
+                            sec.items.filter((it) => (it.notes || "").toString().trim().length > 0).length,
+                        0
+                    ),
+                [sections]
+            );
+
+            const numberFormatter = useMemo(
+                () => new Intl.NumberFormat("en-US"),
+                []
+            );
+
+            const stats = useMemo(
+                () => [
+                    {
+                        icon: "📦",
+                        label: "Items in stock",
+                        value: numberFormatter.format(totalItems),
+                        detail: "Across all categories",
+                    },
+                    {
+                        icon: "🗂️",
+                        label: "Categories",
+                        value: numberFormatter.format(sections.length),
+                        detail: "Groups you're tracking",
+                    },
+                    {
+                        icon: "📝",
+                        label: "Detailed notes",
+                        value: numberFormatter.format(itemsWithNotes),
+                        detail: itemsMissingQty
+                            ? `${itemsMissingQty} items need quantities`
+                            : "Every item has a quantity",
+                    },
+                ],
+                [itemsMissingQty, itemsWithNotes, numberFormatter, sections.length, totalItems]
+            );
+
+            const formattedLastSaved = useMemo(
+                () => new Intl.DateTimeFormat("en", { dateStyle: "medium", timeStyle: "short" }).format(lastSaved),
+                [lastSaved]
+            );
+
+            const addItem = (sectionId) => {
+                setSections((prev) =>
+                    prev.map((s) =>
+                        s.id === sectionId
+                            ? {
+                                ...s,
+                                items: [...s.items, { id: uid(), name: "New Item", qty: "", notes: "" }],
+                            }
+                            : s
+                    )
+                );
+            };
+
+            const deleteItem = (sectionId, itemId) => {
+                setSections((prev) =>
+                    prev.map((s) =>
+                        s.id === sectionId
+                            ? { ...s, items: s.items.filter((i) => i.id !== itemId) }
+                            : s
+                    )
+                );
+            };
+
+            const updateItem = (sectionId, itemId, patch) => {
+                setSections((prev) =>
+                    prev.map((s) =>
+                        s.id === sectionId
+                            ? {
+                                ...s,
+                                items: s.items.map((i) =>
+                                    i.id === itemId ? { ...i, ...patch } : i
+                                ),
+                            }
+                            : s
+                    )
+                );
+            };
+
+            const updateSectionTitle = (sectionId, title) => {
+                setSections((prev) =>
+                    prev.map((s) => (s.id === sectionId ? { ...s, title } : s))
+                );
+            };
+
+            const addSection = () => {
+                setSections((prev) => [
+                    ...prev,
+                    { id: uid(), title: "New Section", items: [] },
+                ]);
+            };
+
+            const deleteSection = (sectionId) => {
+                if (!confirm("Delete this section?")) return;
+                setSections((prev) => prev.filter((s) => s.id !== sectionId));
+            };
+
+            const exportJSON = () => {
+                const payload = {
+                    exportedAt: new Date().toISOString(),
+                    sections,
+                };
+                const blob = new Blob([JSON.stringify(payload, null, 2)], {
+                    type: "application/json",
+                });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `inventory-${new Date()
+                    .toISOString()
+                    .slice(0, 16)
+                    .replace(/[:T]/g, "-")}.json`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+            };
+
+            const importJSON = (evt) => {
+                const file = evt.target.files?.[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = () => {
+                    try {
+                        const data = JSON.parse(reader.result);
+                        if (!data.sections || !Array.isArray(data.sections))
+                            throw new Error("Invalid file");
+                        const normalized = data.sections.map((s) => ({
+                            id: s.id || uid(),
+                            title: s.title || "Section",
+                            items: (s.items || []).map((it) => ({
+                                id: it.id || uid(),
+                                name: it.name || "",
+                                qty: it.qty || "",
+                                notes: it.notes || "",
+                            })),
+                        }));
+                        setSections(normalized);
+                    } catch (e) {
+                        alert("Could not import JSON: " + e.message);
+                    }
+                };
+                reader.readAsText(file);
+            };
+
+            const resetInitial = () => {
+                if (
+                    !confirm(
+                        "Reset inventory to the initial data? This will overwrite current changes."
+                    )
+                )
+                    return;
+                setSections(initialSections);
+            };
+
+            return (
+                <div className="relative min-h-screen overflow-hidden bg-slate-50 text-slate-900 transition-colors dark:bg-night-950 dark:text-slate-100" data-theme={theme}>
+                    <div className="pointer-events-none absolute inset-x-[-30%] top-[-220px] h-[420px] bg-gradient-to-br from-emerald-500/20 via-teal-400/10 to-sky-500/25 blur-3xl"></div>
+                    <div className="pointer-events-none absolute inset-x-[-15%] bottom-[-260px] h-[360px] bg-gradient-to-tr from-sky-500/15 via-purple-500/10 to-emerald-400/20 blur-[110px]"></div>
+
+                    <div className="relative z-10">
+                        <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/80 backdrop-blur-2xl dark:border-white/10 dark:bg-night-950/80">
+                            <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6">
+                                <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                                    <div className="flex items-start gap-4">
+                                        <div className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-emerald-400/30 via-teal-500/25 to-sky-500/25 text-2xl">
+                                            🧺
+                                        </div>
+                                        <div>
+                                            <h1 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-white">
+                                                Jain Pantry Inventory
+                                            </h1>
+                                            <p className="mt-1 text-sm text-slate-500 dark:text-slate-300">
+                                                A calm dashboard to orchestrate your kitchen essentials.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-300">
+                                        <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 dark:border-white/10 dark:bg-night-950/80">
+                                            <span className="relative flex h-2 w-2">
+                                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300/60"></span>
+                                                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-300"></span>
+                                            </span>
+                                            Autosaved {formattedLastSaved}
+                                        </span>
+                                        <a
+                                            href="recipes.html"
+                                            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-slate-600 transition hover:border-emerald-300/60 hover:text-emerald-500 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:text-emerald-200"
+                                        >
+                                            <span>🍳</span>
+                                            <span>Recipe companion</span>
+                                        </a>
+                                        <ThemeToggle theme={theme} onToggle={toggleTheme} />
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col gap-3 md:flex-row md:items-center">
+                                    <label className="relative flex-1">
+                                        <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                className="h-5 w-5"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            >
+                                                <circle cx="11" cy="11" r="7" />
+                                                <path d="m20 20-3.5-3.5" />
+                                            </svg>
+                                        </span>
+                                        <input
+                                            type="search"
+                                            placeholder="Search by item, quantity, or note"
+                                            value={query}
+                                            onChange={(e) => setQuery(e.target.value)}
+                                            className="h-12 w-full rounded-2xl border border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 pl-11 pr-4 text-sm text-slate-500 dark:text-slate-100 placeholder:text-slate-500 transition focus:border-emerald-300 focus:bg-slate-100/70 dark:bg-night-900/60 focus:outline-none focus:ring-2 focus:ring-emerald-300/40"
+                                        />
+                                    </label>
+                                    <div className="flex flex-wrap gap-2 md:justify-end">
+                                        <button
+                                            onClick={exportJSON}
+                                            className="inline-flex items-center gap-2 rounded-2xl border border-emerald-400/50 bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-700 transition hover:border-emerald-300 hover:bg-emerald-500/20 dark:bg-emerald-400/10 dark:text-emerald-200"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                className="h-4 w-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            >
+                                                <path d="M4 20h16" />
+                                                <path d="M12 4v12" />
+                                                <path d="m17 11-5 5-5-5" />
+                                            </svg>
+                                            Export
+                                        </button>
+                                        <button
+                                            onClick={() => fileRef.current?.click()}
+                                            className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition hover:border-emerald-300/40 hover:bg-emerald-400/10 hover:text-emerald-600 dark:border-white/15 dark:bg-white/5 dark:text-slate-200 dark:hover:text-emerald-100"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                className="h-4 w-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            >
+                                                <path d="M4 20h16" />
+                                                <path d="M12 4v12" />
+                                                <path d="m7 13 5 5 5-5" />
+                                            </svg>
+                                            Import
+                                        </button>
+                                        <input
+                                            ref={fileRef}
+                                            type="file"
+                                            accept="application/json"
+                                            className="hidden"
+                                            onChange={importJSON}
+                                        />
+                                        <button
+                                            onClick={addSection}
+                                            className="inline-flex items-center gap-2 rounded-2xl bg-emerald-400/80 px-4 py-2 text-sm font-medium text-night-950 transition hover:bg-emerald-300"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                className="h-4 w-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            >
+                                                <path d="M12 5v14" />
+                                                <path d="M5 12h14" />
+                                            </svg>
+                                            Add Section
+                                        </button>
+                                        <button
+                                            onClick={resetInitial}
+                                            className="inline-flex items-center gap-2 rounded-2xl border border-red-500/40 bg-red-500/10 px-4 py-2 text-sm font-medium text-red-200 transition hover:border-red-300 hover:bg-red-400/15"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                className="h-4 w-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            >
+                                                <path d="m3 3 3 3" />
+                                                <path d="M3 21 21 3" />
+                                                <path d="M21 21 3 3" />
+                                            </svg>
+                                            Reset
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </header>
+
+                        <main className="mx-auto max-w-6xl space-y-10 px-4 py-10">
+                            <section className="relative overflow-hidden rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 p-8 shadow-2xl shadow-slate-900/40">
+                                <div className="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-gradient-to-br from-emerald-400/40 to-sky-500/40 blur-3xl opacity-60"></div>
+                                <div className="relative">
+                                    <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
+                                        Pantry at a glance
+                                    </h2>
+                                    <p className="mt-2 max-w-2xl text-sm text-slate-500 dark:text-slate-300">
+                                        Monitor supplies, add tasting notes, and keep everyone aligned without endless spreadsheets.
+                                    </p>
+                                    <div className="mt-6 grid gap-4 sm:grid-cols-3">
+                                        {stats.map((stat) => (
+                                            <div
+                                                key={stat.label}
+                                                className="group rounded-3xl border border-slate-200 dark:border-white/10 bg-slate-100/60 dark:bg-night-950/40 p-5 shadow-lg shadow-slate-900/40 transition hover:border-emerald-400/30 hover:shadow-emerald-400/20"
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <span className="grid h-10 w-10 place-items-center rounded-2xl bg-emerald-400/10 text-lg">
+                                                        {stat.icon}
+                                                    </span>
+                                                    <div>
+                                                        <p className="text-sm uppercase tracking-[0.2em] text-slate-400">
+                                                            {stat.label}
+                                                        </p>
+                                                        <p className="mt-1 text-2xl font-semibold text-slate-900 dark:text-white">
+                                                            {stat.value}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <p className="mt-3 text-sm text-slate-400">
+                                                    {stat.detail}
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section className="space-y-6">
+                                {filtered.map((section) => (
+                                    <SectionCard
+                                        key={section.id}
+                                        section={section}
+                                        onTitleChange={(t) => updateSectionTitle(section.id, t)}
+                                        onAddItem={() => addItem(section.id)}
+                                        onDeleteSection={() => deleteSection(section.id)}
+                                        onDeleteItem={(itemId) => deleteItem(section.id, itemId)}
+                                        onUpdateItem={(itemId, patch) => updateItem(section.id, itemId, patch)}
+                                    />
+                                ))}
+
+                                {filtered.every((s) => s.items.length === 0) && (
+                                    <p className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 px-6 py-10 text-center text-sm text-slate-400">
+                                        No items match your search. Try a different keyword or reset the filter.
+                                    </p>
+                                )}
+                            </section>
+                        </main>
+
+                        <footer className="border-t border-slate-200 bg-white/80 py-6 text-center text-xs text-slate-500 backdrop-blur-2xl dark:border-white/10 dark:bg-night-950/80 dark:text-slate-400">
+                            Built for your Jain pantry · Beautifully autosaves locally · Export anytime
+                        </footer>
+                    </div>
+                </div>
+            );
+        }
+
+        function SectionCard({
+            section,
+            onTitleChange,
+            onAddItem,
+            onDeleteSection,
+            onDeleteItem,
+            onUpdateItem,
+        }) {
+            const [editingTitle, setEditingTitle] = useState(false);
+            const [collapsed, setCollapsed] = useState(false);
+
+            const missingQty = section.items.filter(
+                (it) => !it.qty || !it.qty.toString().trim()
+            ).length;
+            const hasNotes = section.items.some(
+                (it) => (it.notes || "").toString().trim().length > 0
+            );
+
+            return (
+                <div className="group relative overflow-hidden rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-xl shadow-slate-900/40 transition hover:border-emerald-300/40 hover:shadow-emerald-400/20">
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/10 via-transparent to-sky-500/10 opacity-0 transition group-hover:opacity-100"></div>
+                    <div className="relative">
+                        <div className="flex flex-col gap-4 px-5 py-4 md:flex-row md:items-center md:justify-between">
+                            <div className="flex flex-col gap-2">
+                                {editingTitle ? (
+                                    <input
+                                        className="w-full min-w-[220px] rounded-2xl border border-slate-200 dark:border-white/15 bg-slate-100/70 dark:bg-night-900/60 px-3 py-2 text-lg font-semibold text-slate-500 dark:text-slate-100 focus:border-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-300/40"
+                                        value={section.title}
+                                        onChange={(e) => onTitleChange(e.target.value)}
+                                        onBlur={() => setEditingTitle(false)}
+                                        autoFocus
+                                    />
+                                ) : (
+                                    <h2 className="text-lg font-semibold tracking-tight text-slate-900 dark:text-white">
+                                        {section.title}
+                                    </h2>
+                                )}
+                                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400">
+                                    <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-night-950/80 dark:bg-white/10 px-3 py-1 text-emerald-200">
+                                        <span className="h-2 w-2 rounded-full bg-emerald-300"></span>
+                                        {section.items.length} items
+                                    </span>
+                                    {missingQty > 0 ? (
+                                        <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/30 bg-amber-400/15 px-3 py-1 text-amber-700 dark:text-amber-200">
+                                            <span className="h-2 w-2 rounded-full bg-amber-300"></span>
+                                            {missingQty} need quantities
+                                        </span>
+                                    ) : (
+                                        <span className="inline-flex items-center gap-1 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-200">
+                                            <span className="h-2 w-2 rounded-full bg-emerald-300"></span>
+                                            All quantities noted
+                                        </span>
+                                    )}
+                                    {hasNotes && (
+                                        <span className="inline-flex items-center gap-1 rounded-full border border-sky-400/30 bg-sky-400/10 px-3 py-1 text-sky-700 dark:text-sky-200">
+                                            <span className="h-2 w-2 rounded-full bg-sky-300"></span>
+                                            Notes added
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-2">
+                                <button
+                                    onClick={() => setEditingTitle((v) => !v)}
+                                    className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-600 transition hover:border-emerald-300/40 hover:bg-emerald-400/10 hover:text-emerald-600 dark:border-white/15 dark:bg-white/5 dark:text-slate-200 dark:hover:text-emerald-100"
+                                >
+                                    {editingTitle ? "Save title" : "Edit title"}
+                                </button>
+                                <button
+                                    onClick={() => setCollapsed((v) => !v)}
+                                    className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-600 transition hover:border-emerald-300/40 hover:bg-emerald-400/10 hover:text-emerald-600 dark:border-white/15 dark:bg-white/5 dark:text-slate-200 dark:hover:text-emerald-100"
+                                >
+                                    {collapsed ? "Expand" : "Collapse"}
+                                </button>
+                                <button
+                                    onClick={onAddItem}
+                                    className="inline-flex items-center gap-2 rounded-2xl bg-emerald-400/80 px-3 py-2 text-xs font-medium text-night-950 transition hover:bg-emerald-300"
+                                >
+                                    Add item
+                                </button>
+                                <button
+                                    onClick={onDeleteSection}
+                                    className="inline-flex items-center gap-2 rounded-2xl border border-red-500/40 bg-red-500/10 px-3 py-2 text-xs font-medium text-red-600 transition hover:border-red-300 hover:bg-red-400/15 hover:text-red-700 dark:text-red-200"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+
+                        {!collapsed && (
+                            <div className="space-y-4 px-5 pb-5">
+                                {section.items.length > 0 ? (
+                                    <>
+                                        <div className="hidden grid-cols-12 gap-3 text-[11px] font-medium uppercase tracking-[0.25em] text-slate-400 sm:grid">
+                                            <div className="col-span-6">Item</div>
+                                            <div className="col-span-3">Quantity / Notes</div>
+                                            <div className="col-span-2">Tags</div>
+                                            <div className="col-span-1 text-right">Actions</div>
+                                        </div>
+                                        <ul className="space-y-3">
+                                            {section.items.map((it) => (
+                                                <li
+                                                    key={it.id}
+                                                    className="grid grid-cols-1 gap-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-100/70 dark:bg-night-950/60 p-3 shadow-inner shadow-black/30 transition hover:border-emerald-300/30 hover:shadow-emerald-400/20 sm:grid-cols-12"
+                                                >
+                                                    <input
+                                                        className="sm:col-span-6 h-11 rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 px-3 text-sm text-slate-500 dark:text-slate-100 placeholder:text-slate-500 focus:border-emerald-300 focus:bg-slate-100/70 dark:bg-night-900/60 focus:outline-none focus:ring-2 focus:ring-emerald-300/40"
+                                                        value={it.name}
+                                                        onChange={(e) => onUpdateItem(it.id, { name: e.target.value })}
+                                                    />
+                                                    <input
+                                                        className="sm:col-span-3 h-11 rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 px-3 text-sm text-slate-500 dark:text-slate-100 placeholder:text-slate-500 focus:border-emerald-300 focus:bg-slate-100/70 dark:bg-night-900/60 focus:outline-none focus:ring-2 focus:ring-emerald-300/40"
+                                                        placeholder="e.g., 2 packs, 800 g, 15 slices"
+                                                        value={it.qty || ""}
+                                                        onChange={(e) => onUpdateItem(it.id, { qty: e.target.value })}
+                                                    />
+                                                    <input
+                                                        className="sm:col-span-2 h-11 rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 px-3 text-sm text-slate-500 dark:text-slate-100 placeholder:text-slate-500 focus:border-emerald-300 focus:bg-slate-100/70 dark:bg-night-900/60 focus:outline-none focus:ring-2 focus:ring-emerald-300/40"
+                                                        placeholder="notes / tags"
+                                                        value={it.notes || ""}
+                                                        onChange={(e) =>
+                                                            onUpdateItem(it.id, {
+                                                                notes: e.target.value,
+                                                            })
+                                                        }
+                                                    />
+                                                    <div className="sm:col-span-1 flex justify-end">
+                                                        <button
+                                                            onClick={() => onDeleteItem(it.id)}
+                                                            className="inline-flex h-11 items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 text-xs font-medium text-slate-600 transition hover:border-red-400/40 hover:bg-red-500/10 hover:text-red-600 dark:border-white/15 dark:bg-white/5 dark:text-slate-200 dark:hover:text-red-100"
+                                                        >
+                                                            Remove
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </>
+                                ) : (
+                                    <div className="rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-100/70 dark:bg-night-950/60 px-4 py-10 text-center text-sm text-slate-400">
+                                        This section is ready for new items. Add your first entry to get started.
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<InventoryApp />);
+    </script>
+</body>
+
+</html>

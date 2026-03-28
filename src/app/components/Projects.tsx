@@ -1,7 +1,6 @@
-// app/components/Projects.tsx (or your existing path)
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import ProjectCard from './ProjectCard';
 
 interface Project {
@@ -10,166 +9,187 @@ interface Project {
   org: string;
   description: string;
   tags: string[];
-  repo: string;
+  repo?: string;
 }
 
-/* ———————————————————————————————————————————————————————————
-   COMPLETE DATA-SET  (derived from the descriptions you provided)
-   Feel free to adjust copy or add more tags.
-——————————————————————————————————————————————————————————— */
 const projects: Project[] = [
   {
-    title: 'Vision Transformer',
-    period: 'Sep 2023 – Present',
+    title: 'DP-accurate DAU/MAU Counter Under Deletions',
+    period: 'Sep 2025 - Dec 2025',
+    org: 'Rice University',
+    description:
+      'Designed a deletion-aware distinct-counting pipeline using KMV sketches, tombstone propagation, and RDP accounting for privacy-compliant DAU/MAU analytics.',
+    tags: ['Python', 'Privacy', 'KMV Sketches', 'RDP', 'SQL', 'Backend'],
+    repo: 'https://github.com/Dv04/DAU-MAU_counter',
+  },
+  {
+    title: 'Editability and Faithfulness Metric for FEVER',
+    period: 'Sep 2025 - Dec 2025',
+    org: 'Rice University',
+    description:
+      'Evaluated editability-faithfulness tradeoffs on FEVER claims using GPT-2 and ROME edits across valid examples, comparing target and control flips to quantify localized model edits.',
+    tags: ['LLM Evaluation', 'GPT-2', 'ROME', 'NLP', 'Transformers', 'Research'],
+    repo: 'https://github.com/Dv04/ef_editability',
+  },
+  {
+    title: 'Activity Identification and Triggering System',
+    period: 'Jan 2025 - Apr 2025',
+    org: 'Ahmedabad Research Project',
+    description:
+      'Built a real-time video activity detection and event-triggering system using YOLOv11, TimeSformer, FastAPI, React, and WebSockets with about 95% validation accuracy.',
+    tags: ['YOLOv11', 'TimeSformer', 'FastAPI', 'React', 'WebSockets', 'Edge AI'],
+  },
+  {
+    title: 'Face Recognition Pipeline',
+    period: '2024 - 2025',
+    org: 'VMukti / Adiance',
+    description:
+      'Developed a face verification pipeline with RetinaFace, ViT embeddings, ONNX and ONNXRuntime, FRVT-style evaluation goals, CVLFace / AdaFace migration, and low FMR / low FNMR deployment targets.',
+    tags: ['RetinaFace', 'Vision Transformers', 'ONNX', 'ONNXRuntime', 'C++', 'Computer Vision'],
+  },
+  {
+    title: 'Live Video Analytics with Florence-2 and SAM',
+    period: '2025',
+    org: 'VMukti / Adiance',
+    description:
+      'Implemented interactive live-stream intelligence for activity tracking, person and object tracking, and live feed summarization with Florence-2 and SAM style components.',
+    tags: ['Florence-2', 'SAM', 'Video Analytics', 'Tracking', 'Multimodal AI', 'Python'],
+  },
+  {
+    title: 'Vision Transformer for Metasurface Design',
+    period: 'Sep 2023 - Sep 2024',
     org: 'Adani University',
     description:
-      'Vision-Transformer (ViT) model for image regression; compares transformer-based vision to CNN baselines.',
-    tags: [
-      'Vision Transformers',
-      'Deep Learning',
-      'Transformer Models',
-      'Python',
-      'Jupyter',
-      'CNN',
-    ],
+      'Built a Vision Transformer model for image regression on metasurface absorber data, improving exploration over CNN-like baselines and reducing training time by about 40%.',
+    tags: ['Vision Transformers', 'Image Regression', 'Deep Learning', 'Research', 'Python', 'CNN'],
     repo: 'https://github.com/Dv04/Vision_Transformer',
   },
   {
-    title: 'GUI-based Machine-Learning Studio',
-    period: 'May 2023 – Present',
+    title: 'GUI-Based Machine Learning Model for Interactive Learning',
+    period: 'May 2023 - Aug 2024',
     org: 'Adani University',
     description:
-      'Desktop GUI that lets students tweak ML algorithms live and visualise metrics in real time.',
-    tags: ['Machine Learning', 'GUI', 'Educational Tech'],
+      'Created an interactive GUI-based ML platform for non-expert learners with a focus on accessibility, educational workflows, and hands-on model exploration.',
+    tags: ['Machine Learning', 'GUI Development', 'Educational Tech', 'Python'],
     repo: 'https://github.com/LutionsLab/Predictor',
   },
   {
-    title: 'Text Detector (16-segment display)',
-    period: 'Jan 2023 – Present',
-    org: 'VMukti Solutions Pvt. Ltd.',
-    description:
-      'CNN + EasyOCR + OpenCV pipeline for real-time text extraction from industrial 16-segment displays.',
-    tags: ['OCR', 'OpenCV', 'EasyOCR', 'Flask UI', 'CNN'], // Added CNN here if it's a primary skill for filtering
-    repo: 'https://github.com/Dv04/Text_Detector',
-  },
-  {
-    title: 'IoT Intrusion-Detection DL',
+    title: 'Deep Learning-based IoT Security Model',
     period: 'Jul 2024',
     org: 'IIT Bombay',
     description:
-      'Random-Forest & DL ensemble that flags intrusions in Internet-of-Medical-Things (IoMT) traffic.',
-    tags: ['Cyber-security', 'Ensemble Learning', 'Deep Learning', 'IoT'], // Added Deep Learning
+      'Worked on IoMT intrusion detection using Random Forest, CNN, and optimization experiments for cybersecurity-focused model performance.',
+    tags: ['Cybersecurity', 'IoMT', 'Random Forest', 'CNN', 'Deep Learning'],
     repo: 'https://github.com/Dv04/GraphKAN',
   },
   {
+    title: 'Text Detector for 16-Segment Displays',
+    period: 'Jan 2024 - Apr 2024',
+    org: 'VMukti Solutions Pvt. Ltd.',
+    description:
+      'Built an industrial OCR pipeline with OpenCV, EasyOCR, and Flask for real-time text extraction from noisy 16-segment display images and videos.',
+    tags: ['OCR', 'OpenCV', 'EasyOCR', 'Flask', 'Computer Vision'],
+    repo: 'https://github.com/Dv04/Text_Detector',
+  },
+  {
+    title: 'OCR-Based Emotion Detection',
+    period: 'Jan 2025 - Apr 2025',
+    org: 'ISRO',
+    description:
+      'Combined OCR outputs with RoBERTa-style language representations to classify emotional tone in email content while staying privacy-aware.',
+    tags: ['OCR', 'RoBERTa', 'Text Classification', 'Python', 'Email Intelligence'],
+    repo: 'https://github.com/Dv04/Mail_Detection',
+  },
+  {
+    title: 'Multimodal Song Emotion Classifier',
+    period: 'Sep 2024',
+    org: 'Personal Project',
+    description:
+      'Fused Librosa audio features with SentenceTransformer lyric embeddings in TensorFlow to predict song emotion from both audio and text.',
+    tags: ['TensorFlow', 'Librosa', 'Sentence Transformers', 'Multimodal AI', 'Audio'],
+  },
+  {
     title: 'Alumni Management System',
-    period: 'Sep 2023',
+    period: '2023',
     org: 'Adani University',
     description:
-      'Prototype platform for universities to maintain alumni data and networking features.',
-    tags: ['Python', 'Django', 'Tailwind', 'PostgreSQL'],
+      'Built a university platform for alumni records, networking, and engagement with strong attention to workflow and user experience.',
+    tags: ['Python', 'Django', 'PostgreSQL', 'Web App'],
     repo: 'https://github.com/Dv04/Alumni_Management',
   },
   {
     title: 'Hospital Management System',
-    period: 'Jul 2023',
+    period: '2023',
     org: 'Adani University',
     description:
-      'Chatbot-assisted HMIS aimed at increasing adoption among clinical staff.',
-    tags: ['Chatbot', 'Machine Learning', 'React', 'Node.js', 'AI'],
+      'Created a chatbot-assisted HMIS workflow aimed at improving adoption and reducing friction in day-to-day healthcare operations.',
+    tags: ['Chatbot', 'React', 'Node.js', 'Product Thinking', 'Healthcare'],
     repo: 'https://github.com/Dv04/Hospital_Management_System',
   },
   {
-    title: 'Stock.Pi (Sentiment-driven Prediction)',
-    period: 'Feb 2023',
+    title: 'Stock.Pi',
+    period: '2023',
     org: 'Adani University',
     description:
-      'Scrapes news + social media, performs sentiment analysis and predicts equity / crypto moves.',
-    tags: ['Web Scraping', 'Sentiment Analysis', 'React', 'Python', 'Sentiment', 'NLP', 'Puppeteer'],
+      'Built a market sentiment analysis and chatbot system by combining scraping, sentiment analysis, and real-time market-oriented data processing.',
+    tags: ['Web Scraping', 'Sentiment Analysis', 'NLP', 'Python', 'Finance'],
     repo: 'https://github.com/Dv04/Stock.pi',
   },
   {
     title: 'Amazon Scrapper',
-    period: 'Nov 2022',
+    period: '2022',
     org: 'Adani University',
     description:
-      'Full-stack crawler to collect Amazon product data and build a pricing dashboard.',
-    tags: ['Node.js', 'Puppeteer', 'Pandas', 'Web Scraping', 'React', 'MongoDB'],
+      'Built a crawler and dashboard flow for collecting Amazon product data and learning practical backend scraping fundamentals.',
+    tags: ['Node.js', 'Puppeteer', 'Web Scraping', 'React', 'MongoDB'],
     repo: 'https://github.com/Dv04/Amazon_Scrapper',
   },
-  {
-    title: 'FRVT Research Bench',
-    period: '2024',
-    org: 'Personal R&D',
-    description:
-      'Self-hosted NIST Face-Recognition Vendor Test (FRVT) validation runs.',
-    tags: ['Face Recognition', 'Docker'],
-    repo: 'https://github.com/usnistgov/frvt',
-  },
-  {
-    title: 'Activity Tracker',
-    period: '2024',
-    org: 'Personal',
-    description:
-      'Full-stack fitness tracker that logs workouts and visualises progress.',
-    tags: ['Django', 'ChartJS', 'Python', 'React Native'],
-    repo: 'https://github.com/Dv04/Activity_Tracker',
-  },
-  // …add Jal and Mail_Detection if/when those repos go public
 ];
 
-/* ——————————————————————— helpers ——————————————————————— */
-const tagOptions = ['All', ...Array.from(new Set(projects.flatMap(p => p.tags))).sort()];
+const tagOptions = ['All', ...Array.from(new Set(projects.flatMap((project) => project.tags))).sort()];
 
 export default function Projects() {
   const [selectedTag, setSelectedTag] = useState<string>('All');
+
   const visible = useMemo(
     () =>
       projects.filter(
-        (p) => selectedTag === 'All' || p.tags.includes(selectedTag)
+        (project) => selectedTag === 'All' || project.tags.includes(selectedTag)
       ),
     [selectedTag]
   );
 
   return (
-    <section id="projects" className="py-20 sm:py-24 bg-slate-50 dark:bg-slate-900">
+    <section id="projects" className="bg-slate-50 py-20 sm:py-24 dark:bg-slate-900">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <header className="text-center mb-12 md:mb-16">
-          <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-white">
-            My Creative <span className="text-teal-500 dark:text-teal-400">Endeavors</span>
+        <header className="mx-auto mb-12 max-w-3xl text-center md:mb-16">
+          <h2 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
+            Projects and Research Work
           </h2>
-          <p className="mt-4 text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          <p className="mt-4 text-lg text-slate-600 dark:text-slate-400">
             Explore a selection of projects I've passionately worked on. Filter by topic to find what interests you most.
           </p>
         </header>
 
-        {/* tag dropdown */}
         <div className="mb-12 flex justify-center">
           <select
             value={selectedTag}
-            onChange={(e) => setSelectedTag(e.target.value)}
-            className="
-            rounded-md border border-slate-300 dark:border-slate-600
-            bg-white dark:bg-slate-800
-            py-2 px-3 text-sm
-            focus:outline-none focus:ring-2 focus:ring-teal-500
-          "
+            onChange={(event) => setSelectedTag(event.target.value)}
+            className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 dark:border-slate-600 dark:bg-slate-800"
           >
-            {tagOptions.map((t) => (
-              <option key={t} value={t}>
-                {t}
+            {tagOptions.map((tag) => (
+              <option key={tag} value={tag}>
+                {tag}
               </option>
             ))}
           </select>
         </div>
 
-
-        {/* Projects Grid */}
         {visible.length > 0 ? (
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {visible.map((project) => (
               <ProjectCard
-                key={project.title} // Key on the ProjectCard component itself
+                key={`${project.title}-${project.period}`}
                 title={project.title}
                 period={project.period}
                 org={project.org}
@@ -180,8 +200,9 @@ export default function Projects() {
             ))}
           </div>
         ) : (
-          <p className="text-center text-lg text-slate-600 dark:text-slate-400 py-10">
-            No projects match the skill "{selectedTag}". Please try another filter.
+          <p className="py-10 text-center text-lg text-slate-600 dark:text-slate-400">
+            No projects match the skill &quot;{selectedTag}&quot;. Please try another
+            filter.
           </p>
         )}
       </div>

@@ -76,15 +76,21 @@ export default function About() {
           "
         >
           <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
-            Hi, I’m Dev&nbsp;Sanghvi&nbsp;— AI&nbsp;Engineer &amp; Researcher
+            Hi, I&apos;m Dev Sanghvi, an AI Engineer &amp; Researcher
           </h3>
 
           <p className="mt-4 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
             I build deep-learning systems that bridge academia and
-            production&nbsp;&mdash; from Vision&nbsp;Transformers to
-            intrusion-detection on IoT devices. When I’m not optimising
-            transformers, you’ll find me producing community workshops or
-            hacking on open-source.
+            production - from Vision Transformers to
+            Intrusion-Detection.
+            My work sits at the intersection of edge AI, computer vision, and deployment engineering.
+          </p>
+
+          <p className="mt-4 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+            A lot of my work has lived around cameras, edge devices, and
+            systems that do not get the luxury of ideal conditions. I enjoy the
+            part where a model has to become something usable: faster, cleaner,
+            more reliable, and ready for the real world.
           </p>
 
           {/* fast-facts list */}
@@ -92,15 +98,23 @@ export default function About() {
             <li className="flex items-start gap-3">
               <span className="mt-0.5 text-teal-500">▹</span>
               <span>
-                <strong>M.S. CSE with specialization in AI &amp; Data Science</strong>, Adani University
-                (2025)
+                <strong>Rice University</strong>, Master of Computer Science with
+                an AI focus, expected December 2026, GPA 3.89/4.0.
               </span>
             </li>
             <li className="flex items-start gap-3">
               <span className="mt-0.5 text-teal-500">▹</span>
               <span>
-                <strong>Research Intern</strong> at IIT Bombay (deep-learning&nbsp;IoT security)
-                and ISRO (AI Agent development)
+                <strong>Former Team Lead / AI Solutions Developer at VMukti</strong>,
+                where I built production C++ / ONNX inference systems and deployed
+                analytics across 10K+ IoT cameras.
+              </span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="mt-0.5 text-teal-500">▹</span>
+              <span>
+                <strong>Published Vision Transformer research</strong> presented
+                at CASML 2024, IISc Bangalore, with a 40% training-time reduction.
               </span>
             </li>
             <li className="flex items-start gap-3">

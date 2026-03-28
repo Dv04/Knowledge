@@ -1,128 +1,209 @@
-// app/components/Skills.tsx (or your preferred path)
 'use client';
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid'; // Example icons
+import { motion } from 'framer-motion';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 
-// Skill categories and their skills
-// Derived from your Projects.tsx tags and LinkedIn data
-// Feel free to adjust, add, or remove skills and categories
 const skillData = [
   {
-    category: 'AI & Machine Learning',
-    description: 'Expertise in developing intelligent systems and algorithms.',
+    category: 'AI, ML, and Modeling',
+    description: 'Applied ML work across research, production, and evaluation.',
     skills: [
-      'Deep Learning', 'Machine Learning', 'Artificial Intelligence (AI)', 'Neural Networks',
-      'Transformer Models', 'Vision Transformers', 'Large Language Models (LLM)',
-      'Natural Language Processing (NLP)', 'Sentiment Analysis', 'Optical Character Recognition (OCR)',
-      'Image Processing', 'Face Recognition', 'Convolutional Neural Networks (CNN)',
-      'Ensemble Learning', 'Supervised Learning', 'Reinforcement Learning',
-      'Hyperparameter Optimization', 'Algorithm Optimization', 'TensorFlow', 'PyTorch', 'Scikit-learn'
+      'Deep Learning',
+      'Machine Learning',
+      'Artificial Intelligence',
+      'Transformers',
+      'Vision Transformers',
+      'Large Language Models',
+      'Natural Language Processing (NLP)',
+      'Text Classification',
+      'Multimodal AI',
+      'Neural Networks',
+      'Anomaly Detection',
+      'Reinforcement Learning',
+      'Model Evaluation',
+      'Ensemble Learning',
+      'Supervised Learning',
+      'Algorithm Optimization',
+      'Experimental Design',
+      'Privacy-preserving Analytics',
+      'Sentiment Analysis',
+      'Optical Character Recognition (OCR)',
     ],
-    icon: '🧠' // Example emoji icon
+    icon: 'AI',
   },
   {
-    category: 'Programming Languages',
-    description: 'Proficient in multiple languages for diverse applications.',
-    skills: ['Python', 'JavaScript', 'C++', 'SQL', 'Go', 'Solidity', 'C'],
-    icon: '💻'
-  },
-  {
-    category: 'Web & Application Development',
-    description: 'Building responsive and scalable web and mobile applications.',
+    category: 'Vision, OCR, and Video Intelligence',
+    description: 'Computer vision systems for surveillance, OCR, and edge deployments.',
     skills: [
-      'React', 'React Native', 'Node.js', 'Django', 'Flask', 'Tailwind CSS', 'SASS',
-      'HTML5', 'CSS3', 'PostgreSQL', 'MongoDB', 'Firebase',
-      'GUI Development', 'Web Scraping', 'Chatbot Development', 'REST APIs'
+      'Computer Vision',
+      'Real-time Video Analytics',
+      'OCR',
+      'OpenCV',
+      'Tesseract',
+      'EasyOCR',
+      'RetinaFace',
+      'Face Recognition',
+      'FRVT-aligned Evaluation',
+      'Florence-2',
+      'TimeSformer',
+      'SAM',
+      'Object Tracking',
+      'Person Tracking',
+      'Image Processing',
+      'Vision Analytics',
     ],
-    icon: '🌐'
+    icon: 'CV',
   },
   {
-    category: 'Tools & Platforms',
-    description: 'Utilizing industry-standard tools for efficient development.',
-    skills: ['Git', 'GitHub', 'Docker', 'Jira', 'Jupyter', 'Pandas', 'OpenCV', 'EasyOCR', 'Puppeteer'],
-    icon: '🛠️'
+    category: 'Deployment, Edge, and Infrastructure',
+    description: 'Production-oriented systems work for low-latency inference and scale.',
+    skills: [
+      'Edge AI',
+      'ONNX',
+      'ONNXRuntime',
+      'TensorRT',
+      'QAT / PTQ',
+      'Edge Inference',
+      'RTSP Stream Processing',
+      'Cloud VMS',
+      'Kubernetes',
+      'Inferencing Infrastructure',
+      'Docker',
+      'REST APIs',
+      'CI-like Workflows',
+      'Production-minded Testing',
+      'Resource-constrained Optimization',
+      'Sub-second Latency Pipelines',
+    ],
+    icon: 'INFRA',
   },
   {
-    category: 'Blockchain & Cryptocurrency',
-    description: 'Experience in decentralized technologies and smart contracts.',
-    skills: ['Blockchain', 'Smart Contracts', 'Cryptocurrency', 'Solidity', 'Hardhat', 'Ethereum'],
-    icon: '🔗'
+    category: 'Languages and Core Engineering',
+    description: 'Languages and engineering tools used across AI and product work.',
+    skills: [
+      'Python',
+      'C++',
+      'C',
+      'JavaScript',
+      'TypeScript',
+      'SQL',
+      'MATLAB',
+      'Go',
+      'Java',
+      'Solidity',
+      'Git',
+      'GitHub',
+      'Jupyter',
+      'NumPy',
+      'Pandas',
+      'Dask',
+    ],
+    icon: 'CODE',
   },
   {
-    category: 'Cybersecurity',
-    description: 'Focused on protecting systems and data from digital threats.',
-    skills: ['Intrusion Detection', 'Cybersecurity Concepts', 'Network Security Basics'],
-    icon: '🛡️'
+    category: 'Frameworks and Product Engineering',
+    description: 'Tools used for end-to-end product and application delivery.',
+    skills: [
+      'React',
+      'TypeScript',
+      'FastAPI',
+      'Flask',
+      'Node.js',
+      'HTML',
+      'CSS',
+      'SASS',
+      'Back-End Web Development',
+      'Front-End Development',
+      'Web Development',
+      'Web Scraping',
+      'GUI Development',
+      'Chatbot Development',
+      'PostgreSQL',
+      'MongoDB',
+    ],
+    icon: 'APP',
   },
   {
-    category: 'Cloud Computing',
-    description: 'Leveraging cloud platforms for scalable solutions.',
-    skills: ['Microsoft Azure', 'Cloud Computing Principles'],
-    icon: '☁️'
+    category: 'Research and Specialized Areas',
+    description: 'Research-heavy areas and adjacent technical background.',
+    skills: [
+      'BERT',
+      'RoBERTa',
+      'PyTorch',
+      'TensorFlow',
+      'Keras',
+      'scikit-learn',
+      'CNNs',
+      'IoMT Security',
+      'Nanotechnology',
+      'Metamaterials',
+      'Design Research',
+      'Cybersecurity',
+      'R&D',
+      'Blockchain',
+      'Smart Contracts',
+      'Cryptocurrency',
+      'Virtual Reality Development',
+    ],
+    icon: 'RND',
   },
-  {
-    category: 'Research & Specialized Tech',
-    description: 'Exploring cutting-edge technologies and research areas.',
-    skills: ['Research and Development (R&D)', 'Design Research', 'Internet of Things (IoT)', 'Nanotechnology', 'Metamaterials', 'Virtual Reality Development'],
-    icon: '🔬'
-  }
 ];
 
-const SKILLS_TO_SHOW_INITIALLY = 8; // Number of skills to show before "Show more"
+const SKILLS_TO_SHOW_INITIALLY = 12;
 
 export default function Skills() {
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
 
   const toggleCategory = (categoryName: string) => {
-    setExpandedCategories(prev => ({
-      ...prev,
-      [categoryName]: !prev[categoryName]
+    setExpandedCategories((previous) => ({
+      ...previous,
+      [categoryName]: !previous[categoryName],
     }));
   };
 
   return (
-    <section id="skills" className="py-20 sm:py-24 bg-slate-100 dark:bg-slate-900">
+    <section id="skills" className="py-20 sm:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <header className="text-center mb-12 md:mb-16">
-          <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-white">
-            My Technical <span className="text-teal-500 dark:text-teal-400">Proficiencies</span>
+        <header className="mx-auto mb-12 max-w-3xl text-center md:mb-16">
+          <h2 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
+            Technical Stack
           </h2>
-          <p className="mt-4 text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            A curated list of my key technical skills and areas of expertise.
+          <p className="mt-4 text-lg text-slate-600 dark:text-slate-400">
+            The skills section has been expanded to reflect the current stack:
+            edge inference, video analytics, privacy-aware ML, and production
+            systems work, not just the older academic projects.
           </p>
         </header>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {skillData.map((categoryItem) => {
             const isExpanded = expandedCategories[categoryItem.category] || false;
-            const skillsToShow = isExpanded ? categoryItem.skills : categoryItem.skills.slice(0, SKILLS_TO_SHOW_INITIALLY);
-            const canShowMore = categoryItem.skills.length > SKILLS_TO_SHOW_INITIALLY;
+            const skillsToShow = isExpanded
+              ? categoryItem.skills
+              : categoryItem.skills.slice(0, SKILLS_TO_SHOW_INITIALLY);
+            const canShowMore =
+              categoryItem.skills.length > SKILLS_TO_SHOW_INITIALLY;
 
             return (
               <motion.div
                 key={categoryItem.category}
                 layout
-                className="relative flex flex-col h-full rounded-xl border
-                           border-slate-200 dark:border-slate-700
-                           bg-white dark:bg-slate-800
-                           shadow-lg hover:shadow-xl dark:hover:shadow-slate-900/40
-                           p-6 transition-shadow duration-300"
+                className="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl dark:border-slate-700 dark:bg-slate-800 dark:hover:shadow-slate-900/40"
               >
                 <header className="mb-4">
-                  <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-100 flex items-center">
-                    <span className="mr-2 text-2xl">{categoryItem.icon}</span>
+                  <h3 className="flex items-center text-xl font-semibold text-slate-800 dark:text-slate-100">
+                    <span className="mr-2 text-sm font-bold uppercase tracking-[0.15em] text-teal-600 dark:text-teal-400">
+                      {categoryItem.icon}
+                    </span>
                     {categoryItem.category}
                   </h3>
-                  {categoryItem.description && (
-                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                      {categoryItem.description}
-                    </p>
-                  )}
+                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                    {categoryItem.description}
+                  </p>
                 </header>
 
-                <motion.ul layout className="flex flex-wrap gap-2 mb-4">
+                <motion.ul layout className="mb-4 flex flex-wrap gap-2">
                   {skillsToShow.map((skill) => (
                     <motion.li
                       key={skill}
@@ -141,14 +222,16 @@ export default function Skills() {
                 {canShowMore && (
                   <button
                     onClick={() => toggleCategory(categoryItem.category)}
-                    className="mt-auto text-sm font-medium text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300
-                               flex items-center self-start pt-2"
+                    className="mt-auto flex items-center self-start pt-2 text-sm font-medium text-teal-600 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300"
                   >
-                    {isExpanded ? 'Show less' : `Show more (${categoryItem.skills.length - SKILLS_TO_SHOW_INITIALLY} more)`}
-                    {isExpanded ?
-                      <ChevronUpIcon className="ml-1 h-4 w-4" /> :
+                    {isExpanded
+                      ? 'Show less'
+                      : `Show more (${categoryItem.skills.length - SKILLS_TO_SHOW_INITIALLY} more)`}
+                    {isExpanded ? (
+                      <ChevronUpIcon className="ml-1 h-4 w-4" />
+                    ) : (
                       <ChevronDownIcon className="ml-1 h-4 w-4" />
-                    }
+                    )}
                   </button>
                 )}
               </motion.div>

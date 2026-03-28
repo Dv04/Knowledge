@@ -12,7 +12,7 @@ const HeroCanvas = dynamic(() => import('./HeroCanvas'), { ssr: false });
 /* ------------------------------------------------------------------ */
 /*                        tiny type-writer hook                        */
 /* ------------------------------------------------------------------ */
-const phrases = ['AI Engineer', 'Blockchain Developer', 'Researcher'];
+const phrases = ['Edge AI Builder', 'Vision Systems Engineer', 'Research-to-Product Engineer'];
 function useTypewriter(delay = 120) {
   const [index, setIndex] = useState(0);
   const [sub, setSub] = useState('');
@@ -72,10 +72,11 @@ export default function Hero() {
           {text}
         </h2>
 
-        <p className="mx-auto mt-6 max-w-lg text-center text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-          I craft intelligent software that bridges research and real-world
-          impact — from transformer-driven vision systems to intrusion detection
-          on IoT devices.
+        <p className="mx-auto mt-6 max-w-2xl text-center text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+          I like building AI that has to work in the real world. Most of my
+          work sits between research and deployment, from video understanding
+          and OCR to fast inference systems built for edge hardware, privacy
+          constraints, and real operational use.
         </p>
 
         {/* CTA buttons */}
