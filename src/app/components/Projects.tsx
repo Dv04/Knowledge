@@ -10,6 +10,7 @@ interface Project {
   description: string;
   tags: string[];
   repo?: string;
+  status?: 'Public repo' | 'Private work' | 'Research';
 }
 
 const projects: Project[] = [
@@ -38,6 +39,7 @@ const projects: Project[] = [
     description:
       'Built a real-time video activity detection and event-triggering system using YOLOv11, TimeSformer, FastAPI, React, and WebSockets with about 95% validation accuracy.',
     tags: ['YOLOv11', 'TimeSformer', 'FastAPI', 'React', 'WebSockets', 'Edge AI'],
+    status: 'Research',
   },
   {
     title: 'Face Recognition Pipeline',
@@ -46,6 +48,7 @@ const projects: Project[] = [
     description:
       'Developed a face verification pipeline with RetinaFace, ViT embeddings, ONNX and ONNXRuntime, FRVT-style evaluation goals, CVLFace / AdaFace migration, and low FMR / low FNMR deployment targets.',
     tags: ['RetinaFace', 'Vision Transformers', 'ONNX', 'ONNXRuntime', 'C++', 'Computer Vision'],
+    status: 'Private work',
   },
   {
     title: 'Live Video Analytics with Florence-2 and SAM',
@@ -54,6 +57,7 @@ const projects: Project[] = [
     description:
       'Implemented interactive live-stream intelligence for activity tracking, person and object tracking, and live feed summarization with Florence-2 and SAM style components.',
     tags: ['Florence-2', 'SAM', 'Video Analytics', 'Tracking', 'Multimodal AI', 'Python'],
+    status: 'Private work',
   },
   {
     title: 'Vision Transformer for Metasurface Design',
@@ -107,6 +111,7 @@ const projects: Project[] = [
     description:
       'Fused Librosa audio features with SentenceTransformer lyric embeddings in TensorFlow to predict song emotion from both audio and text.',
     tags: ['TensorFlow', 'Librosa', 'Sentence Transformers', 'Multimodal AI', 'Audio'],
+    status: 'Research',
   },
   {
     title: 'Alumni Management System',
@@ -196,6 +201,7 @@ export default function Projects() {
                 description={project.description}
                 tags={project.tags}
                 repo={project.repo}
+                status={project.status}
               />
             ))}
           </div>

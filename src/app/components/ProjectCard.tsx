@@ -12,6 +12,7 @@ export interface ProjectCardProps {
   description: string;
   tags: string[];
   repo?: string;
+  status?: string;
 }
 
 export default function ProjectCard({
@@ -21,7 +22,10 @@ export default function ProjectCard({
   description,
   tags,
   repo,
+  status,
 }: ProjectCardProps) {
+  const projectStatus = repo ? 'Public repo' : status;
+
   return (
     <motion.article
       whileHover={{
@@ -77,20 +81,28 @@ export default function ProjectCard({
         </ul>
       )}
 
-      {!!repo && (
-        <Link
-          href={repo}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="
-            z-10 mt-auto inline-flex items-center gap-1 text-sm font-semibold
-            text-teal-600 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500
-          "
-        >
-          View&nbsp;code <span aria-hidden className="translate-x-0.5">↗</span>
-        </Link>
-      )}
+      <div className="z-10 mt-auto flex items-center justify-between gap-3">
+        {projectStatus && (
+          <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-600 dark:bg-slate-700/60 dark:text-slate-300">
+            {projectStatus}
+          </span>
+        )}
+
+        {!!repo && (
+          <Link
+            href={repo}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              inline-flex items-center gap-1 text-sm font-semibold
+              text-teal-600 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500
+            "
+          >
+            View&nbsp;code <span aria-hidden className="translate-x-0.5">↗</span>
+          </Link>
+        )}
+      </div>
     </motion.article>
   );
 }

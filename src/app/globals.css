@@ -6,6 +6,50 @@ html, body, #__next {
   height: 100%;
 }
 
+.text-pretty-wrap {
+  text-wrap: pretty;
+}
+
+.example-grid {
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.045) 1px, transparent 1px);
+  background-position: center;
+  background-size: 34px 34px;
+}
+
+@keyframes example-line-grow {
+  from {
+    opacity: 0.35;
+    transform: scaleX(0.12);
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+.example-scroll-line {
+  transform-origin: left center;
+}
+
+@supports (animation-timeline: view()) {
+  .example-scroll-line {
+    animation: example-line-grow linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 35%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .example-scroll-line {
+    animation: none;
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
 /* ===== Unified page background =====
 body {
   @apply bg-gradient-to-br from-slate-900 via-slate-950 to-black text-slate-100;

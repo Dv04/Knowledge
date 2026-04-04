@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { CalendarDaysIcon, MapPinIcon } from '@heroicons/react/24/outline';
 
@@ -13,6 +14,7 @@ interface Entry {
   summary: string;
   bullets: string[];
   skills: string[];
+  logo: string;
   link?: string;
 }
 
@@ -23,6 +25,7 @@ const timeline: Entry[] = [
     period: 'Jan 2026 - Present',
     location: 'Houston, TX',
     mode: 'Academic',
+    logo: '/logos/rice.png',
     summary:
       'Support course delivery while giving students structured feedback and guidance in and after class.',
     bullets: [
@@ -36,42 +39,27 @@ const timeline: Entry[] = [
     period: 'Nov 2025 - Present',
     location: 'Houston, TX',
     mode: 'Startup',
+    logo: '/logos/dhi.png',
     summary:
       'Building a privacy-first edge video analytics platform for existing CCTV systems.',
     bullets: [
-      'Focused on no-cloud, low-latency inference for industrial, port, and transit environments.',
-      'Built around RTSP stream processing, real-time dashboards, safety and hazard detection, and modular AI models.',
-      'Targeted deployments on Raspberry Pi, NVIDIA Jetson, and similar edge devices.',
-      'Own go-to-market, pilot outreach, and performance tuning for selected use cases.',
+      'Focused on no-cloud, low-latency inference for industrial, port, and transit environments using RTSP stream processing, real-time dashboards, and modular AI models.',
+      'Built safety and hazard detection workflows for Raspberry Pi, NVIDIA Jetson, and similar edge devices while handling pilot outreach, go-to-market, and performance tuning.',
     ],
     skills: ['Vision Analytics', 'Edge AI', 'Business Development', 'Startup Leadership'],
   },
-  // {
-  //   org: 'Gruve',
-  //   role: 'Incoming Software Engineer Intern',
-  //   period: 'Summer 2026',
-  //   mode: 'Internship',
-  //   summary:
-  //     'Joining the Kubernetes and inferencing infrastructure team starting June 1, 2026.',
-  //   bullets: [
-  //     'Accepted the 20 hours/week option at $28.85/hour instead of the 40 hours/week schedule.',
-  //   ],
-  //   skills: ['Kubernetes', 'Inferencing Infrastructure', 'Systems Engineering'],
-  // },
   {
-    org: 'VMukti Solutions Pvt. Ltd.',
+    org: 'VMukti Solutions',
     role: 'R&D Intern -> AI Solutions Developer -> Team Lead',
-    period: 'Jul 2021 - Jul 2025',
+    period: 'Jul 2021 - Jan 2025',
     location: 'India',
     mode: 'Industry',
+    logo: '/logos/vmukti.png',
     summary:
       'Built deployment-focused AI for cloud VMS systems, edge CCTV software, and large-scale surveillance analytics.',
     bullets: [
-      'Built production-ready C++ / ONNX inference systems and reduced edge latency by 50 to 70 percent.',
-      'Delivered 60 to 80 percent model-size reduction with 2 to 5x faster inference while retaining more than 95 percent of original accuracy.',
-      'Integrated GenAI video-forensics workflows with more than 95 percent precision in internal testing on real surveillance feeds.',
-      'Designed sub-second pipelines for thousands of concurrent streams and deployed analytics across 10K+ IoT cameras.',
-      'Moved AI features from research to deployment about 40 percent faster by coordinating cross-functional teams.',
+      'Built production-ready C++ / ONNX inference systems, reduced edge latency by 50 to 70 percent, and delivered 60 to 80 percent model-size reduction with 2 to 5x faster inference while retaining more than 95 percent of original accuracy.',
+      'Integrated GenAI video-forensics workflows with more than 95 percent precision, designed sub-second pipelines for thousands of concurrent streams across 10K+ IoT cameras, and moved AI features from research to deployment about 40 percent faster through cross-functional coordination.',
     ],
     skills: ['C++', 'ONNX', 'Python', 'Video Analytics', 'Deployment', 'Edge AI'],
     link: 'https://www.vmukti.com',
@@ -79,15 +67,15 @@ const timeline: Entry[] = [
   {
     org: 'Adiance Technologies Pvt. Ltd.',
     role: 'Product Development Team -> Project Manager / Team Lead',
-    period: 'Jan 2023 - Jul 2025',
+    period: 'Jan 2025 - Jul 2025',
     location: 'India',
     mode: 'Industry',
+    logo: '/logos/adiance.png',
     summary:
       'Worked on edge AI CCTV products and deployment pipelines for surveillance environments.',
     bullets: [
-      'Optimized deep learning models for real-time video analytics on constrained devices.',
-      'Worked on Florence-2 / TimeSformer activity tracking and C++ ONNXRuntime face verification for edge deployments.',
-      'Coordinated hardware-cloud integration and product deployment across surveillance use cases.',
+      'Optimized deep learning models for real-time video analytics on constrained devices and worked on Florence-2 / TimeSformer activity tracking for edge deployments.',
+      'Built C++ ONNXRuntime face verification workflows and coordinated hardware-cloud integration and product deployment across surveillance use cases.',
     ],
     skills: ['Edge AI', 'ONNXRuntime', 'Computer Vision', 'Product Delivery'],
   },
@@ -97,12 +85,12 @@ const timeline: Entry[] = [
     period: 'Jan 2025 - Apr 2025',
     location: 'Ahmedabad, India',
     mode: 'Research',
+    logo: '/logos/isro.png',
     summary:
       'Built an offline-capable multilingual email-security pipeline combining OCR, transformer-based analysis, and privacy-preserving processing.',
     bullets: [
       'Worked on malicious content detection, emotional tone detection, attachment analysis, and offline-friendly execution.',
-      'One version of the work reached 95 percent accuracy with Tesseract + BERT.',
-      'Another version reached more than 98 percent detection accuracy on multilingual real-world samples while reducing false positives by about 70 percent versus a rule-based baseline.',
+      'One version reached 95 percent accuracy with Tesseract + BERT, while another reached more than 98 percent multilingual detection accuracy and reduced false positives by about 70 percent versus a rule-based baseline.',
     ],
     skills: ['OCR', 'Transformers', 'BERT', 'RoBERTa', 'Python', 'Text Classification'],
   },
@@ -112,6 +100,7 @@ const timeline: Entry[] = [
     period: 'Jul 2024 - Aug 2024',
     location: 'Mumbai, India',
     mode: 'Research',
+    logo: '/logos/iitb.png',
     summary:
       'Researched intrusion detection in IoMT networks with deep learning and reinforcement learning.',
     bullets: [
@@ -121,46 +110,20 @@ const timeline: Entry[] = [
     skills: ['Reinforcement Learning', 'Deep Learning', 'Cybersecurity', 'Algorithm Optimization'],
   },
   {
-    org: 'ACM - Association for Computing Machinery',
-    role: 'Treasurer',
-    period: 'Mar 2024 - Mar 2025',
-    location: 'Ahmedabad, India',
-    mode: 'Leadership',
-    summary:
-      'Managed chapter operations around budgets, events, and student coordination.',
-    bullets: [
-      'Supported hackathons, tech talks, and chapter execution through planning and logistics.',
-    ],
-    skills: ['Budgeting', 'Leadership', 'Event Planning'],
-  },
-  {
     org: 'Adani Student Programming and Development Club',
     role: 'Vice President',
     period: 'Mar 2023 - Aug 2024',
     location: 'Ahmedabad, India',
     mode: 'Leadership',
+    logo: '/logos/aspdc.png',
     summary:
       'Scaled the largest programming club on campus through mentorship, workshops, hackathons, and repository stewardship.',
     bullets: [
-      'Organized 10+ workshops and hackathons and mentored 250+ students.',
-      'Built the club to 400+ members in earlier versions and regularly saw demand exceed capacity.',
+      'Organized 10+ workshops and hackathons, mentored 250+ students, and helped the club reach 400+ members with demand regularly exceeding capacity.',
       'Managed club GitHub repositories and strengthened the campus coding culture.',
     ],
     skills: ['Mentoring', 'GitHub', 'Community Building', 'Leadership'],
     link: 'https://aspdc.tech/team',
-  },
-  {
-    org: 'Global Education Forum, Adani University',
-    role: 'Coordinator of Volunteers',
-    period: 'Jun 2023',
-    location: 'Ahmedabad, India',
-    mode: 'Leadership',
-    summary:
-      'Coordinated volunteers and logistics for a large university event.',
-    bullets: [
-      'Helped operate a 300+ attendee event and improved cross-functional coordination.',
-    ],
-    skills: ['Operations', 'Volunteer Coordination', 'Event Management'],
   },
   {
     org: 'Adani University',
@@ -168,34 +131,13 @@ const timeline: Entry[] = [
     period: 'Jul 2023 - Aug 2023',
     location: 'Ahmedabad, India',
     mode: 'Research',
+    logo: '/logos/adaniuni.png',
     summary:
       'Worked on nanotechnology, metamaterials, camouflage, and design research.',
     bullets: [
       'This work became the foundation for the later metasurface absorber publication.',
     ],
     skills: ['Nanotechnology', 'Metamaterials', 'Design Research'],
-  },
-  {
-    org: 'Adani University',
-    role: 'Class Representative',
-    period: 'Multiple semesters',
-    location: 'Ahmedabad, India',
-    mode: 'Leadership',
-    summary:
-      'Acted as a bridge between students and faculty across multiple semesters.',
-    bullets: [],
-    skills: ['Communication', 'Student Advocacy'],
-  },
-  {
-    org: 'Sanand Panjrapol',
-    role: 'Volunteer',
-    period: 'Mar 2024',
-    location: 'Ahmedabad, India',
-    mode: 'Service',
-    summary:
-      'Supported animal welfare through feeding and maintenance work at the shelter.',
-    bullets: [],
-    skills: ['Community Service', 'Animal Welfare'],
   },
 ];
 
@@ -228,17 +170,31 @@ export default function Timeline() {
 
               <article className="rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-md backdrop-blur dark:border-slate-700 dark:bg-slate-800/70">
                 <header>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-                      {entry.role}
-                    </h3>
-                    <span className="rounded-full bg-teal-100 px-3 py-1 text-xs font-medium text-teal-700 dark:bg-teal-500/15 dark:text-teal-300">
-                      {entry.mode}
-                    </span>
+                  <div className="flex flex-wrap items-start gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900/70">
+                      <Image
+                        src={entry.logo}
+                        alt={`${entry.org} logo`}
+                        width={34}
+                        height={34}
+                        className="h-8 w-8 object-contain"
+                      />
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                          {entry.role}
+                        </h3>
+                        <span className="rounded-full bg-teal-100 px-3 py-1 text-xs font-medium text-teal-700 dark:bg-teal-500/15 dark:text-teal-300">
+                          {entry.mode}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+                        {entry.org}
+                      </p>
+                    </div>
                   </div>
-                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-                    {entry.org}
-                  </p>
 
                   <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
                     <span className="inline-flex items-center gap-1">

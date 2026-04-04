@@ -8,6 +8,14 @@
     ],
     "rewrites": [
       {
+        "source": "/example",
+        "destination": "/example.html"
+      },
+      {
+        "source": "/example/**",
+        "destination": "/example.html"
+      },
+      {
         "source": "/jain-culinary-guide",
         "destination": "/special.html"
       },

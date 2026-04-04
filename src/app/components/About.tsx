@@ -76,7 +76,7 @@ export default function About() {
           "
         >
           <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
-            Hi, I&apos;m Dev Sanghvi, an AI Engineer &amp; Researcher
+            Hi, I&apos;m Dev Sanghvi, AI Engineer
           </h3>
 
           <p className="mt-4 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
@@ -120,13 +120,13 @@ export default function About() {
             <li className="flex items-start gap-3">
               <span className="mt-0.5 text-teal-500">▹</span>
               <span>
-                Contributor to&nbsp;
+                Public GitHub work across&nbsp;
                 <a
                   href="https://github.com/Dv04?tab=repositories"
                   target="_blank"
                   className="font-medium text-teal-600 hover:underline dark:text-teal-400"
                 >
-                  20+ open-source repos
+                  AI, vision, and OCR
                 </a>
               </span>
             </li>
