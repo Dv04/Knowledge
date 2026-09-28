@@ -142,9 +142,17 @@ function CurrentCard({
   );
 }
 
-function ExperienceCard({ entry }: { entry: ExperienceEntry }) {
+function linkHost(href: string) {
+  try {
+    return new URL(href).hostname.replace(/^www\./, '');
+  } catch {
+    return href;
+  }
+}
+
+function ExperienceCard({ entry, wide = false }: { entry: ExperienceEntry; wide?: boolean }) {
   return (
-    <article className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+    <article className={`rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm ${wide ? 'xl:col-span-2' : ''}`}>
       <header className="flex items-start gap-4">
         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50">
           {entry.logo ? (
@@ -222,7 +230,7 @@ function ExperienceCard({ entry }: { entry: ExperienceEntry }) {
             target="_blank"
             className="inline-flex items-center gap-2 text-sm font-semibold text-teal-700 hover:text-teal-800"
           >
-            Related link <ArrowTopRightOnSquareIcon className="h-4 w-4" />
+            {linkHost(entry.href)} <ArrowTopRightOnSquareIcon className="h-4 w-4" />
           </Link>
         </div>
       )}
@@ -327,9 +335,9 @@ function FeaturePreview({ feature }: { feature: FeaturedSystem }) {
         <span>{feature.metricValue}</span>
       </div>
 
-      <div className="mt-8 grid gap-4 xl:grid-cols-[0.92fr_1.08fr]">
+      <div className="mt-8 grid gap-4">
         <div className="rounded-[1.5rem] border border-slate-200 bg-white/90 p-5">
-          <div className="flex items-start justify-between gap-4">
+          <div>
             <div>
               <p className="text-xs uppercase tracking-[0.18em] text-slate-400">
                 {feature.previewTitle}
@@ -338,9 +346,6 @@ function FeaturePreview({ feature }: { feature: FeaturedSystem }) {
                 {feature.title}
               </h3>
               <p className="mt-2 text-sm text-slate-500">{feature.period}</p>
-            </div>
-            <div className="rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700">
-              {feature.metricValue}
             </div>
           </div>
 
@@ -471,9 +476,7 @@ export default function ExampleShowcase() {
       <div className="example-grid min-h-screen">
         <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <motion.div
-            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-            animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+            initial={false}
             className="rounded-full border border-slate-200 bg-white/90 px-4 py-2 text-sm text-slate-600 shadow-sm"
           >
             <nav
@@ -493,6 +496,12 @@ export default function ExampleShowcase() {
               <a href="#publication" className="hover:text-slate-900">
                 Publication
               </a>
+              <a href="#skills" className="hover:text-slate-900">
+                Skills
+              </a>
+              <a href="#education" className="hover:text-slate-900">
+                Education
+              </a>
               <a href="#contact" className="hover:text-slate-900">
                 Contact
               </a>
@@ -506,12 +515,7 @@ export default function ExampleShowcase() {
             />
 
             <div className="relative grid gap-10 xl:grid-cols-[1.08fr_0.92fr]">
-              <motion.div
-                initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-                whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.25 }}
-                transition={{ duration: 0.55, ease: 'easeOut' }}
-              >
+              <motion.div initial={false}>
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
                   Dev Sanghvi
                 </p>
@@ -567,10 +571,7 @@ export default function ExampleShowcase() {
               </motion.div>
 
               <motion.div
-                initial={reduceMotion ? false : { opacity: 0, y: 22 }}
-                whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.25 }}
-                transition={{ duration: 0.55, ease: 'easeOut', delay: 0.05 }}
+                initial={false}
                 className="grid gap-4"
               >
                 <div className="grid items-start gap-4 sm:grid-cols-[0.95fr_1.05fr]">
@@ -752,8 +753,12 @@ export default function ExampleShowcase() {
           />
 
           <div className="mt-10 grid gap-5 xl:grid-cols-2">
-            {experienceEntries.map((entry) => (
-              <ExperienceCard key={`${entry.org}-${entry.role}`} entry={entry} />
+            {experienceEntries.map((entry, index) => (
+              <ExperienceCard
+                key={`${entry.org}-${entry.role}`}
+                entry={entry}
+                wide={experienceEntries.length % 2 === 1 && index === experienceEntries.length - 1}
+              />
             ))}
           </div>
         </section>
@@ -915,7 +920,10 @@ export default function ExampleShowcase() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <section
+          id="skills"
+          className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8"
+        >
           <SectionHeader
             eyebrow="Technical stack"
             title="Tools, frameworks, and systems I keep reaching for."
@@ -934,7 +942,10 @@ export default function ExampleShowcase() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <section
+          id="education"
+          className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8"
+        >
           <SectionHeader
             eyebrow="Education"
             title="Education"
