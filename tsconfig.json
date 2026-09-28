@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "types": [
-      "@react-three/fiber",
       "react"
     ],
     "target": "ES2017",
@@ -32,7 +31,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "**/*.d.ts", // ★ NEW — picks up src/types/react-three.d.ts
+    "**/*.d.ts",
     ".next/types/**/*.ts"
   ],
   "exclude": [
