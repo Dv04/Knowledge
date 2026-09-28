@@ -30,6 +30,8 @@
   },
   "type": "module",
   "devDependencies": {
-    "@types/react": "19.1.9"
+    "@types/node": "^20.19.43",
+    "@types/react": "19.1.9",
+    "typescript": "~5.6"
   }
 }

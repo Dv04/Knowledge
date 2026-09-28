@@ -66,7 +66,7 @@ export type ProjectEntry = {
   title: string;
   org: string;
   period: string;
-  category: 'Edge AI' | 'Research' | 'Data & Privacy' | 'Product';
+  category: 'DHI Labs' | 'Edge AI' | 'Research' | 'Data & Privacy' | 'Product';
   summary: string;
   bullets: string[];
   tags: string[];
@@ -82,7 +82,7 @@ export type SkillGroup = {
 
 export const proofItems: ProofItem[] = [
   { label: 'Rice University', logo: '/logos/rice.png' },
-  { label: 'Dhi-Tech', logo: '/logos/dhi.png' },
+  { label: 'DHI', logo: '/logos/dhi.png' },
   { label: 'VMukti', logo: '/logos/vmukti.png' },
   { label: 'ISRO', logo: '/logos/isro.png' },
   { label: 'CASML 2024' },
@@ -90,24 +90,26 @@ export const proofItems: ProofItem[] = [
 
 export const currentItems: CurrentItem[] = [
   {
-    label: 'Now',
+    label: 'Building',
+    title: 'DHI',
+    description:
+      'Co-founder. DHI turns the cameras a site already has into live video analytics, running on a small local edge node. I wrote most of the platform.',
+    href: 'https://dhi-tech.com',
+    hrefLabel: 'Visit DHI',
+  },
+  {
+    label: 'Research',
+    title: 'DHI Labs',
+    description:
+      'A 12-product applied research program: one repo per product, tests against synthetic ground truth, and results published with their misses.',
+    href: 'https://dhi-tech.com/labs/',
+    hrefLabel: 'See DHI Labs',
+  },
+  {
+    label: 'Recently',
     title: 'Rice University',
     description:
-      'MCS student in Houston with an AI focus, expected to graduate in December 2026 with a current GPA of 3.89/4.0.',
-  },
-  {
-    label: 'Building',
-    title: 'Dhi-Tech',
-    description:
-      'Co-founding a privacy-first edge video analytics platform for existing CCTV systems, focused on real-time safety intelligence without cloud dependency.',
-    href: 'https://dhi-tech.com',
-    hrefLabel: 'Visit Dhi-Tech',
-  },
-  {
-    label: 'Now',
-    title: 'Current focus',
-    description:
-      'Building around edge AI, privacy-aware video intelligence, OCR, deployment constraints, and production-ready systems work.',
+      'Finished a Master of Computer Science (AI) in August 2026, then spent the summer building DHI in Rice\'s Summer Venture Studio.',
   },
 ];
 
@@ -118,6 +120,7 @@ export const roleFits = [
   'Inference / Deployment Engineer',
   'Applied AI / Production ML',
   'Founding Engineer',
+  'Contract: AI automation, agents, MVPs',
 ];
 
 export const focusAreas = [
@@ -135,12 +138,16 @@ export const focusAreas = [
 
 export const metrics: MetricItem[] = [
   {
-    value: '10K+',
-    label: 'IoT cameras reached by deployed analytics across large surveillance environments',
+    value: '31',
+    label: 'configurable video analytics use cases on 12 detector engines in the DHI platform',
   },
   {
-    value: '50-70%',
-    label: 'latency reduction achieved on optimized edge inference workloads',
+    value: '710 MB',
+    label: 'memory for six live cameras on an 8 GB edge GPU, down from about 3.4 GB',
+  },
+  {
+    value: '10K+',
+    label: 'IoT cameras reached by deployed analytics across large surveillance environments',
   },
   {
     value: '2-5x',
@@ -154,34 +161,52 @@ export const metrics: MetricItem[] = [
     value: '40%',
     label: 'training-time reduction in the metasurface publication presented at CASML 2024',
   },
-  {
-    value: '400+',
-    label: 'members reached as ASPDC grew into the largest programming club on campus',
-  },
 ];
 
 export const featuredSystems: FeaturedSystem[] = [
   {
     id: 'dhi',
-    label: 'Dhi-Tech',
-    title: 'Privacy-first edge video analytics for existing CCTV systems',
+    label: 'DHI',
+    title: 'Safety analytics that run next to the cameras a site already has',
     period: 'Nov 2025 - Present',
     summary:
-      'Current startup work centered on safety intelligence that has to run close to the camera, stay fast, and avoid unnecessary cloud dependency.',
+      'My company. The platform turns ordinary RTSP/ONVIF camera feeds into live alerts on a small local edge node.',
     details: [
-      'Built around no-cloud, low-latency inference for industrial, port, and transit environments.',
-      'Uses RTSP stream processing, real-time dashboard visualization, modular AI models, and safety / hazard detection workflows.',
-      'Targets Raspberry Pi, NVIDIA Jetson, and similar devices while also covering pilot outreach, go-to-market, and performance tuning.',
+      'Video analytics engine in Python and FastAPI: 31 configurable use cases, including license plate recognition, long-term re-identification, intrusion, loitering and tailgating, on 12 detector engines.',
+      'Designed the multi-camera inference pipeline on a shared TensorRT context and shared-memory frame buffer: six live cameras in 710 MB on an 8 GB edge GPU, down from about 3.4 GB.',
+      'Multi-tenant cloud dashboard in React and TypeScript on Cloudflare Workers and D1, with live alerts and webhooks. Events queue on the edge node and replay if the connection drops.',
     ],
-    metricValue: 'No cloud',
-    metricLabel: 'privacy-first, low-latency deployment',
-    stack: ['Edge AI', 'RTSP', 'Dashboards', 'Jetson', 'Raspberry Pi', 'Safety Detection'],
-    diagram: ['CCTV input', 'RTSP ingest', 'On-device inference', 'Operations dashboard'],
-    previewTitle: 'Current startup direction',
+    metricValue: '31 use cases',
+    metricLabel: 'on 12 detector engines',
+    stack: ['Python', 'FastAPI', 'TensorRT', 'GStreamer', 'React', 'Cloudflare Workers', 'D1'],
+    diagram: ['Existing cameras', 'Shared TensorRT inference', 'Rules and alerts', 'Cloud dashboard'],
+    previewTitle: 'The main thing I am building',
     previewCaption:
-      'This is where product thinking, deployment constraints, and computer vision come together most directly.',
+      'Most of what I have learned about edge inference, product and selling ends up here.',
     href: 'https://dhi-tech.com',
-    hrefLabel: 'Dhi-Tech',
+    hrefLabel: 'DHI',
+  },
+  {
+    id: 'labs',
+    label: 'DHI Labs',
+    title: 'A 12-product research program, each result published with its limits',
+    period: '2026',
+    summary:
+      'Standalone engines that plug into any detector: scene graphs, cross-camera identity, open-vocabulary detection, occlusion-aware counting, predictive alerting and more.',
+    details: [
+      'Edge scene graphs: 2.4 ms p50 per frame on-device; the learned relation head scores R@20 0.500 against 0.220 for a frequency baseline on Visual Genome.',
+      'Cross-camera identity memory: zero wrong links across 7 cameras and 313 people on WILDTRACK, because it would rather leave a link out than guess.',
+      'Continual open-vocabulary detection: add a class on-device from a text prompt or a few crops, with no retraining and zero forgetting on COCO.',
+    ],
+    metricValue: '12 products',
+    metricLabel: 'one tested repo each',
+    stack: ['PyTorch', 'TensorRT', 'Conformal prediction', 'Scene graphs', 'Re-identification'],
+    diagram: ['Any detector', 'Standalone engine', 'Tested against ground truth', 'Published with limits'],
+    previewTitle: 'Research that has to run on the box',
+    previewCaption:
+      'Every engine has to fit the same small edge node the product runs on, and every number comes with what it does not show.',
+    href: 'https://dhi-tech.com/labs/',
+    hrefLabel: 'DHI Labs',
   },
   {
     id: 'vmukti',
@@ -225,64 +250,57 @@ export const featuredSystems: FeaturedSystem[] = [
     previewCaption:
       'What stands out here is the mix of constraints: privacy, offline execution, multilingual inputs, and reliability.',
   },
-  {
-    id: 'privacy',
-    label: 'Rice project',
-    title: 'Deletion-aware analytics and model-edit evaluation',
-    period: 'Sep 2025 - Dec 2025',
-    summary:
-      'Recent Rice work focused on privacy-aware analytics infrastructure and LLM evaluation with measurable methodology.',
-    details: [
-      'Designed a deletion-aware DAU/MAU pipeline using KMV sketches, tombstone propagation, and RDP accounting for GDPR-compliant analytics.',
-      'Benchmarked editability-faithfulness tradeoffs on FEVER using GPT-2 and ROME edits across valid examples.',
-      'Together, they cover backend reasoning, experimental design, and correctness under constraints.',
-    ],
-    metricValue: 'RDP + FEVER',
-    metricLabel: 'privacy analytics and model-evaluation work',
-    stack: ['Python', 'KMV Sketches', 'RDP', 'SQL', 'GPT-2', 'ROME'],
-    diagram: ['User events', 'Deletion handling', 'Metric logic', 'Evaluation output'],
-    previewTitle: 'Research + data systems breadth',
-    previewCaption:
-      'It adds range while staying close to the same themes of rigor, measurement, and practical systems work.',
-    href: 'https://github.com/Dv04/DAU-MAU_counter',
-    hrefLabel: 'DAU/MAU repo',
-  },
 ];
 
 export const experienceEntries: ExperienceEntry[] = [
   {
-    org: 'Rice University School of Engineering and Computing',
-    role: 'Teaching Assistant',
-    period: 'Jan 2026 - Present',
-    location: 'Houston, TX',
-    mode: 'Academic',
-    logo: '/logos/rice.png',
-    summary:
-      'Supporting course delivery while giving students structured feedback and guidance during and outside class.',
-    bullets: [
-      'Strengthened constructive feedback and professional communication through direct student support.',
-    ],
-    skills: ['Constructive Feedback', 'Professional Communication', 'Teaching'],
-  },
-  {
-    org: 'Dhi-Tech',
+    org: 'DHI Technologies, Inc.',
     role: 'Co-Founder',
     period: 'Nov 2025 - Present',
     location: 'Houston, TX',
     mode: 'Startup',
     logo: '/logos/dhi.png',
     summary:
-      'Building a privacy-first edge video analytics platform for existing CCTV systems and real-time safety intelligence.',
+      'Building DHI, video analytics that run on a local edge node next to the cameras a site already has. I wrote most of the platform and run go-to-market.',
     bullets: [
-      'Focused on no-cloud, low-latency inference for industrial, port, and transit environments using RTSP stream processing and modular AI models.',
-      'Built around dashboard visualization, safety / hazard detection, Jetson and Raspberry Pi deployment, and early pilot and go-to-market work.',
+      'Built the video analytics engine (Python, FastAPI): 31 configurable use cases, including license plates, re-identification and intrusion, on 12 detector engines.',
+      'Designed the multi-camera inference pipeline: six live cameras in 710 MB on an 8 GB edge GPU, down from about 3.4 GB.',
+      'Built the multi-tenant cloud dashboard (React, TypeScript, Cloudflare Workers, D1) and lead DHI Labs, the 12-product research program.',
     ],
-    skills: ['Vision Analytics', 'Edge AI', 'Startup Leadership', 'Business Development'],
+    skills: ['TensorRT', 'FastAPI', 'React', 'Cloudflare Workers', 'Edge AI', 'Startup Leadership'],
     href: 'https://dhi-tech.com',
   },
   {
+    org: 'Rice Summer Venture Studio (Liu Idea Lab)',
+    role: 'Founder, DHI',
+    period: 'May 2026 - Aug 2026',
+    location: 'Houston, TX',
+    mode: 'Accelerator',
+    logo: '/logos/rice.png',
+    summary:
+      'Rice\'s summer accelerator. DHI was selected for the cohort with a $15,000 award, and I spent the summer building it with my two co-founders.',
+    bullets: [
+      'Worked on DHI\'s product and go-to-market through the program, alongside the engineering.',
+    ],
+    skills: ['Go-to-market', 'Product', 'Startup Leadership'],
+  },
+  {
+    org: 'Rice University School of Engineering and Computing',
+    role: 'Teaching Assistant',
+    period: 'Jan 2026 - May 2026',
+    location: 'Houston, TX',
+    mode: 'Academic',
+    logo: '/logos/rice.png',
+    summary:
+      'Supported course delivery and gave students structured feedback and guidance during and outside class.',
+    bullets: [
+      'Strengthened constructive feedback and professional communication through direct student support.',
+    ],
+    skills: ['Constructive Feedback', 'Professional Communication', 'Teaching'],
+  },
+  {
     org: 'VMukti Solutions',
-    role: 'R&D Intern -> AI Solutions Developer',
+    role: 'AI Solutions Developer',
     period: 'Jul 2021 - Jan 2025',
     location: 'Ahmedabad, India',
     mode: 'Industry',
@@ -322,7 +340,7 @@ export const experienceEntries: ExperienceEntry[] = [
       'Built an offline-capable multilingual email-security pipeline combining OCR, transformer-based analysis, and privacy-preserving processing.',
     bullets: [
       'Worked on malicious content detection, emotional tone detection, attachment analysis, and multilingual email understanding without cloud upload.',
-      'Reached 98% accuracy in one reported version and reduced false positives by about 70% versus a rule-based baseline.',
+      'Reached 98% accuracy on internal multilingual samples and about 70% fewer false positives than the rule-based baseline.',
     ],
     skills: ['OCR', 'BERT', 'RoBERTa', 'Python', 'Text Classification'],
   },
@@ -336,7 +354,7 @@ export const experienceEntries: ExperienceEntry[] = [
     summary:
       'Researched intrusion detection in IoMT networks with deep learning and reinforcement learning.',
     bullets: [
-      'Worked on a 77 GB dataset and improved detection accuracy to 98% in the current resume version.',
+      'Trained intrusion detection models on a 77 GB dataset, reaching 98% detection accuracy.',
       'Experimented with Random Forest, CNN, and Kolmogorov-Arnold Networks while handling class imbalance and training / inference efficiency.',
     ],
     skills: ['Reinforcement Learning', 'Deep Learning', 'Cybersecurity', 'Algorithm Optimization'],
@@ -385,6 +403,27 @@ export const publication = {
 
 export const awards: AwardEntry[] = [
   {
+    title: 'Summer Venture Studio cohort, $15,000 award',
+    issuer: 'Rice University, Liu Idea Lab',
+    period: 'May 2026',
+    description:
+      'DHI was selected for Rice\'s summer accelerator, which ran from May 18 to August 7, 2026.',
+  },
+  {
+    title: 'Semifinalist (top 27), AI Venture Velocity Challenge',
+    issuer: 'Texas A&M Mays Business School',
+    period: '2026',
+    description:
+      'DHI reached the semifinal round and submitted its stage-two experiment logs.',
+  },
+  {
+    title: 'Two DHI whitepapers',
+    issuer: 'DHI Labs',
+    period: 'Jul 2026',
+    description:
+      'Privacy-native edge video analytics, and a hybrid edge-cloud VMS architecture.',
+  },
+  {
     title: '1st Place, E-Yantra Robotics Workshop',
     issuer: 'IIT Bombay',
     period: 'Dec 2022',
@@ -404,10 +443,14 @@ export const educationEntries: EducationEntry[] = [
   {
     school: 'Rice University',
     degree: 'Master of Computer Science (AI focus)',
-    period: 'Aug 2025 - Expected Dec 2026',
+    period: 'Aug 2025 - Aug 2026',
     location: 'Houston, TX',
     logo: '/logos/rice.png',
-    details: ['Current GPA: 3.89/4.0'],
+    details: [
+      'GPA: 3.69/4.0',
+      'Coursework: Deep Learning, Deep Learning for Vision and Language, NLP, Machine Learning with Graphs, Probabilistic Algorithms, Parallel Computing',
+      'Teaching Assistant, Spring 2026',
+    ],
   },
   {
     school: 'Adani University',
@@ -425,6 +468,143 @@ export const educationNotes = [
 ];
 
 export const projects: ProjectEntry[] = [
+  {
+    title: 'Edge Scene Graphs',
+    org: 'DHI Labs',
+    period: '2026',
+    category: 'DHI Labs',
+    summary:
+      'A layer between any detector and an alerting system that turns boxes into a queryable scene graph and explainable alerts.',
+    bullets: [
+      'Spatial and temporal predicates, an interval-compressed graph, and a rule engine whose alerts point back to the evidence.',
+      '2.4 ms p50 per frame on-device; learned relation head R@20 0.500 against 0.220 for a frequency baseline on Visual Genome.',
+    ],
+    tags: ['Scene Graphs', 'Rule Engine', 'Visual Genome', 'TensorRT', 'Python'],
+    status: 'Private work',
+  },
+  {
+    title: 'Cross-Camera Identity Memory',
+    org: 'DHI Labs',
+    period: '2026',
+    category: 'DHI Labs',
+    summary:
+      'Links people across cameras and answers questions like where someone went, from any tracker\'s event stream.',
+    bullets: [
+      'Prefers leaving a link out to making a wrong one, and keeps a bounded memory that survives restarts.',
+      'Zero wrong links across 7 cameras and 313 people on WILDTRACK; ships with a Frigate adapter.',
+    ],
+    tags: ['Multi-camera', 'Re-identification', 'SQLite', 'WILDTRACK', 'Frigate'],
+    status: 'Private work',
+  },
+  {
+    title: 'Continual Open-Vocabulary Detection',
+    org: 'DHI Labs',
+    period: '2026',
+    category: 'DHI Labs',
+    summary:
+      'Add a new class on-device from a text prompt or a handful of image crops, with no gradient updates.',
+    bullets: [
+      'A gate replays the site\'s evaluation set before a new class goes live, and classes can be rolled back.',
+      'On COCO val2017, 4 of 6 added classes went live with zero forgetting of existing classes.',
+    ],
+    tags: ['Open Vocabulary', 'CLIP', 'Continual Learning', 'COCO'],
+    status: 'Private work',
+  },
+  {
+    title: 'Occlusion-Aware Counting',
+    org: 'DHI Labs',
+    period: '2026',
+    category: 'DHI Labs',
+    summary:
+      'People counts that correct for who the detector cannot see, with calibrated intervals instead of a single number.',
+    bullets: [
+      'Visibility estimation, detectability calibration and conformal 90% count intervals.',
+      'MAE 2.46 against 3.73 for naive counting in heavy crowds on synthetic ground truth, then tested on CrowdHuman.',
+    ],
+    tags: ['Counting', 'Conformal Prediction', 'CrowdHuman', 'Python'],
+    status: 'Private work',
+  },
+  {
+    title: 'Predictive Alerting with a Falsification Ledger',
+    org: 'DHI Labs',
+    period: '2026',
+    category: 'DHI Labs',
+    summary:
+      'Forecasts incidents a few seconds ahead, explains each forecast by replaying it with a cause removed, and scores every forecast against what happened.',
+    bullets: [
+      'A 210-scenario battery run through the production code, reported per alert type, including the weak one.',
+      '8% false alarms across the no-incident scenarios.',
+    ],
+    tags: ['Forecasting', 'Counterfactuals', 'Evaluation', 'Python'],
+    status: 'Private work',
+  },
+  {
+    title: 'Fixed-Camera 3D',
+    org: 'DHI Labs',
+    period: '2026',
+    category: 'DHI Labs',
+    summary:
+      'Calibrates a fixed camera from people walking past, with no calibration target, then reports distance, speed, height and density.',
+    bullets: [
+      '0.16 m ground-position RMSE for a 5 m, 30 degree mount on synthetic ground truth.',
+    ],
+    tags: ['Camera Calibration', '3D Geometry', 'Python'],
+    status: 'Private work',
+  },
+  {
+    title: 'Thermal Perception',
+    org: 'DHI Labs',
+    period: '2026',
+    category: 'DHI Labs',
+    summary:
+      'A thermal perception engine that needs no training, plus the data and pretraining tooling for thermal models.',
+    bullets: [
+      'Masked-autoencoder pretraining pilot on real LWIR images (LLVIP), reported as training mechanics rather than accuracy.',
+    ],
+    tags: ['Thermal', 'MAE Pretraining', 'ViT', 'LLVIP'],
+    status: 'Private work',
+  },
+  {
+    title: 'Prompt2Model',
+    org: 'DHI Labs',
+    period: '2026',
+    category: 'DHI Labs',
+    summary:
+      'Turns a plain-language request into a trained, compressed model ready for an edge device.',
+    bullets: [
+      'Planner, training, ONNX export and evaluation in one pipeline.',
+      'Refuses to ship a compressed model that falls below its accuracy floor and keeps the uncompressed one instead.',
+    ],
+    tags: ['LLM Planner', 'Model Compression', 'ONNX'],
+    status: 'Private work',
+  },
+  {
+    title: 'Collision-Risk Forecasting with Spatiotemporal Graphs',
+    org: 'Rice University (team of 3)',
+    period: 'Spring 2026',
+    category: 'Research',
+    summary:
+      'Forecasts calibrated collision probability and time to event for autonomous driving, instead of raw trajectories.',
+    bullets: [
+      'Led the graph engine and models: kNN, radius and time-to-event graph builders, ST-GNN (GAT + GRU) and graph transformer encoders.',
+      'Multi-head decoder for risk and time to event, plus attribution tools to explain predictions.',
+    ],
+    tags: ['GNNs', 'PyTorch', 'Hydra', 'Autonomous Driving', 'Calibration'],
+    repo: 'https://github.com/Dv04/Spatiotemporal_Interaction_Graphs_Forecasting',
+  },
+  {
+    title: 'MemFaith: Context Faithfulness in Long-Context LLMs',
+    org: 'Rice University',
+    period: 'Spring 2026',
+    category: 'Research',
+    summary:
+      'Measures how much each chunk of context drives a model\'s answer, by leaving chunks out one at a time.',
+    bullets: [
+      'Deterministic chunk ablation on FEVER-style and HotpotQA-style examples, with a Hugging Face Transformers backend.',
+    ],
+    tags: ['LLM Evaluation', 'FEVER', 'HotpotQA', 'Transformers'],
+    repo: 'https://github.com/Dv04/Memfaith',
+  },
   {
     title: 'DP-accurate DAU/MAU Counter Under Deletions',
     org: 'Rice University',
@@ -639,6 +819,7 @@ export const projects: ProjectEntry[] = [
 
 export const projectFilters: Array<ProjectEntry['category'] | 'All'> = [
   'All',
+  'DHI Labs',
   'Edge AI',
   'Research',
   'Data & Privacy',
@@ -669,6 +850,9 @@ export const skillGroups: SkillGroup[] = [
       'Algorithm Optimization',
       'Experimental Design',
       'Privacy-preserving Analytics',
+      'Graph Neural Networks',
+      'Conformal Prediction',
+      'Differential Privacy',
       'Sentiment Analysis',
       'Optical Character Recognition (OCR)',
     ],
@@ -709,8 +893,11 @@ export const skillGroups: SkillGroup[] = [
       'Edge Inference',
       'RTSP Stream Processing',
       'Cloud VMS',
-      'Kubernetes',
-      'Inferencing Infrastructure',
+      'NVIDIA Jetson',
+      'GStreamer',
+      'MediaMTX',
+      'Cloudflare Workers',
+      'Cloudflare D1',
       'Docker',
       'REST APIs',
       'CI-like Workflows',
