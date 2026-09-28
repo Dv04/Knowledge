@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Dev Sanghvi | Portfolio',
-  description: 'AI Engineer, Researcher & Entrepreneur'
+  description: 'Dev Sanghvi, AI engineer and co-founder of DHI. Edge computer vision, DHI Labs research, Rice MCS 2026.'
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

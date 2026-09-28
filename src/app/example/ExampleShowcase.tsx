@@ -516,23 +516,24 @@ export default function ExampleShowcase() {
                   Dev Sanghvi
                 </p>
                 <h1 className="text-pretty-wrap mt-5 max-w-4xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
-                  AI Engineer (Edge AI &amp; Computer Vision)
+                  AI engineer and co-founder of DHI
                 </h1>
                 <p className="mt-6 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">
-                  I&apos;m an AI engineer currently pursuing an MCS at Rice. Most
-                  of my work sits around edge computer vision, OCR, real-time
-                  video analytics, and deployment-focused ML under latency,
-                  privacy, and real operational constraints.
+                  I build computer vision that runs on small GPUs next to the
+                  camera. At DHI I wrote most of our platform: 31 video analytics
+                  use cases on a single 8 GB edge GPU, a cloud dashboard, and a
+                  12-product research program behind it. I finished my Master
+                  of Computer Science at Rice in August 2026.
                 </p>
                 <p className="mt-4 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">
-                  Across startup, research, and production roles, I keep moving
-                  toward work that has to hold up outside the lab and run well
-                  in the field.
+                  DHI is my main work. I also take on a small amount of contract
+                  work: AI automation, agents, internal tools and MVPs.
                 </p>
 
                 <div className="mt-8 flex flex-wrap gap-3">
                   <Link
                     href="/Dev_Sanghvi.pdf"
+                    prefetch={false}
                     className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
                   >
                     <ArrowDownTrayIcon className="h-4 w-4" />
@@ -591,9 +592,9 @@ export default function ExampleShowcase() {
                       Working style
                     </p>
                     <ul className="mt-5 space-y-4 text-sm leading-7 text-white/82">
-                      <li>I usually think about deployment early.</li>
-                      <li>Latency, privacy, and edge constraints stay in view throughout the work.</li>
-                      <li>I am comfortable taking research ideas far enough that they become usable systems.</li>
+                      <li>I think about the hardware and the deployment before the model.</li>
+                      <li>I publish results with what they do not show.</li>
+                      <li>I take research far enough that it runs on the box.</li>
                     </ul>
                   </div>
                 </div>
@@ -664,8 +665,8 @@ export default function ExampleShowcase() {
           >
             <SectionHeader
               eyebrow="Featured systems"
-              title="Selected systems where deployment constraints mattered as much as the model itself."
-              body="These are the projects that best reflect how I like to work: start with the real constraint, build the model, and make the full pipeline reliable enough to use."
+              title="Systems where the hardware and the deployment mattered as much as the model."
+              body="DHI and DHI Labs first, then the earlier production and research work they grew out of."
             />
           </motion.div>
 
@@ -747,7 +748,7 @@ export default function ExampleShowcase() {
           <SectionHeader
             eyebrow="Experience"
             title="Work across startups, production AI, and research."
-            body="My experience sits across shipping edge AI, building video and OCR systems, and taking research work far enough that it can survive outside the lab."
+            body="Four years of video analytics in industry, research at ISRO and IIT Bombay, and now my own company."
           />
 
           <div className="mt-10 grid gap-5 xl:grid-cols-2">
@@ -763,8 +764,8 @@ export default function ExampleShowcase() {
         >
           <SectionHeader
             eyebrow="Project library"
-            title="A broader project library across vision, OCR, privacy, and deployment-focused ML."
-            body="This section includes both public repositories and non-public work. Where code is public, it is linked. Where it is not, the work is labeled clearly."
+            title="DHI Labs products, Rice research, and earlier projects."
+            body="Public repositories are linked. DHI Labs code is private, so those cards describe the work and the measured results."
           />
 
           <div className="mt-10 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
@@ -821,8 +822,8 @@ export default function ExampleShowcase() {
         >
           <SectionHeader
             eyebrow="Publication and awards"
-            title="Publication, awards, and a few markers of technical recognition."
-            body="Research matters most to me when it leads to something concrete. This section collects the paper, competitions, and milestones that shaped that side of my work."
+            title="Publication, whitepapers, and awards."
+            body="The published paper, the DHI whitepapers, the accelerator and competitions."
           />
 
           <div className="mt-10 grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
@@ -831,7 +832,7 @@ export default function ExampleShowcase() {
               whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.25 }}
               transition={{ duration: 0.45, ease: 'easeOut' }}
-              className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-8 shadow-[0_20px_60px_-24px_rgba(15,23,42,0.25)]"
+              className="relative self-start overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-8 shadow-[0_20px_60px_-24px_rgba(15,23,42,0.25)]"
             >
               <div
                 aria-hidden
@@ -918,7 +919,7 @@ export default function ExampleShowcase() {
           <SectionHeader
             eyebrow="Technical stack"
             title="Tools, frameworks, and systems I keep reaching for."
-            body="Most of my work clusters around vision, OCR, edge inference, deployment, and production-facing ML, so the stack reflects that."
+            body="Mostly vision, edge inference and the web and cloud pieces around them."
           />
 
           <div className="mt-10 grid gap-5 xl:grid-cols-2">
@@ -936,8 +937,8 @@ export default function ExampleShowcase() {
         <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Education"
-            title="Academic background that supports the work."
-            body="Rice sharpened the systems and ML side of my path, while Adani gave me the early foundation across AI, engineering, and student-led technical work."
+            title="Education"
+            body="A Master's at Rice, finished in August 2026, and a B.Eng. in AI-ML from Adani University."
           />
 
           <div className="mt-10 grid gap-5 xl:grid-cols-[0.95fr_1.05fr]">
@@ -1011,12 +1012,9 @@ export default function ExampleShowcase() {
                   Professional narrative
                 </p>
                 <p className="mt-5 text-sm leading-8 text-white/82">
-                  An AI and software engineer currently pursuing an MCS at Rice,
-                  with deep hands-on experience in edge computer vision,
-                  real-time video analytics, OCR and text models,
-                  deployment-focused ML, startup execution, and technical
-                  leadership, supported by research, product, and systems work
-                  across surveillance, cybersecurity, and applied AI.
+                  AI engineer and co-founder of DHI, with a Master of Computer
+                  Science from Rice (2026). Four years of production video
+                  analytics before that, plus research at ISRO and IIT Bombay.
                 </p>
               </article>
             </div>
@@ -1029,8 +1027,8 @@ export default function ExampleShowcase() {
         >
           <SectionHeader
             eyebrow="Contact"
-            title="The contact section stays simple."
-            body="This keeps the direct channels visible without turning the bottom of the page into a social wall."
+            title="Get in touch"
+            body="Email is the fastest way to reach me."
           />
 
           <div className="mt-10 grid gap-5 xl:grid-cols-[0.9fr_1.1fr]">
@@ -1046,6 +1044,7 @@ export default function ExampleShowcase() {
                   <Link
                     key={item.label}
                     href={item.href}
+                    prefetch={false}
                     target={item.href.startsWith('http') ? '_blank' : undefined}
                     className="flex items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-4 text-slate-700 transition hover:border-teal-200 hover:text-teal-700"
                   >
@@ -1067,29 +1066,29 @@ export default function ExampleShowcase() {
                 <li className="flex gap-3">
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-teal-500" />
                   <span>
-                    Building AI that still works once latency, privacy, and deployment constraints become real.
+                    AI that still works once latency, privacy and small hardware become real constraints.
                   </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-teal-500" />
                   <span>
-                    Closing the gap between research ideas and production-ready systems people can actually use.
+                    Research taken far enough that people can use it.
                   </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-teal-500" />
                   <span>
-                    Communicating technical work clearly enough for engineers, recruiters, and founders to understand the value quickly.
+                    Numbers that come with their limits.
                   </span>
                 </li>
               </ul>
 
               <div className="mt-8 rounded-[1.6rem] border border-slate-200 bg-[linear-gradient(150deg,#f7fbfc_0%,#eef5f7_100%)] p-5">
                 <p className="text-[11px] uppercase tracking-[0.22em] text-slate-400">
-                  Interaction style
+                  Availability
                 </p>
                 <p className="mt-3 text-sm leading-7 text-slate-600">
-                  The interaction layer stays restrained and functional, with motion used mainly to guide focus, clarify transitions, and keep the page readable.
+                  DHI comes first. I take on a small number of part-time contract projects in AI automation, agents, internal tools and MVPs, outside DHI&apos;s camera and safety space.
                 </p>
               </div>
             </article>
